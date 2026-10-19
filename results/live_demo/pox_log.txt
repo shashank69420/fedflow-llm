@@ -1,0 +1,26 @@
+shashank@WIN-SQM8A7OO8D4:~/fedflow$ cd ~/pox
+python3 pox.py reroute_trigger
+POX 0.7.0 (gar) / Copyright 2011-2020 James McCauley, et al.
+INFO:reroute_trigger:[FedFlow] Starting on primary path (forecast 70.35, threshold 100.0)
+WARNING:version:POX requires one of the following versions of Python: 3.6 3.7 3.8 3.9
+WARNING:version:You're running Python 3.10.
+WARNING:version:If you run into problems, try using a supported version.
+INFO:core:POX 0.7.0 (gar) is up.
+WARNING:openflow.of_01:Bad OpenFlow version (0x47) on connection [None 1]
+WARNING:openflow.of_01:Bad OpenFlow version (0x47) on connection [None 2]
+INFO:openflow.of_01:[00-00-00-00-00-04 5] connected
+INFO:reroute_trigger:Reroute-aware forwarding active on switch dpid=4
+INFO:openflow.of_01:[00-00-00-00-00-01 4] connected
+INFO:reroute_trigger:Reroute-aware forwarding active on switch dpid=1
+INFO:openflow.of_01:[00-00-00-00-00-03 6] connected
+INFO:reroute_trigger:Reroute-aware forwarding active on switch dpid=3
+INFO:openflow.of_01:[00-00-00-00-00-02 7] connected
+INFO:reroute_trigger:Reroute-aware forwarding active on switch dpid=2
+INFO:reroute_trigger:[FedFlow] 00:18:56.239 FLIP primary -> alternate (forecast 100.84)
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 1 — using alt path, port 3
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 4 — using alt path, port 2
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 2 — using alt path, port 1
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 2 — using alt path, port 3
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 4 — using alt path, port 1
+INFO:reroute_trigger:[FedFlow] Forecast 100.84 > 100.0 on switch 1 — using alt path, port 1
+INFO:reroute_trigger:[FedFlow] 00:21:12.224 FLIP alternate -> primary (forecast 70.35)
