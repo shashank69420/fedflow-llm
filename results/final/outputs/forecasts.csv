@@ -1,0 +1,1639 @@
+start,step,true,model,persistence,moving_avg,parsed,raw_output
+1440,1,68.95,70.35,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1440,2,67.71,66.0,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1440,3,81.6,66.0,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1440,4,71.43,66.0,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1440,5,89.29,66.0,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1440,6,83.06,66.0,72.52,67.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 70.35, 66.00, 66.00, 66.00, 66.00, 66.00"
+1443,1,71.43,69.7,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1443,2,89.29,70.4,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1443,3,83.06,69.5,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1443,4,116.81,72.8,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1443,5,131.61,72.0,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1443,6,152.46,69.5,81.6,72.7533,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.39.
+PREDICTION: 69.70, 70.40, 69.50, 72.80, 72.00, 69.50"
+1446,1,116.81,78.08,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1446,2,131.61,78.8,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1446,3,152.46,78.8,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1446,4,141.84,78.0,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1446,5,126.71,78.0,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1446,6,113.48,80.0,83.06,81.26,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.81.
+PREDICTION: 78.08, 78.80, 78.80, 78.00, 78.00, 80.00"
+1449,1,141.84,133.2,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1449,2,126.71,138.33,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1449,3,113.48,133.04,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1449,4,97.65,133.0,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1449,5,84.12,133.0,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1449,6,105.55,133.0,152.46,133.6267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 133.20, 138.33, 133.04, 133.00, 133.00, 133.00"
+1452,1,97.65,111.67,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1452,2,84.12,111.6,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1452,3,105.55,111.76,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1452,4,165.14,111.88,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1452,5,195.44,111.8,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1452,6,165.15,111.86,113.48,127.3433,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.39.
+PREDICTION: 111.67, 111.60, 111.76, 111.88, 111.80, 111.86"
+1455,1,165.14,90.12,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1455,2,195.44,90.01,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1455,3,165.15,90.0,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1455,4,121.06,90.0,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1455,5,100.3,90.0,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1455,6,93.83,90.0,105.55,95.7733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 18.81.
+PREDICTION: 90.12, 90.01, 90.00, 90.00, 90.00, 90.00"
+1458,1,121.06,93.11,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1458,2,100.3,83.34,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1458,3,93.83,83.14,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1458,4,79.61,93.31,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1458,5,95.61,93.31,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1458,6,97.33,93.11,165.15,175.2433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -38.91.
+PREDICTION: 93.11, 83.34, 83.14, 93.31, 93.31, 93.11"
+1461,1,79.61,90.48,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1461,2,95.61,88.34,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1461,3,97.33,90.4,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1461,4,114.67,90.8,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1461,5,91.33,88.0,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1461,6,100.32,90.0,93.83,105.0633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.84.
+PREDICTION: 90.48, 88.34, 90.40, 90.80, 88.00, 90.00"
+1464,1,114.67,80.7,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1464,2,91.33,90.88,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1464,3,100.32,98.88,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1464,4,116.51,90.08,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1464,5,109.23,90.0,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1464,6,111.52,90.0,97.33,90.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.45.
+PREDICTION: 80.70, 90.88, 98.88, 90.08, 90.00, 90.00"
+1467,1,116.51,90.88,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1467,2,109.23,88.38,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1467,3,111.52,90.0,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1467,4,109.86,98.0,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1467,5,112.83,90.0,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1467,6,117.41,98.0,100.32,102.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.39.
+PREDICTION: 90.88, 88.38, 90.00, 98.00, 90.00, 98.00"
+1470,1,109.86,100.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1470,2,112.83,103.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1470,3,117.41,100.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1470,4,107.73,100.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1470,5,120.94,100.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1470,6,106.55,100.0,111.52,112.42,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -14.81.
+PREDICTION: 100.00, 103.00, 100.00, 100.00, 100.00, 100.00"
+1473,1,107.73,110.82,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1473,2,120.94,111.8,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1473,3,106.55,111.3,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1473,4,119.8,111.8,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1473,5,120.06,111.8,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1473,6,115.76,111.8,117.41,113.3667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 110.82, 111.80, 111.30, 111.80, 111.80, 111.80"
+1476,1,119.8,111.88,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1476,2,120.06,111.8,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1476,3,115.76,111.11,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1476,4,121.15,111.83,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1476,5,118.14,111.11,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1476,6,116.14,111.11,106.55,111.74,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 111.88, 111.80, 111.11, 111.83, 111.11, 111.11"
+1479,1,121.15,118.4,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1479,2,118.14,119.0,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1479,3,116.14,118.8,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1479,4,122.27,118.8,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1479,5,118.08,118.8,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1479,6,129.07,118.8,115.76,118.54,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.40, 119.00, 118.80, 118.80, 118.80, 118.80"
+1482,1,122.27,118.98,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1482,2,118.08,116.44,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1482,3,129.07,111.44,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1482,4,119.72,111.44,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1482,5,133.65,111.44,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1482,6,121.25,111.44,116.14,118.4767,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.88.
+PREDICTION: 118.98, 116.44, 111.44, 111.44, 111.44, 111.44"
+1485,1,119.72,118.88,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1485,2,133.65,128.98,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1485,3,121.25,122.44,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1485,4,126.35,122.8,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1485,5,126.67,122.8,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1485,6,141.0,122.84,129.07,123.14,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 118.88, 128.98, 122.44, 122.80, 122.80, 122.84"
+1488,1,126.35,122.81,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1488,2,126.67,122.96,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1488,3,141.0,122.22,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1488,4,134.65,129.44,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1488,5,131.41,122.4,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1488,6,136.87,122.2,121.25,124.8733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.91.
+PREDICTION: 122.81, 122.96, 122.22, 129.44, 122.40, 122.20"
+1491,1,134.65,130.42,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1491,2,131.41,133.93,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1491,3,136.87,133.33,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1491,4,119.06,133.8,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1491,5,133.87,133.8,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1491,6,148.45,133.88,141.0,131.34,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.91.
+PREDICTION: 130.42, 133.93, 133.33, 133.80, 133.80, 133.88"
+1494,1,119.06,138.64,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1494,2,133.87,138.01,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1494,3,148.45,138.81,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1494,4,135.63,138.81,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1494,5,135.34,138.81,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1494,6,138.8,138.81,136.87,134.31,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.19.
+PREDICTION: 138.64, 138.01, 138.81, 138.81, 138.81, 138.81"
+1497,1,135.63,128.7,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1497,2,135.34,133.8,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1497,3,138.8,133.81,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1497,4,141.27,133.88,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1497,5,120.98,133.88,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1497,6,123.09,133.81,148.45,133.7933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.61.
+PREDICTION: 128.70, 133.80, 133.81, 133.88, 133.88, 133.81"
+1500,1,141.27,128.48,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1500,2,120.98,123.81,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1500,3,123.09,123.8,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1500,4,136.17,128.81,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1500,5,129.46,123.8,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1500,6,143.35,128.48,138.8,136.59,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.63.
+PREDICTION: 128.48, 123.81, 123.80, 128.81, 123.80, 128.48"
+1503,1,136.17,128.58,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1503,2,129.46,122.88,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1503,3,143.35,122.67,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1503,4,131.6,122.6,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1503,5,119.84,122.8,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1503,6,124.01,122.65,123.09,128.4467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.63.
+PREDICTION: 128.58, 122.88, 122.67, 122.60, 122.80, 122.65"
+1506,1,131.6,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1506,2,119.84,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1506,3,124.01,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1506,4,113.09,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1506,5,130.08,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1506,6,129.73,138.8,143.35,136.3267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 138.80, 138.80, 138.80, 138.80, 138.80, 138.80"
+1509,1,113.09,128.58,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1509,2,130.08,122.88,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1509,3,129.73,122.65,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1509,4,127.34,122.6,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1509,5,137.07,122.8,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1509,6,137.06,122.65,124.01,125.15,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 128.58, 122.88, 122.65, 122.60, 122.80, 122.65"
+1512,1,127.34,124.88,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1512,2,137.07,122.2,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1512,3,137.06,122.6,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1512,4,126.57,122.22,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1512,5,111.87,122.22,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1512,6,130.13,122.22,129.73,124.3,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 124.88, 122.20, 122.60, 122.22, 122.22, 122.22"
+1515,1,126.57,128.55,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1515,2,111.87,128.91,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1515,3,130.13,128.41,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1515,4,128.64,132.88,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1515,5,125.81,132.41,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1515,6,129.37,133.4,137.06,133.8233,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.84.
+PREDICTION: 128.55, 128.91, 128.41, 132.88, 132.41, 133.40"
+1518,1,128.64,128.57,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1518,2,125.81,128.04,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1518,3,129.37,128.41,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1518,4,113.15,128.81,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1518,5,134.14,127.81,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1518,6,112.09,128.88,130.13,122.8567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.99.
+PREDICTION: 128.57, 128.04, 128.41, 128.81, 127.81, 128.88"
+1521,1,113.15,128.81,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1521,2,134.14,122.88,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1521,3,112.09,122.61,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1521,4,122.74,122.62,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1521,5,104.35,122.02,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1521,6,108.28,122.08,129.37,127.94,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 128.81, 122.88, 122.61, 122.62, 122.02, 122.08"
+1524,1,122.74,128.81,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1524,2,104.35,122.34,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1524,3,108.28,122.81,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1524,4,124.01,122.02,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1524,5,110.14,122.34,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1524,6,116.4,122.34,112.09,119.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.87.
+PREDICTION: 128.81, 122.34, 122.81, 122.02, 122.34, 122.34"
+1527,1,124.01,100.48,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1527,2,110.14,103.61,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1527,3,116.4,101.36,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1527,4,110.72,108.0,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1527,5,106.84,101.3,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1527,6,115.62,100.0,108.28,111.79,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.43.
+PREDICTION: 100.48, 103.61, 101.36, 108.00, 101.30, 100.00"
+1530,1,110.72,111.48,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1530,2,106.84,111.91,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1530,3,115.62,111.11,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1530,4,102.91,111.11,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1530,5,90.59,111.11,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1530,6,95.9,111.11,116.4,116.85,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.44.
+PREDICTION: 111.48, 111.91, 111.11, 111.11, 111.11, 111.11"
+1533,1,102.91,110.88,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1533,2,90.59,106.88,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1533,3,95.9,106.3,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1533,4,103.86,106.84,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1533,5,101.24,106.84,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1533,6,85.98,106.84,115.62,111.06,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 106.88, 106.30, 106.84, 106.84, 106.84"
+1536,1,103.86,90.88,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1536,2,101.24,90.44,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1536,3,85.98,90.0,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1536,4,90.36,90.0,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1536,5,89.85,90.0,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1536,6,89.87,90.0,95.9,96.4667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.81.
+PREDICTION: 90.88, 90.44, 90.00, 90.00, 90.00, 90.00"
+1539,1,90.36,88.18,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1539,2,89.85,90.8,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1539,3,89.87,98.3,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1539,4,81.31,90.3,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1539,5,85.08,98.3,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1539,6,82.93,90.3,85.98,97.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -28.95.
+PREDICTION: 88.18, 90.80, 98.30, 90.30, 98.30, 90.30"
+1542,1,81.31,88.45,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1542,2,85.08,90.84,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1542,3,82.93,90.04,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1542,4,92.01,90.34,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1542,5,90.87,90.04,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1542,6,82.82,90.04,89.87,90.0267,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -18.64.
+PREDICTION: 88.45, 90.84, 90.04, 90.34, 90.04, 90.04"
+1545,1,92.01,79.15,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1545,2,90.87,80.44,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1545,3,82.82,80.34,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1545,4,79.76,80.34,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1545,5,82.17,80.34,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1545,6,74.21,79.15,82.93,83.1067,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 79.15, 80.44, 80.34, 80.34, 80.34, 79.15"
+1548,1,79.76,82.02,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1548,2,82.17,82.24,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1548,3,74.21,82.22,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1548,4,70.67,82.22,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1548,5,70.92,82.22,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1548,6,71.91,82.22,82.82,88.5667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.39.
+PREDICTION: 82.02, 82.24, 82.22, 82.22, 82.22, 82.22"
+1551,1,70.67,70.11,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1551,2,70.92,78.38,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1551,3,71.91,78.3,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1551,4,67.11,76.3,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1551,5,75.33,76.3,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1551,6,78.3,68.3,74.21,78.7133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.30.
+PREDICTION: 70.11, 78.38, 78.30, 76.30, 76.30, 68.30"
+1554,1,67.11,68.38,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1554,2,75.33,70.81,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1554,3,78.3,69.33,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1554,4,61.12,69.33,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1554,5,71.51,70.33,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1554,6,68.94,71.33,71.91,71.1667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.57.
+PREDICTION: 68.38, 70.81, 69.33, 69.33, 70.33, 71.33"
+1557,1,61.12,68.38,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1557,2,71.51,66.38,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1557,3,68.94,66.3,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1557,4,72.08,66.3,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1557,5,68.86,66.3,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1557,6,58.1,70.88,78.3,73.58,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -5.19.
+PREDICTION: 68.38, 66.38, 66.30, 66.30, 66.30, 70.88"
+1560,1,72.08,68.88,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1560,2,68.86,66.88,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1560,3,58.1,66.6,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1560,4,58.83,71.4,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1560,5,67.32,66.6,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1560,6,73.82,66.6,68.94,67.19,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 68.88, 66.88, 66.60, 71.40, 66.60, 66.60"
+1563,1,58.83,64.88,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1563,2,67.32,66.6,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1563,3,73.82,66.6,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1563,4,50.69,66.6,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1563,5,68.25,59.6,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1563,6,73.86,59.6,58.1,66.3467,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.89.
+PREDICTION: 64.88, 66.60, 66.60, 66.60, 59.60, 59.60"
+1566,1,50.69,68.88,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1566,2,68.25,66.88,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1566,3,73.86,66.8,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1566,4,64.23,66.8,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1566,5,68.98,66.8,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1566,6,69.65,70.8,73.82,66.6567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.14.
+PREDICTION: 68.88, 66.88, 66.80, 66.80, 66.80, 70.80"
+1569,1,64.23,68.9,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1569,2,68.98,60.0,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1569,3,69.65,68.0,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1569,4,92.79,66.0,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1569,5,91.85,66.0,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1569,6,77.35,59.0,73.86,64.2667,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 68.90, 60.00, 68.00, 66.00, 66.00, 59.00"
+1572,1,92.79,64.08,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1572,2,91.85,68.18,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1572,3,77.35,66.26,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1572,4,81.44,66.2,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1572,5,58.64,66.63,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1572,6,62.64,70.6,69.65,67.62,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.86.
+PREDICTION: 64.08, 68.18, 66.26, 66.20, 66.63, 70.60"
+1575,1,81.44,70.71,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1575,2,58.64,77.6,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1575,3,62.64,78.8,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1575,4,56.49,67.81,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1575,5,56.75,76.8,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1575,6,65.89,77.35,77.35,87.33,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 30.13.
+PREDICTION: 70.71, 77.60, 78.80, 67.81, 76.80, 77.35"
+1578,1,56.49,60.7,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1578,2,56.75,68.0,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1578,3,65.89,68.3,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1578,4,62.56,68.8,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1578,5,70.93,66.3,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1578,6,72.12,76.8,62.64,67.5733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.35.
+PREDICTION: 60.70, 68.00, 68.30, 68.80, 66.30, 76.80"
+1581,1,62.56,64.88,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1581,2,70.93,61.4,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1581,3,72.12,61.84,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1581,4,71.94,61.6,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1581,5,72.15,61.6,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1581,6,82.37,59.8,65.89,59.71,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.57.
+PREDICTION: 64.88, 61.40, 61.84, 61.60, 61.60, 59.80"
+1584,1,71.94,68.38,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1584,2,72.15,66.3,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1584,3,82.37,66.3,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1584,4,64.76,66.3,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1584,5,72.8,70.3,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1584,6,82.12,72.33,72.12,68.5367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 68.38, 66.30, 66.30, 66.30, 70.30, 72.33"
+1587,1,64.76,76.08,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1587,2,72.8,78.34,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1587,3,82.12,78.34,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1587,4,84.1,78.34,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1587,5,66.4,78.34,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1587,6,75.32,80.68,82.37,75.4867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.83.
+PREDICTION: 76.08, 78.34, 78.34, 78.34, 78.34, 80.68"
+1590,1,84.1,76.6,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1590,2,66.4,76.81,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1590,3,75.32,76.88,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1590,4,88.2,76.88,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1590,5,83.48,76.88,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1590,6,82.56,80.88,82.12,73.2267,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.36.
+PREDICTION: 76.60, 76.81, 76.88, 76.88, 76.88, 80.88"
+1593,1,88.2,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1593,2,83.48,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1593,3,82.56,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1593,4,80.98,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1593,5,81.15,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1593,6,87.23,76.0,75.32,75.2733,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.30.
+PREDICTION: 76.00, 76.00, 76.00, 76.00, 76.00, 76.00"
+1596,1,80.98,78.98,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1596,2,81.15,83.34,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1596,3,87.23,83.34,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1596,4,84.84,78.68,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1596,5,87.73,83.34,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1596,6,90.03,83.34,82.56,84.7467,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.15.
+PREDICTION: 78.98, 83.34, 83.34, 78.68, 83.34, 83.34"
+1599,1,84.84,88.08,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1599,2,87.73,81.36,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1599,3,90.03,90.37,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1599,4,86.19,91.34,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1599,5,96.15,91.4,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1599,6,114.32,91.46,87.23,83.12,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 88.08, 81.36, 90.37, 91.34, 91.40, 91.46"
+1602,1,86.19,88.08,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1602,2,96.15,90.8,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1602,3,114.32,90.0,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1602,4,82.99,90.8,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1602,5,99.22,90.0,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1602,6,93.15,88.08,90.03,87.5333,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.84.
+PREDICTION: 88.08, 90.80, 90.00, 90.80, 90.00, 88.08"
+1605,1,82.99,90.12,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1605,2,99.22,96.88,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1605,3,93.15,96.0,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1605,4,104.04,90.8,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1605,5,101.85,96.03,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1605,6,108.38,96.2,114.32,98.8867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 17.85.
+PREDICTION: 90.12, 96.88, 96.00, 90.80, 96.03, 96.20"
+1608,1,104.04,90.49,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1608,2,101.85,95.31,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1608,3,108.38,98.84,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1608,4,112.8,100.8,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1608,5,107.42,100.0,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1608,6,115.5,100.84,93.15,91.7867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 13.84.
+PREDICTION: 90.49, 95.31, 98.84, 100.80, 100.00, 100.84"
+1611,1,112.8,100.81,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1611,2,107.42,107.3,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1611,3,115.5,100.0,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1611,4,92.65,103.76,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1611,5,121.66,106.8,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1611,6,114.6,108.8,108.38,104.7567,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 10.84.
+PREDICTION: 100.81, 107.30, 100.00, 103.76, 106.80, 108.80"
+1614,1,92.65,111.8,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1614,2,121.66,111.4,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1614,3,114.6,111.8,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1614,4,120.94,111.8,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1614,5,106.25,111.8,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1614,6,110.35,111.8,115.5,111.9067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 111.80, 111.40, 111.80, 111.80, 111.80, 111.80"
+1617,1,120.94,99.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1617,2,106.25,100.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1617,3,110.35,100.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1617,4,118.52,100.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1617,5,118.69,100.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1617,6,122.06,100.0,114.6,109.6367,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 11.43.
+PREDICTION: 99.00, 100.00, 100.00, 100.00, 100.00, 100.00"
+1620,1,118.52,98.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1620,2,118.69,100.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1620,3,122.06,98.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1620,4,128.9,100.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1620,5,110.14,98.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1620,6,130.46,100.0,110.35,112.5133,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.77.
+PREDICTION: 98.00, 100.00, 98.00, 100.00, 98.00, 100.00"
+1623,1,128.9,112.55,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1623,2,110.14,106.88,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1623,3,130.46,106.85,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1623,4,124.81,106.8,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1623,5,124.38,106.8,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1623,6,116.51,106.8,122.06,119.7567,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.65.
+PREDICTION: 112.55, 106.88, 106.85, 106.80, 106.80, 106.80"
+1626,1,124.81,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1626,2,124.38,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1626,3,116.51,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1626,4,131.29,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1626,5,111.77,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1626,6,134.06,128.9,130.46,123.1667,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.18.
+PREDICTION: 128.90, 128.90, 128.90, 128.90, 128.90, 128.90"
+1629,1,131.29,120.8,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1629,2,111.77,124.0,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1629,3,134.06,122.6,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1629,4,119.87,122.6,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1629,5,131.42,122.0,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1629,6,130.89,122.8,116.51,121.9,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 7.87.
+PREDICTION: 120.80, 124.00, 122.60, 122.60, 122.00, 122.80"
+1632,1,119.87,128.88,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1632,2,131.42,128.8,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1632,3,130.89,128.8,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1632,4,140.52,128.8,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1632,5,131.64,128.8,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1632,6,128.52,128.8,134.06,125.7067,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.80.
+PREDICTION: 128.88, 128.80, 128.80, 128.80, 128.80, 128.80"
+1635,1,140.52,128.46,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1635,2,131.64,133.03,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1635,3,128.52,133.64,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1635,4,130.26,133.33,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1635,5,143.08,133.33,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1635,6,138.22,133.33,130.89,127.3933,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.81.
+PREDICTION: 128.46, 133.03, 133.64, 133.33, 133.33, 133.33"
+1638,1,130.26,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1638,2,143.08,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1638,3,138.22,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1638,4,132.0,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1638,5,133.21,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1638,6,124.0,133.81,128.52,133.56,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 5.17.
+PREDICTION: 133.81, 133.81, 133.81, 133.81, 133.81, 133.81"
+1641,1,132.0,138.12,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1641,2,133.21,138.08,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1641,3,124.0,138.21,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1641,4,137.72,138.21,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1641,5,122.65,138.21,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1641,6,140.13,138.21,138.22,137.1867,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.94.
+PREDICTION: 138.12, 138.08, 138.21, 138.21, 138.21, 138.21"
+1644,1,137.72,128.42,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1644,2,122.65,133.84,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1644,3,140.13,133.64,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1644,4,135.6,133.33,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1644,5,151.18,133.84,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1644,6,126.47,133.33,124.0,129.7367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.59.
+PREDICTION: 128.42, 133.84, 133.64, 133.33, 133.84, 133.33"
+1647,1,135.6,138.4,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1647,2,151.18,133.88,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1647,3,126.47,133.8,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1647,4,133.09,133.4,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1647,5,145.97,133.0,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1647,6,141.23,133.8,140.13,133.5,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 2.90.
+PREDICTION: 138.40, 133.88, 133.80, 133.40, 133.00, 133.80"
+1650,1,133.09,128.58,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1650,2,145.97,133.31,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1650,3,141.23,133.42,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1650,4,127.46,133.03,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1650,5,133.29,133.01,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1650,6,131.06,133.08,126.47,137.75,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 9.46.
+PREDICTION: 128.58, 133.31, 133.42, 133.03, 133.01, 133.08"
+1653,1,127.46,138.1,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1653,2,133.29,138.8,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1653,3,131.06,133.36,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1653,4,132.28,143.88,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1653,5,124.63,143.8,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1653,6,128.05,143.8,141.23,140.0967,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.15.
+PREDICTION: 138.10, 138.80, 133.36, 143.88, 143.80, 143.80"
+1656,1,132.28,138.08,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1656,2,124.63,133.91,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1656,3,128.05,138.7,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1656,4,116.58,138.0,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1656,5,127.76,133.83,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1656,6,128.95,133.3,131.06,130.6033,True,"Trend direction: increasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is 1.85.
+PREDICTION: 138.08, 133.91, 138.70, 138.00, 133.83, 133.30"
+1659,1,116.58,128.85,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1659,2,127.76,128.64,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1659,3,128.95,128.64,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1659,4,123.16,128.44,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1659,5,112.34,128.44,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1659,6,129.42,128.85,128.05,128.32,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -1.45.
+PREDICTION: 128.85, 128.64, 128.64, 128.44, 128.44, 128.85"
+1662,1,123.16,122.68,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1662,2,112.34,119.44,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1662,3,129.42,117.44,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1662,4,123.86,118.44,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1662,5,114.99,117.76,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1662,6,116.84,118.44,128.95,124.43,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.75.
+PREDICTION: 122.68, 119.44, 117.44, 118.44, 117.76, 118.44"
+1665,1,123.86,119.55,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1665,2,114.99,111.34,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1665,3,116.84,111.34,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1665,4,107.0,111.34,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1665,5,108.98,111.34,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1665,6,111.03,111.34,129.42,121.64,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.45.
+PREDICTION: 119.55, 111.34, 111.34, 111.34, 111.34, 111.34"
+1668,1,107.0,111.45,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1668,2,108.98,111.91,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1668,3,111.03,111.11,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1668,4,121.99,111.34,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1668,5,107.49,111.11,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1668,6,115.01,111.34,116.84,118.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.40.
+PREDICTION: 111.45, 111.91, 111.11, 111.34, 111.11, 111.34"
+1671,1,121.99,111.78,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1671,2,107.49,100.44,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1671,3,115.01,100.88,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1671,4,105.29,108.44,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1671,5,109.31,100.08,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1671,6,105.09,100.0,111.03,109.0033,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.02.
+PREDICTION: 111.78, 100.44, 100.88, 108.44, 100.08, 100.00"
+1674,1,105.29,110.88,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1674,2,109.31,107.44,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1674,3,105.09,107.4,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1674,4,110.68,107.0,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1674,5,99.31,107.4,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1674,6,90.52,107.4,115.01,114.83,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.15.
+PREDICTION: 110.88, 107.44, 107.40, 107.00, 107.40, 107.40"
+1677,1,110.68,105.48,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1677,2,99.31,107.81,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1677,3,90.52,100.01,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1677,4,90.33,100.8,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1677,5,94.75,100.0,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1677,6,88.21,100.0,105.09,106.5633,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.17.
+PREDICTION: 105.48, 107.81, 100.01, 100.80, 100.00, 100.00"
+1680,1,90.33,90.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1680,2,94.75,98.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1680,3,88.21,90.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1680,4,98.3,90.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1680,5,90.66,90.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1680,6,109.05,90.0,90.52,100.17,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.47.
+PREDICTION: 90.00, 98.00, 90.00, 90.00, 90.00, 90.00"
+1683,1,98.3,88.98,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1683,2,90.66,90.26,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1683,3,109.05,90.3,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1683,4,78.78,90.33,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1683,5,90.9,90.33,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1683,6,80.13,90.33,88.21,91.0967,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.87.
+PREDICTION: 88.98, 90.26, 90.30, 90.33, 90.33, 90.33"
+1686,1,78.78,90.88,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1686,2,90.9,90.22,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1686,3,80.13,90.02,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1686,4,83.15,90.33,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1686,5,86.2,88.36,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1686,6,67.56,90.41,109.05,99.3367,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 90.88, 90.22, 90.02, 90.33, 88.36, 90.41"
+1689,1,83.15,79.18,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1689,2,86.2,88.3,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1689,3,67.56,90.3,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1689,4,84.16,90.3,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1689,5,94.51,90.3,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1689,6,76.75,90.3,80.13,83.27,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -11.35.
+PREDICTION: 79.18, 88.30, 90.30, 90.30, 90.30, 90.30"
+1692,1,84.16,67.18,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1692,2,94.51,68.3,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1692,3,76.75,66.36,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1692,4,80.51,68.4,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1692,5,84.68,66.3,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1692,6,75.21,70.2,67.56,78.97,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.81.
+PREDICTION: 67.18, 68.30, 66.36, 68.40, 66.30, 70.20"
+1695,1,80.51,78.68,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1695,2,84.68,78.86,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1695,3,75.21,78.88,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1695,4,71.18,78.88,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1695,5,58.27,78.88,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1695,6,77.68,80.38,76.75,85.14,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.85.
+PREDICTION: 78.68, 78.86, 78.88, 78.88, 78.88, 80.38"
+1698,1,71.18,78.98,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1698,2,58.27,78.18,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1698,3,77.68,78.18,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1698,4,71.44,78.18,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1698,5,64.24,78.18,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1698,6,71.37,80.48,75.21,80.1333,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.10.
+PREDICTION: 78.98, 78.18, 78.18, 78.18, 78.18, 80.48"
+1701,1,71.44,68.08,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1701,2,64.24,68.22,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1701,3,71.37,68.22,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1701,4,65.6,68.22,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1701,5,65.26,68.22,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1701,6,72.52,58.27,77.68,69.0433,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.83.
+PREDICTION: 68.08, 68.22, 68.22, 68.22, 68.22, 58.27"
+1704,1,65.6,67.3,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1704,2,65.26,66.36,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1704,3,72.52,66.3,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1704,4,58.3,66.2,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1704,5,74.44,66.3,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1704,6,56.84,66.3,71.37,69.0167,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -10.43.
+PREDICTION: 67.30, 66.36, 66.30, 66.20, 66.30, 66.30"
+1707,1,58.3,68.08,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1707,2,74.44,71.0,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1707,3,56.84,67.2,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1707,4,61.55,68.3,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1707,5,79.29,70.0,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1707,6,73.42,66.0,72.52,67.7933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -19.09.
+PREDICTION: 68.08, 71.00, 67.20, 68.30, 70.00, 66.00"
+1710,1,61.55,58.88,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"
+1710,2,79.29,66.38,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"
+1710,3,73.42,66.84,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"
+1710,4,65.98,66.8,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"
+1710,5,58.55,66.8,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"
+1710,6,61.33,66.8,56.84,63.1933,True,"Trend direction: decreasing.
+Justification: The history slope (mean of last 3 minus mean of first 3) is -9.65.
+PREDICTION: 58.88, 66.38, 66.84, 66.80, 66.80, 66.80"

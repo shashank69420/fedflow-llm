@@ -7,4 +7,5 @@ forecast_value.txt
 *.safetensors
 *.bin
 *.pt
-outputs/
+training/outputs/
+results/final/outputs.zip
