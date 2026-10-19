@@ -17,8 +17,9 @@ setInterval(keepAlive, 60000);
 
 ```python
 !pip install -q torch transformers peft accelerate bitsandbytes "flwr[simulation]"
-!pip uninstall -y torchvision torchaudio
+!pip uninstall -y torch
 !pip install -q torch --index-url https://download.pytorch.org/whl/cu121
+!pip uninstall -y torchvision torchaudio
 !pip install -q transformers==4.46.3 peft==0.13.2
 ```
 
