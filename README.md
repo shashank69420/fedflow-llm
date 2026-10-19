@@ -26,6 +26,8 @@ python server.py          # runs the 6-client, 25-round federated simulation
 
 ## Results
 
+Table below is from earlier runs that trained on all windows with no held-out test set; it will be replaced by results/final.
+
 Distributed loss after each round of the 25-round runs (full logs in `results/`):
 
 | Round | Qwen2.5-0.5B-Instruct | Qwen2.5-1.5B-Instruct |

@@ -7,3 +7,4 @@ forecast_value.txt
 *.safetensors
 *.bin
 *.pt
+outputs/
