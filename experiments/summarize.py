@@ -3,15 +3,18 @@ FedFlow-LLM — experiments/summarize.py
 ---------------------------------------
 Reads only the raw files written by run_experiment.py and produces:
   summary.csv   one row per mode and rep
-  summary.png   loss % and p95 ping RTT per mode (mean of reps, min-max error bars)
+  summary.png   loss % (server side) and p95 ping RTT per mode (mean of reps, min-max error bars)
 
 Usage (no sudo):
   python3 experiments/summarize.py                          results/experiment/
   python3 experiments/summarize.py --dir results/experiment/quick
   python3 experiments/summarize.py --selftest               made-up raw text, temp folder
 
-Nothing is estimated: a step without an iperf Server Report is counted as
-"no report", and anything that can't be computed is written as "not computed".
+UDP loss comes from the iperf SERVER's own per-connection report
+(raw_<mode>_<rep>_server.txt), matched to steps by the "### step i" markers in
+that file. The client-side Server Report is kept as a cross-check column.
+Nothing is estimated: a step without a report is counted, never filled in, and
+anything that can't be computed is written as a reason string instead of a number.
 """
 import argparse
 import csv
@@ -30,10 +33,16 @@ MODES = ["static", "reactive", "model", "oracle", "alt"]
 THRESHOLD = 100.0
 MATCH_WINDOW_S = 5.0   # a FLIP must land within one step (5 s) of the write that caused it
 NOT_COMPUTED = "not computed"
+NO_SERVER_FILE = "no server file"
+MARKER_MISMATCH = "server marker mismatch"
+COUNT_MISMATCH = "server report count mismatch"
 
-STEP_MARK = re.compile(r"^### step (\d+)", re.M)
-# iperf 2 Server Report data line ends with "lost/total (pct%)", e.g. "0.021 ms 12/4253 (0.28%)".
+STEP_MARK = re.compile(r"^### step (\d+)\b", re.M)
+# iperf 2 client "Server Report" data line ends with "lost/total (pct%)", e.g. "0.021 ms 12/4253 (0.28%)".
 LOSS_RE = re.compile(r"(\d+)\s*/\s*(\d+)\s+\(([-\d.eE+]+|nan)%\)")
+# iperf 2 server per-connection report line: "<a>-<b> sec ... lost/total (pct%)".
+# Same pattern as SERVER_REPORT_RE in run_experiment.py.
+SERVER_REPORT_RE = re.compile(r"\d+(?:\.\d+)?-\s*\d+(?:\.\d+)?\s+sec\s.*?(\d+)\s*/\s*(\d+)\s+\(([^)]*)%\)")
 RTT_RE = re.compile(r"time=([\d.]+) ms")
 FLIP_RE = re.compile(r"\[FedFlow\] (\d\d):(\d\d):(\d\d)\.(\d{3}) FLIP (\w+) -> (\w+)")
 
@@ -43,15 +52,22 @@ def read(path):
         return f.read()
 
 
-# ---------------------------------------------------------------- parsers
-
-def parse_iperf(text):
-    """Returns (lost_sum, total_sum, steps_with_report, steps_without_report)."""
-    lost = total = with_report = without = 0
+def split_blocks(text):
+    """[(step_number, block_text)] for each "### step i" marker, in file order."""
     marks = list(STEP_MARK.finditer(text))
+    blocks = []
     for k, mark in enumerate(marks):
         end = marks[k + 1].start() if k + 1 < len(marks) else len(text)
-        block = text[mark.start():end]
+        blocks.append((int(mark.group(1)), text[mark.end():end]))
+    return blocks
+
+
+# ---------------------------------------------------------------- parsers
+
+def parse_client_iperf(text):
+    """Client-side cross-check. Returns (lost_sum, total_sum, steps_with_report, steps_without_report)."""
+    lost = total = with_report = without = 0
+    for _, block in split_blocks(text):
         report_at = block.find("Server Report")
         match = LOSS_RE.search(block, report_at) if report_at >= 0 else None
         if match is None:
@@ -61,6 +77,30 @@ def parse_iperf(text):
         total += int(match.group(2))
         with_report += 1
     return lost, total, with_report, without
+
+
+def parse_server(text, step_ids):
+    """Server-side loss, matched to steps by the file's own "### step i" markers.
+    Returns {"status", "lost", "total", "with_report", "without"}. status is "ok",
+    MARKER_MISMATCH (a step's marker missing/duplicated/unknown) or COUNT_MISMATCH
+    (a step block has more than one report line); on a mismatch nothing is matched."""
+    blocks = split_blocks(text)
+    numbers = [n for n, _ in blocks]
+    if len(numbers) != len(set(numbers)) or set(numbers) != set(step_ids):
+        return {"status": MARKER_MISMATCH}
+    lost = total = with_report = without = 0
+    for _, block in blocks:
+        reports = [SERVER_REPORT_RE.search(line) for line in block.splitlines()]
+        reports = [m for m in reports if m]
+        if len(reports) > 1:
+            return {"status": COUNT_MISMATCH}  # one connection per step can't have 2 reports
+        if not reports:
+            without += 1
+            continue
+        lost += int(reports[0].group(1))
+        total += int(reports[0].group(2))
+        with_report += 1
+    return {"status": "ok", "lost": lost, "total": total, "with_report": with_report, "without": without}
 
 
 def parse_ping(text):
@@ -78,12 +118,12 @@ def parse_flips(text):
 
 
 def parse_steps(path):
-    """[(value_written, seconds_of_day_written)] in step order."""
+    """[(step_number, value_written, seconds_of_day_written)] in file order."""
     rows = []
     with open(path, newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f):
             t = datetime.strptime(r["time_written"], "%Y-%m-%d %H:%M:%S.%f")
-            rows.append((float(r["value_written"]),
+            rows.append((int(r["step"]), float(r["value_written"]),
                          t.hour * 3600 + t.minute * 60 + t.second + t.microsecond / 1e6))
     return rows
 
@@ -96,7 +136,7 @@ def match_flip_delays(steps, flips):
     """Delay (s) from a step write to the FLIP it caused, only where the match is unambiguous:
     the latest write at or before the FLIP is a write that CHANGES the path to the FLIP's new
     path, the FLIP is within MATCH_WINDOW_S of it, and no other FLIP is matched to that write.
-    Times are time-of-day only, so differences are taken modulo 24 h."""
+    steps = [(value_written, seconds_of_day)]. Times are time-of-day, so differences are mod 24 h."""
     if not steps:
         return []
     # Path in force before step 0 = step 0's own value (run_experiment writes it before POX starts).
@@ -126,15 +166,35 @@ def match_flip_delays(steps, flips):
 # ---------------------------------------------------------------- summary
 
 def summarize_run(prefix):
-    steps_path = prefix + "_steps.csv"
-    row = {}
-    lost, total, with_report, without = parse_iperf(read(prefix + "_iperf.txt")) \
+    steps = parse_steps(prefix + "_steps.csv")
+    row = {"steps": len(steps)}
+
+    # Server side: the main loss measure.
+    if os.path.exists(prefix + "_server.txt"):
+        server = parse_server(read(prefix + "_server.txt"), [n for n, _, _ in steps])
+    else:
+        server = {"status": NO_SERVER_FILE}
+    row["server_status"] = server["status"]
+    if server["status"] == "ok":
+        row["server_udp_lost"] = server["lost"]
+        row["server_udp_total"] = server["total"]
+        row["server_udp_loss_pct"] = round(100.0 * server["lost"] / server["total"], 4) \
+            if server["total"] > 0 else NOT_COMPUTED
+        row["server_steps_with_report"] = server["with_report"]
+        row["steps_no_server_report"] = server["without"]
+    else:
+        # Mismatch or missing file: no numbers at all for the server side.
+        for key in ("server_udp_lost", "server_udp_total", "server_steps_with_report",
+                    "steps_no_server_report"):
+            row[key] = NOT_COMPUTED
+        row["server_udp_loss_pct"] = server["status"]
+
+    # Client side: cross-check only.
+    lost, total, with_report, without = parse_client_iperf(read(prefix + "_iperf.txt")) \
         if os.path.exists(prefix + "_iperf.txt") else (0, 0, 0, 0)
-    row["udp_lost"] = lost
-    row["udp_total"] = total
-    row["udp_loss_pct"] = round(100.0 * lost / total, 4) if total > 0 else NOT_COMPUTED
-    row["steps_with_report"] = with_report
-    row["steps_no_report"] = without
+    row["client_udp_loss_pct"] = round(100.0 * lost / total, 4) if total > 0 else NOT_COMPUTED
+    row["client_steps_with_report"] = with_report
+    row["client_steps_no_report"] = without
 
     rtts = parse_ping(read(prefix + "_ping.txt")) if os.path.exists(prefix + "_ping.txt") else []
     row["ping_replies"] = len(rtts)
@@ -144,12 +204,10 @@ def summarize_run(prefix):
     flips = parse_flips(read(prefix + "_pox.txt")) if os.path.exists(prefix + "_pox.txt") else []
     row["flip_lines"] = len(flips)
 
-    steps = parse_steps(steps_path)
-    row["steps"] = len(steps)
-    row["frac_written_above_100"] = round(sum(v > THRESHOLD for v, _ in steps) / len(steps), 4) \
+    row["frac_written_above_100"] = round(sum(v > THRESHOLD for _, v, _ in steps) / len(steps), 4) \
         if steps else NOT_COMPUTED
 
-    delays = match_flip_delays(steps, flips)
+    delays = match_flip_delays([(v, t) for _, v, t in steps], flips)
     row["flips_matched"] = len(delays)
     row["median_write_to_flip_s"] = round(float(np.median(delays)), 3) if delays else NOT_COMPUTED
     return row
@@ -166,6 +224,10 @@ def find_runs(folder):
     return sorted(runs, key=lambda r: (order.get(r[0], len(MODES)), r[0], r[1]))
 
 
+def is_number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
 def plot(rows, png_path):
     import matplotlib
     matplotlib.use("Agg")  # no display needed
@@ -174,11 +236,11 @@ def plot(rows, png_path):
     modes = [m for m in MODES if any(r["mode"] == m for r in rows)]
     modes += sorted({r["mode"] for r in rows} - set(modes))
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-    for ax, key, label in [(axes[0], "udp_loss_pct", "UDP loss (%)"),
+    for ax, key, label in [(axes[0], "server_udp_loss_pct", "UDP loss, server side (%)"),
                            (axes[1], "ping_p95_ms", "Ping p95 RTT (ms)")]:
         means, lows, highs, names = [], [], [], []
         for m in modes:
-            vals = [r[key] for r in rows if r["mode"] == m and r[key] != NOT_COMPUTED]
+            vals = [r[key] for r in rows if r["mode"] == m and is_number(r[key])]
             if not vals:
                 continue  # nothing measured for this mode: leave the bar out rather than draw 0
             mean = float(np.mean(vals))
@@ -188,14 +250,16 @@ def plot(rows, png_path):
             names.append(f"{m}\n(n={len(vals)})")
         ax.bar(names, means, yerr=[lows, highs], capsize=4, color="#4C78A8")
         ax.set_ylabel(label)
-        ax.set_title(f"{label}: mean of reps, min-max bars")
+        ax.set_title(f"{label}\nmean of reps, min-max bars", fontsize=10)
     fig.tight_layout()
     fig.savefig(png_path, dpi=120)
     plt.close(fig)
 
 
-FIELDS = ["mode", "rep", "steps", "udp_lost", "udp_total", "udp_loss_pct", "steps_with_report",
-          "steps_no_report", "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
+FIELDS = ["mode", "rep", "steps", "server_status", "server_udp_lost", "server_udp_total",
+          "server_udp_loss_pct", "server_steps_with_report", "steps_no_server_report",
+          "client_udp_loss_pct", "client_steps_with_report", "client_steps_no_report",
+          "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
           "frac_written_above_100", "flips_matched", "median_write_to_flip_s"]
 
 
@@ -223,8 +287,40 @@ def summarize(folder, make_plot=True):
 
 # ---------------------------------------------------------------- selftest
 
+STEPS_4 = """step,timestep,true_value,value_written,time_written
+0,1452,68.95,0.00,2026-10-20 10:00:00.000
+1,1453,150.00,150.00,2026-10-20 10:00:05.000
+2,1454,150.00,150.00,2026-10-20 10:00:10.000
+3,1455,70.00,50.00,2026-10-20 10:00:15.000
+"""
+
+SERVER_HEAD = """------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+"""
+
+
+def server_block(i, lost=None, total=None, conn=1):
+    """Made-up server output for step i; lost=None means the server printed no report."""
+    text = f"### step {i} timestep {1452 + i} rate 6.895M written 0.00\n" + SERVER_HEAD
+    text += f"[  {conn}] local 10.0.0.1 port 5001 connected with 10.0.0.2 port {40000 + i}\n"
+    if lost is None:
+        return text + f"[  {conn}] WARNING: ack of last datagram failed.\n"
+    return (text + "[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams\n"
+            f"[  {conn}] 0.0000-5.0012 sec  5.96 MBytes  10.0 Mbits/sec   0.500 ms {lost}/{total} "
+            f"({100 * lost / total:.2g}%)\n")
+
+
+def write_run(folder, name, files):
+    prefix = os.path.join(folder, name)
+    for suffix, text in files.items():
+        with open(prefix + suffix, "w", encoding="utf-8") as f:
+            f.write(text)
+
+
 def run_selftest():
-    iperf_text = """### step 0 timestep 1452 rate 6.895M written 0.00
+    client_text = """### step 0 timestep 1452 rate 6.895M written 0.00
 [  1] local 10.0.0.2 port 40000 connected with 10.0.0.1 port 5001
 [  1] Sent 2932 datagrams
 [  1] Server Report:
@@ -232,9 +328,7 @@ def run_selftest():
 [  1] 0.0000-5.0012 sec  4.10 MBytes  6.88 Mbits/sec   0.020 ms 0/2932 (0%)
 ### step 1 timestep 1453 rate 15.000M written 150.00
 [  1] Sent 6378 datagrams
-[  1] Server Report:
-[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
-[  1] 0.0000-5.0010 sec  5.96 MBytes  10.0 Mbits/sec   0.500 ms 2128/6378 (33%)
+[  1] WARNING: did not receive ack of last datagram after 10 tries.
 ### step 2 timestep 1454 rate 15.000M written 150.00
 [  1] Sent 6378 datagrams
 [  1] WARNING: did not receive ack of last datagram after 10 tries.
@@ -242,6 +336,9 @@ def run_selftest():
 [  1] Server Report:
 [  1] 0.0000-5.0000 sec  4.17 MBytes  7.00 Mbits/sec   0.010 ms 10/2990 (0.33%)
 """
+    # Server: steps 0, 1, 3 report; step 2 has no report (counted, not filled in).
+    server_ok = (server_block(0, 0, 2932) + server_block(1, 2128, 6378)
+                 + server_block(2) + server_block(3, 10, 2990))
     ping_text = "\n".join(
         [f"[1700000000.{i:06d}] 64 bytes from 10.0.0.2: icmp_seq={i} ttl=64 time={v} ms"
          for i, v in enumerate([1.0, 2.0, 3.0, 4.0, 100.0], start=1)]
@@ -254,37 +351,42 @@ INFO:reroute_trigger:[FedFlow] 10:00:05.600 FLIP primary -> alternate (forecast 
 INFO:reroute_trigger:[FedFlow] Forecast 150.0 > 100.0 on switch 1 — using alt path, port 3
 INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 50.0)
 """
-    steps_text = """step,timestep,true_value,value_written,time_written
-0,1452,68.95,0.00,2026-10-20 10:00:00.000
-1,1453,150.00,150.00,2026-10-20 10:00:05.000
-2,1454,150.00,150.00,2026-10-20 10:00:10.000
-3,1455,70.00,50.00,2026-10-20 10:00:15.000
-"""
+    base = {"_iperf.txt": client_text, "_ping.txt": ping_text, "_pox.txt": pox_text, "_steps.csv": STEPS_4}
+
     with tempfile.TemporaryDirectory() as tmp:
-        prefix = os.path.join(tmp, "raw_model_1")
-        for suffix, text in [("_iperf.txt", iperf_text), ("_ping.txt", ping_text),
-                             ("_pox.txt", pox_text), ("_steps.csv", steps_text)]:
-            with open(prefix + suffix, "w", encoding="utf-8") as f:
-                f.write(text)
-        # A second run whose iperf has no reports at all and whose ping and FLIPs are empty.
-        prefix2 = os.path.join(tmp, "raw_static_1")
-        for suffix, text in [("_iperf.txt", "### step 0 timestep 1452 rate 6.895M written 0.00\nno output\n"),
-                             ("_ping.txt", "PING 10.0.0.2\n"), ("_pox.txt", "nothing\n"),
-                             ("_steps.csv", "step,timestep,true_value,value_written,time_written\n"
-                                            "0,1452,68.95,0.00,2026-10-20 10:00:00.000\n")]:
-            with open(prefix2 + suffix, "w", encoding="utf-8") as f:
-                f.write(text)
+        write_run(tmp, "raw_model_1", {**base, "_server.txt": server_ok})
+        # Marker for step 2 missing -> marker mismatch.
+        write_run(tmp, "raw_model_2", {**base, "_server.txt": server_block(0, 0, 1) + server_block(1, 0, 1)
+                                       + server_block(3, 0, 1)})
+        # Marker for step 1 duplicated -> marker mismatch.
+        write_run(tmp, "raw_model_3", {**base, "_server.txt": server_ok + server_block(1, 5, 10)})
+        # Step 1 block has two report lines -> report count mismatch.
+        write_run(tmp, "raw_oracle_1", {**base, "_server.txt": server_block(0, 0, 1)
+                                        + server_block(1, 1, 10) + server_block(1, 2, 10, conn=2)[
+                                            len("### step 1 timestep 1453 rate 6.895M written 0.00\n"):]
+                                        + server_block(2, 0, 1) + server_block(3, 0, 1)})
+        # A run with no server file, no client reports, and empty ping/FLIPs.
+        write_run(tmp, "raw_static_1", {
+            "_iperf.txt": "### step 0 timestep 1452 rate 6.895M written 0.00\nno output\n",
+            "_ping.txt": "PING 10.0.0.2\n", "_pox.txt": "nothing\n",
+            "_steps.csv": "step,timestep,true_value,value_written,time_written\n"
+                          "0,1452,68.95,0.00,2026-10-20 10:00:00.000\n"})
 
         rows = summarize(tmp, make_plot=True)
         assert os.path.exists(os.path.join(tmp, "summary.png"))
-        by_mode = {r["mode"]: r for r in rows}
-        assert [r["mode"] for r in rows] == ["static", "model"], "rows should follow MODES order"
+        assert [(r["mode"], r["rep"]) for r in rows] == \
+            [("static", 1), ("model", 1), ("model", 2), ("model", 3), ("oracle", 1)], "MODES order"
+        by = {(r["mode"], r["rep"]): r for r in rows}
 
-        r = by_mode["model"]
-        # Steps 0, 1, 3 have reports: lost 0 + 2128 + 10, total 2932 + 6378 + 2990.
-        assert (r["udp_lost"], r["udp_total"]) == (2138, 12300), (r["udp_lost"], r["udp_total"])
-        assert r["udp_loss_pct"] == round(100 * 2138 / 12300, 4)
-        assert (r["steps_with_report"], r["steps_no_report"]) == (3, 1)
+        r = by[("model", 1)]
+        assert r["server_status"] == "ok"
+        # Server: steps 0, 1, 3 -> lost 0 + 2128 + 10, total 2932 + 6378 + 2990; step 2 no report.
+        assert (r["server_udp_lost"], r["server_udp_total"]) == (2138, 12300), r
+        assert r["server_udp_loss_pct"] == round(100 * 2138 / 12300, 4)
+        assert (r["server_steps_with_report"], r["steps_no_server_report"]) == (3, 1)
+        # Client cross-check: steps 0 and 3 only -> 10 / (2932 + 2990).
+        assert r["client_udp_loss_pct"] == round(100 * 10 / 5922, 4)
+        assert (r["client_steps_with_report"], r["client_steps_no_report"]) == (2, 2)
         assert r["ping_replies"] == 5 and r["ping_mean_ms"] == 22.0
         assert r["ping_p95_ms"] == round(float(np.percentile([1, 2, 3, 4, 100], 95)), 4)
         assert r["flip_lines"] == 2
@@ -292,26 +394,39 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
         # Write at 10:00:05.000 -> FLIP at 05.600 (0.6 s); write at 15.000 -> FLIP at 15.900 (0.9 s).
         assert r["flips_matched"] == 2 and r["median_write_to_flip_s"] == 0.75, r
 
-        s = by_mode["static"]
-        assert s["udp_loss_pct"] == NOT_COMPUTED and s["steps_no_report"] == 1
+        for key in [("model", 2), ("model", 3)]:
+            r = by[key]
+            assert r["server_status"] == MARKER_MISMATCH and r["server_udp_loss_pct"] == MARKER_MISMATCH, r
+            assert r["server_udp_lost"] == NOT_COMPUTED and r["steps_no_server_report"] == NOT_COMPUTED
+
+        r = by[("oracle", 1)]
+        assert r["server_status"] == COUNT_MISMATCH and r["server_udp_loss_pct"] == COUNT_MISMATCH, r
+        assert r["server_udp_total"] == NOT_COMPUTED
+
+        s = by[("static", 1)]
+        assert s["server_status"] == NO_SERVER_FILE and s["server_udp_loss_pct"] == NO_SERVER_FILE
+        assert s["client_udp_loss_pct"] == NOT_COMPUTED and s["client_steps_no_report"] == 1
         assert s["ping_mean_ms"] == NOT_COMPUTED and s["ping_p95_ms"] == NOT_COMPUTED
         assert s["median_write_to_flip_s"] == NOT_COMPUTED
 
-    # Matching rules on their own.
+    # Marker numbers must match steps.csv exactly (file numbers steps from 0).
+    assert parse_server(server_block(1, 0, 1) + server_block(2, 0, 1), [0, 1])["status"] == MARKER_MISMATCH
+    assert parse_server(server_block(0, 0, 1) + server_block(1, 3, 9), [0, 1])["lost"] == 3
+    # Header and "connected" lines are not reports.
+    assert parse_server(server_block(0), [0]) == {"status": "ok", "lost": 0, "total": 0,
+                                                  "with_report": 0, "without": 1}
+
+    # FLIP matching rules on their own (steps as (value, time)).
     steps = [(0.0, 0.0), (150.0, 5.0), (150.0, 10.0), (50.0, 15.0)]
     one = match_flip_delays(steps, [(5.6, "primary", "alternate")])
     assert len(one) == 1 and abs(one[0] - 0.6) < 1e-9
-    # FLIP after a write that did not change the path (10.0) -> no match.
-    assert match_flip_delays(steps, [(10.4, "primary", "alternate")]) == []
-    # Wrong direction -> no match.
-    assert match_flip_delays(steps, [(5.6, "alternate", "primary")]) == []
-    # Two FLIPs for the same write -> ambiguous, no match.
-    assert match_flip_delays(steps, [(5.3, "primary", "alternate"), (5.8, "primary", "alternate")]) == []
-    # FLIP more than 5 s after the last write -> no match.
-    assert match_flip_delays(steps, [(21.0, "alternate", "primary")]) == []
-    # Midnight wrap: write at 23:59:59.800, FLIP at 00:00:00.300 -> 0.5 s.
+    assert match_flip_delays(steps, [(10.4, "primary", "alternate")]) == []   # write didn't change path
+    assert match_flip_delays(steps, [(5.6, "alternate", "primary")]) == []    # wrong direction
+    assert match_flip_delays(steps, [(5.3, "primary", "alternate"),
+                                     (5.8, "primary", "alternate")]) == []    # two FLIPs, one write
+    assert match_flip_delays(steps, [(21.0, "alternate", "primary")]) == []   # > 5 s after last write
     wrap = match_flip_delays([(0.0, 86390.0), (150.0, 86399.8)], [(0.3, "primary", "alternate")])
-    assert len(wrap) == 1 and abs(wrap[0] - 0.5) < 1e-6
+    assert len(wrap) == 1 and abs(wrap[0] - 0.5) < 1e-6                       # midnight wrap
 
     print("SELFTEST OK")
 

@@ -28,6 +28,12 @@ Known effects (identical in every mode, not tuned):
     the next packet.
   - On an overloaded link the iperf Server Report can be lost; that step is
     recorded as "no report", never as a number.
+  - iperf 2.1.5's long-running UDP server stops reporting after its 2nd client
+    (reproduced on loopback, no network involved). So each step gets a FRESH
+    server on h1: start it, wait SERVER_START_WAIT, write the forecast, start the
+    client immediately, wait SERVER_STOP_WAIT after the client ends, stop the
+    server. This adds about 0.6 s between steps, identical in every mode. The
+    server's own per-connection report is saved to raw_<mode>_<rep>_server.txt.
   - A model or oracle window can include up to 2 steps that have already passed
     (windows start every 3 timesteps); this applies equally to both modes.
 
@@ -43,6 +49,7 @@ import csv
 import importlib.util
 import os
 import pwd
+import re
 import signal
 import socket
 import subprocess
@@ -67,6 +74,9 @@ MODES = ["static", "reactive", "model", "oracle", "alt"]
 WINDOW_HISTORY = 12                    # a window starting at w has history w..w+11
 POX_UP_TIMEOUT = 20
 CONNECT_TIMEOUT = 20
+SERVER_START_WAIT = 0.3   # s for a fresh iperf server to start listening
+SERVER_STOP_WAIT = 0.3    # s after the client ends, so the server prints its report
+SERVER_EXIT_TIMEOUT = 3   # s to wait for the server to exit after SIGINT before SIGKILL
 N_SWITCHES = 4
 OF_PORT = 6633
 H1_IP, H2_IP = "10.0.0.1", "10.0.0.2"
@@ -169,7 +179,40 @@ def quick_length(steps, mode="oracle"):
     sys.exit(f"ERROR: {mode} mode never crosses {THRESHOLD:g} upward in this trace.")
 
 
+# Same pattern as summarize.py (duplicated because this file must not import numpy):
+# an iperf 2 data report line, e.g. "[  1] 0.0000-5.0058 sec  5.96 MBytes ... 0.020 ms 12/4253 (0.28%)".
+SERVER_REPORT_RE = re.compile(r"\d+(?:\.\d+)?-\s*\d+(?:\.\d+)?\s+sec\s.*?(\d+)\s*/\s*(\d+)\s+\(([^)]*)%\)")
+
+
+def count_server_reports(text):
+    """Number of per-connection report lines in one step's server output (expected: 1)."""
+    return sum(1 for line in text.splitlines() if SERVER_REPORT_RE.search(line))
+
+
+def selftest_server_counting():
+    good = """### step 0 timestep 1452 rate 6.895M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 40000
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0012 sec  4.10 MBytes  6.88 Mbits/sec   0.020 ms 12/2932 (0.41%)
+"""
+    none = """### step 1 timestep 1453 rate 15.000M written 150.00
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 40001
+[  1] WARNING: ack of last datagram failed.
+"""
+    double = good + "[  2] 0.0000-5.0012 sec  4.10 MBytes  6.88 Mbits/sec   0.020 ms 0/2932 (0%)\n"
+    assert count_server_reports(good) == 1
+    assert count_server_reports(none) == 0
+    assert count_server_reports(double) == 2   # would show as MISMATCH in the progress line
+    # The column header and "connected" lines must not count as reports.
+    assert count_server_reports("[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams\n") == 0
+
+
 def run_selftest():
+    selftest_server_counting()
+    print("Server report counting: OK")
     start, crossings, steps = build_trace()
     print(f"Trace: timesteps {start}-{start + TRACE_LEN - 1}, upward crossings of {THRESHOLD:g} "
           f"in true traffic: {crossings}")
@@ -267,12 +310,35 @@ def load_topo_class():
     return module.DualPathTopo
 
 
+def process_alive(pid):
+    """True if pid exists and is not a zombie (an exited child the shell hasn't reaped yet)."""
+    try:
+        with open(f"/proc/{pid}/stat") as f:
+            # Field 3 is the state; the command name in field 2 is in parentheses.
+            return f.read().rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return False
+
+
+def stop_process(pid, timeout=SERVER_EXIT_TIMEOUT):
+    """SIGINT (lets iperf/ping print their final lines), then SIGKILL if it doesn't exit."""
+    try:
+        os.kill(pid, signal.SIGINT)
+    except ProcessLookupError:
+        return
+    if not wait_for(lambda: not process_alive(pid), timeout, 0.05):
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+
+
 class RunAborted(Exception):
     pass
 
 
 def run_once(mode, rep, steps, out_dir, user, home, uid, gid, fpath):
-    """One run of one mode. Writes raw_<mode>_<rep>_{iperf,ping,pox}.txt and _steps.csv."""
+    """One run of one mode. Writes raw_<mode>_<rep>_{iperf,server,ping,pox}.txt and _steps.csv."""
     from mininet.net import Mininet
     from mininet.node import RemoteController
     from mininet.link import TCLink
@@ -280,6 +346,7 @@ def run_once(mode, rep, steps, out_dir, user, home, uid, gid, fpath):
     prefix = os.path.join(out_dir, f"raw_{mode}_{rep}")
     iperf_path, ping_path = prefix + "_iperf.txt", prefix + "_ping.txt"
     pox_path, steps_path = prefix + "_pox.txt", prefix + "_steps.csv"
+    server_path = prefix + "_server.txt"
     tag = f"[{mode} rep {rep}]"
 
     # ---- pre-flight
@@ -299,6 +366,7 @@ def run_once(mode, rep, steps, out_dir, user, home, uid, gid, fpath):
     )
     net = None
     ping_pid = None
+    server_pid = None
     try:
         if not wait_for(lambda: "is up." in read_text(pox_path), POX_UP_TIMEOUT):
             raise RunAborted(f"POX did not report 'is up.' within {POX_UP_TIMEOUT} s (see {pox_path})")
@@ -322,10 +390,9 @@ def run_once(mode, rep, steps, out_dir, user, home, uid, gid, fpath):
             raise RunAborted(f"test ping h1 -> h2 got no replies:\n{test}")
         print(f"{tag} test ping ok: {[l for l in test.splitlines() if 'received' in l][0].strip()}")
 
-        h1.cmd("iperf -u -s > /dev/null 2>&1 &")  # one UDP server for the whole run
-        time.sleep(0.5)
         # Continuous ping for the whole run; -D adds a timestamp to each reply line.
         ping_pid = int(h1.cmd(f"ping -D -i 0.2 {H2_IP} > {ping_path} 2>&1 & echo $!").strip().split()[-1])
+        open(server_path, "w").close()  # fresh server file for this run
 
         run_start = time.time()
         with open(steps_path, "w", newline="", encoding="utf-8") as sf, \
@@ -335,28 +402,42 @@ def run_once(mode, rep, steps, out_dir, user, home, uid, gid, fpath):
             for i, s in enumerate(steps):
                 value = s["written"][mode]
                 rate = s["true"] / 10.0   # v traffic units -> v/10 Mbps
+                marker = f"### step {i} timestep {s['timestep']} rate {rate:.3f}M written {value:.2f}\n"
+
+                # Fresh iperf server for this step only (see "Known effects"); its own output
+                # is appended under this step's marker. No -i, so it prints one final report.
+                with open(server_path, "a", encoding="utf-8") as srv:
+                    srv.write(marker)
+                server_pid = int(h1.cmd(f"iperf -u -s >> {server_path} 2>&1 & echo $!").strip().split()[-1])
+                time.sleep(SERVER_START_WAIT)
+
                 # Write the forecast, then start this step's traffic immediately.
                 written_at = write_forecast(fpath, value, uid, gid)
                 writer.writerow([i, s["timestep"], f"{s['true']:.2f}", f"{value:.2f}", written_at])
                 sf.flush()
                 out = h2.cmd(f"iperf -u -c {H1_IP} -b {rate:.3f}M -t {STEP_SECONDS}")
-                iperf_file.write(f"### step {i} timestep {s['timestep']} rate {rate:.3f}M written {value:.2f}\n")
+                iperf_file.write(marker)
                 iperf_file.write(out)
                 if not out.endswith("\n"):
                     iperf_file.write("\n")
                 iperf_file.flush()
-                report = "Server Report" in out
+
+                time.sleep(SERVER_STOP_WAIT)
+                stop_process(server_pid)
+                server_pid = None
+                # Count report lines in this step's part of the server file (after the last marker).
+                server_reports = count_server_reports(read_text(server_path).rsplit(marker, 1)[-1])
+                server_flag = {0: "no report", 1: "yes"}.get(server_reports, f"MISMATCH({server_reports})")
+                client_flag = "yes" if "Server Report" in out else "no report"
                 print(f"{tag} step {i + 1}/{len(steps)} t={s['timestep']} true={s['true']:.2f} "
-                      f"wrote={value:.2f} rate={rate:.2f}M report={'yes' if report else 'no report'} "
+                      f"wrote={value:.2f} rate={rate:.2f}M server={server_flag} client={client_flag} "
                       f"elapsed={time.time() - run_start:.0f}s")
     finally:
         # ---- teardown, always
+        if server_pid:
+            stop_process(server_pid)
         if ping_pid:
-            try:
-                os.kill(ping_pid, signal.SIGINT)  # SIGINT makes ping print its statistics
-                time.sleep(1)
-            except ProcessLookupError:
-                pass
+            stop_process(ping_pid)  # SIGINT makes ping print its statistics
         if net is not None:
             net.get("h1").cmd("kill %iperf 2>/dev/null")
             net.stop()
