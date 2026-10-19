@@ -9,10 +9,13 @@ Usage (no sudo):
   python3 experiments/summarize.py                          results/experiment/
   python3 experiments/summarize.py --dir results/experiment/quick
   python3 experiments/summarize.py --selftest               made-up raw text, temp folder
+  python3 experiments/summarize.py --steps-check            per-step static1 vs alt1 table only
+                                                            (writes static1_steps_check.txt, not summary.*)
 
 UDP loss comes from the iperf SERVER's own per-connection report
 (raw_<mode>_<rep>_server.txt), matched to steps by the "### step i" markers in
-that file. The client-side Server Report is kept as a cross-check column.
+that file. The client-side Server Report is kept as a cross-check column; garbled
+client report lines (e.g. "4294966796/0 (0%)") are excluded and counted in client_bad_reports.
 Nothing is estimated: a step without a report is counted, never filled in, and
 anything that can't be computed is written as a reason string instead of a number.
 """
@@ -64,19 +67,36 @@ def split_blocks(text):
 
 # ---------------------------------------------------------------- parsers
 
+def client_report_ok(lost, total, printed_pct):
+    """False for a garbled client "Server Report" line, e.g. "4294966796/0 (0%)", where
+    lost > total or total is 0, or where lost/total disagrees with the printed (x%)."""
+    if total <= 0 or lost > total:
+        return False
+    try:
+        printed = float(printed_pct)
+    except ValueError:
+        return False  # "nan" or other non-number printed
+    # iperf prints the % with 2 significant digits, so rounding moves it by at most ~5% of itself.
+    return abs(100.0 * lost / total - printed) <= 0.051 * abs(printed) + 1e-9
+
+
 def parse_client_iperf(text):
-    """Client-side cross-check. Returns (lost_sum, total_sum, steps_with_report, steps_without_report)."""
-    lost = total = with_report = without = 0
+    """Client-side cross-check. Returns (lost_sum, total_sum, steps_with_report,
+    steps_without_report, bad_reports). Bad (garbled) report lines are counted, not summed."""
+    lost = total = with_report = without = bad = 0
     for _, block in split_blocks(text):
         report_at = block.find("Server Report")
         match = LOSS_RE.search(block, report_at) if report_at >= 0 else None
         if match is None:
             without += 1
             continue
+        if not client_report_ok(int(match.group(1)), int(match.group(2)), match.group(3)):
+            bad += 1  # excluded from the sums; reported in client_bad_reports
+            continue
         lost += int(match.group(1))
         total += int(match.group(2))
         with_report += 1
-    return lost, total, with_report, without
+    return lost, total, with_report, without, bad
 
 
 def parse_server(text, step_ids):
@@ -190,11 +210,12 @@ def summarize_run(prefix):
         row["server_udp_loss_pct"] = server["status"]
 
     # Client side: cross-check only.
-    lost, total, with_report, without = parse_client_iperf(read(prefix + "_iperf.txt")) \
-        if os.path.exists(prefix + "_iperf.txt") else (0, 0, 0, 0)
+    lost, total, with_report, without, bad = parse_client_iperf(read(prefix + "_iperf.txt")) \
+        if os.path.exists(prefix + "_iperf.txt") else (0, 0, 0, 0, 0)
     row["client_udp_loss_pct"] = round(100.0 * lost / total, 4) if total > 0 else NOT_COMPUTED
     row["client_steps_with_report"] = with_report
     row["client_steps_no_report"] = without
+    row["client_bad_reports"] = bad
 
     rtts = parse_ping(read(prefix + "_ping.txt")) if os.path.exists(prefix + "_ping.txt") else []
     row["ping_replies"] = len(rtts)
@@ -259,7 +280,7 @@ def plot(rows, png_path):
 FIELDS = ["mode", "rep", "steps", "server_status", "server_udp_lost", "server_udp_total",
           "server_udp_loss_pct", "server_steps_with_report", "steps_no_server_report",
           "client_udp_loss_pct", "client_steps_with_report", "client_steps_no_report",
-          "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
+          "client_bad_reports", "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
           "frac_written_above_100", "flips_matched", "median_write_to_flip_s"]
 
 
@@ -283,6 +304,118 @@ def summarize(folder, make_plot=True):
         plot(rows, png_path)
         print(f"Wrote {png_path}")
     return rows
+
+
+# ---------------------------------------------------------------- per-step check
+
+DATAGRAM_BYTES = 1470   # iperf UDP datagram size, as printed by the client ("Sending 1470 byte datagrams")
+STEP_SECONDS = 5        # iperf -t 5 in run_experiment.py
+PRIMARY_MBPS = 10.0     # primary path capacity (CLAUDE.md)
+CHECK_RUNS = [("static", 1), ("alt", 1)]
+CHECK_FILE = "static1_steps_check.txt"
+RATE_MARK = re.compile(r"\brate ([\d.]+)M\b")
+SENT_RE = re.compile(r"Sent (\d+) datagrams")
+# First interval line of the client block, e.g. "[  1] 0.0000-5.0349 sec  5.90 MBytes  9.83 Mbits/sec".
+INTERVAL_RE = re.compile(r"(\d+(?:\.\d+)?)-\s*(\d+(?:\.\d+)?)\s+sec\s")
+
+
+def step_check_rows(prefix):
+    """{step: dict} for one run, straight from its steps.csv, client and server files."""
+    true_values = {}
+    with open(prefix + "_steps.csv", newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            true_values[int(r["step"])] = r["true_value"]
+    server = dict(split_blocks(read(prefix + "_server.txt")))
+    rows = {}
+    for step, block in split_blocks(read(prefix + "_iperf.txt")):
+        # The block starts with the rest of the marker line (" timestep ... rate 6.895M written ...").
+        marker_rate = RATE_MARK.search(block.split("\n", 1)[0])
+        sent = SENT_RE.search(block)
+        sent_at = sent.start() if sent else len(block)
+        interval = INTERVAL_RE.search(block, 0, sent_at)  # the client's own line, before "Sent"
+        report_at = block.find("Server Report")
+        client_report = LOSS_RE.search(block, report_at) if report_at >= 0 else None
+        server_reports = [m for m in (SERVER_REPORT_RE.search(line)
+                                      for line in server.get(step, "").splitlines()) if m]
+        row = {"true": true_values.get(step, "none"),
+               "rate": float(marker_rate.group(1)) if marker_rate else None,
+               "sent": int(sent.group(1)) if sent else None,
+               "duration": float(interval.group(2)) - float(interval.group(1)) if interval else None,
+               "client_report": client_report.group(0) if client_report else "no report",
+               "srv_lost": server_reports[0].group(1) if len(server_reports) == 1 else "none",
+               "srv_total": server_reports[0].group(2) if len(server_reports) == 1 else "none"}
+        if step not in server:
+            row["srv_lost"] = row["srv_total"] = "no marker"
+        elif len(server_reports) > 1:
+            row["srv_lost"] = row["srv_total"] = "2+ reports"
+        # Offered rate = what the client actually put on the wire over its own printed duration.
+        if row["sent"] is not None and row["duration"]:
+            row["offered"] = row["sent"] * DATAGRAM_BYTES * 8 / row["duration"] / 1e6
+        else:
+            row["offered"] = None
+        rows[step] = row
+    return rows
+
+
+def fmt(value, spec):
+    return "none" if value is None else format(value, spec)
+
+
+def steps_check(folder):
+    """Side-by-side per-step table for CHECK_RUNS. Returns the text."""
+    runs = {}
+    for mode, rep in CHECK_RUNS:
+        prefix = os.path.join(folder, f"raw_{mode}_{rep}")
+        if not os.path.exists(prefix + "_server.txt"):
+            sys.exit(f"ERROR: {prefix}_server.txt not found")
+        runs[(mode, rep)] = step_check_rows(prefix)
+    first = runs[CHECK_RUNS[0]]
+    steps = sorted(first)
+    for key, rows in runs.items():
+        if sorted(rows) != steps:
+            sys.exit(f"ERROR: {key} has different step numbers from {CHECK_RUNS[0]}")
+        for s in steps:
+            # Same trace in every mode: true value and target rate must agree, else the table would mislead.
+            if (rows[s]["true"], rows[s]["rate"]) != (first[s]["true"], first[s]["rate"]):
+                sys.exit(f"ERROR: step {s} true value/rate differ between {CHECK_RUNS[0]} and {key}")
+
+    names = [f"{m}{r}" for m, r in CHECK_RUNS]
+    lines = [f"Per-step check: {' vs '.join(names)} (from {os.path.relpath(folder, REPO)}/raw_* files)",
+             f"target Mbps = rate in the '### step' marker; expected dg = target x {STEP_SECONDS} s / "
+             f"({DATAGRAM_BYTES} B x 8)",
+             f"offered Mbps = Sent x {DATAGRAM_BYTES} x 8 / client interval duration / 1e6; "
+             f"srv = iperf server file; client report = text as printed after 'Server Report'",
+             ""]
+    head = f"{'step':>4} {'true':>7} {'target':>7} {'expected':>8}"
+    sub = f"{'':>4} {'value':>7} {'Mbps':>7} {'dg':>8}"
+    for n in names:
+        head += f" | {n + ' offered':>14} {'sent':>5} {'srvLost':>7} {'srvTotal':>8} {'client report':>22}"
+        sub += f" | {'Mbps':>14} {'dg':>5} {'':>7} {'':>8} {'':>22}"
+    lines += [head, sub, "-" * len(head)]
+    for s in steps:
+        rate = first[s]["rate"]
+        expected = rate * 1e6 * STEP_SECONDS / (DATAGRAM_BYTES * 8) if rate is not None else None
+        line = f"{s:>4} {first[s]['true']:>7} {fmt(rate, '.3f'):>7} {fmt(expected, '.1f'):>8}"
+        for key in CHECK_RUNS:
+            r = runs[key][s]
+            line += (f" | {fmt(r['offered'], '.2f'):>14} {fmt(r['sent'], 'd'):>5} {r['srv_lost']:>7}"
+                     f" {r['srv_total']:>8} {r['client_report']:>22}")
+        lines.append(line)
+
+    lines.append("")
+    targets_over = sum(1 for s in steps if first[s]["rate"] is not None and first[s]["rate"] > PRIMARY_MBPS)
+    lines.append(f"steps with target > {PRIMARY_MBPS:g} Mbps: {targets_over} of {len(steps)}")
+    for name, key in zip(names, CHECK_RUNS):
+        rows = runs[key]
+        offered = [rows[s]["offered"] for s in steps if rows[s]["offered"] is not None]
+        sent = sum(rows[s]["sent"] for s in steps if rows[s]["sent"] is not None)
+        srv_total = sum(int(rows[s]["srv_total"]) for s in steps if rows[s]["srv_total"].isdigit())
+        srv_lost = sum(int(rows[s]["srv_lost"]) for s in steps if rows[s]["srv_lost"].isdigit())
+        over = sum(1 for o in offered if o > PRIMARY_MBPS)
+        lines.append(f"{name}: steps with offered > {PRIMARY_MBPS:g} Mbps: {over} of {len(steps)}; "
+                     f"max offered {fmt(max(offered) if offered else None, '.2f')} Mbps; "
+                     f"sum sent {sent}; sum srvTotal {srv_total}; sum srvLost {srv_lost}")
+    return "\n".join(lines) + "\n"
 
 
 # ---------------------------------------------------------------- selftest
@@ -416,6 +549,43 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
     assert parse_server(server_block(0), [0]) == {"status": "ok", "lost": 0, "total": 0,
                                                   "with_report": 0, "without": 1}
 
+    # Client report check: garbled line (seen in real runs), printed-% mismatch, and good lines.
+    assert not client_report_ok(4294966796, 0, "0")       # lost > total and total 0
+    assert not client_report_ok(5, 10, "nan")
+    assert not client_report_ok(10, 2990, "5")            # 0.33% computed, 5% printed
+    assert client_report_ok(10, 2990, "0.33") and client_report_ok(0, 3077, "0")
+    assert not client_report_ok(1, 3077, "0")             # 0.032% computed, iperf would not print 0
+    garbled = ("### step 0 timestep 1452 rate 13.161M written 0.00\n[  1] Sent 4209 datagrams\n"
+               "[  1] Server Report:\n[  1] 0.0000-0.0000 sec  4.00 GBytes  -nan bits/sec   0.000 ms "
+               "4294966796/0 (0%) -/-/-/- ms 0 pps\n"
+               "### step 1 timestep 1453 rate 6.771M written 0.00\n[  1] Server Report:\n"
+               "[  1] 0.0000-4.9981 sec  4.24 MBytes  7.11 Mbits/sec   0.005 ms 0/3022 (0%)\n"
+               "### step 2 timestep 1454 rate 6.771M written 0.00\n[  1] Server Report:\n"
+               "[  1] 0.0000-4.9981 sec  4.24 MBytes  7.11 Mbits/sec   0.005 ms 10/2990 (5%)\n")
+    assert parse_client_iperf(garbled) == (0, 3022, 1, 0, 2), parse_client_iperf(garbled)
+
+    # Per-step check table on made-up static1/alt1 files.
+    client_step = ("### step 0 timestep 1459 rate 13.161M written {w}\n"
+                   "[  1] 0.0000-{d} sec  5.90 MBytes  9.83 Mbits/sec\n[  1] Sent {n} datagrams\n"
+                   "[  1] Server Report:\n[  1] 0.0000-5.0 sec  1 MBytes  1 Mbits/sec   0.0 ms {rep}\n")
+    with tempfile.TemporaryDirectory() as tmp:
+        one_step = "step,timestep,true_value,value_written,time_written\n0,1459,131.61,{w},2026-10-20 10:00:00.000\n"
+        write_run(tmp, "raw_static_1", {"_steps.csv": one_step.format(w="0.00"),
+                                        "_iperf.txt": client_step.format(w="0.00", d="5.0349", n=4209,
+                                                                         rep="4294966796/0 (0%)"),
+                                        "_server.txt": server_block(0, 0, 4208)})
+        write_run(tmp, "raw_alt_1", {"_steps.csv": one_step.format(w="1000.00"),
+                                     "_iperf.txt": client_step.format(w="1000.00", d="5.0000", n=5597,
+                                                                      rep="0/5596 (0%)"),
+                                     "_server.txt": server_block(0, 0, 5596)})
+        text = steps_check(tmp)
+        row = [ln for ln in text.splitlines() if ln.startswith("   0 ")][0]
+        # expected = 13.161e6 * 5 / 11760 = 5595.7; offered static = 4209 * 11760 / 5.0349 / 1e6 = 9.83
+        assert "5595.7" in row and "9.83" in row and "4294966796/0 (0%)" in row and "4208" in row, row
+        assert f"{5597 * 11760 / 5.0 / 1e6:.2f}" in row, row
+        assert "static1: steps with offered > 10 Mbps: 0 of 1" in text, text
+        assert "alt1: steps with offered > 10 Mbps: 1 of 1" in text, text
+
     # FLIP matching rules on their own (steps as (value, time)).
     steps = [(0.0, 0.0), (150.0, 5.0), (150.0, 10.0), (50.0, 15.0)]
     one = match_flip_delays(steps, [(5.6, "primary", "alternate")])
@@ -435,9 +605,17 @@ def main():
     parser = argparse.ArgumentParser(description="Summarize FedFlow-LLM experiment raw files")
     parser.add_argument("--dir", default=DEFAULT_DIR, help="folder with raw_* files (default results/experiment)")
     parser.add_argument("--selftest", action="store_true", help="test parsers on made-up raw text")
+    parser.add_argument("--steps-check", action="store_true",
+                        help=f"per-step static1 vs alt1 table, printed and saved to <dir>/{CHECK_FILE}")
     args = parser.parse_args()
     if args.selftest:
         run_selftest()
+    elif args.steps_check:
+        text = steps_check(args.dir)
+        print(text, end="")
+        with open(os.path.join(args.dir, CHECK_FILE), "w", encoding="utf-8") as f:
+            f.write(text)
+        print(f"Wrote {os.path.join(args.dir, CHECK_FILE)}")
     else:
         summarize(args.dir)
 
