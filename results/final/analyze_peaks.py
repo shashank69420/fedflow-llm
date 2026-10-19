@@ -73,22 +73,115 @@ def confusion(pairs):
     return counts
 
 
+def classify(window):
+    """onset: starts low, peaks high. calm: starts low, stays low. already_high: starts high."""
+    if window["last_value"] > THRESHOLD:
+        return "already_high"
+    return "onset" if window["true_peak"] > THRESHOLD else "calm"
+
+
+def onset_section(records):
+    """Markdown lines for the onset analysis (windows split by their last history value)."""
+    groups = {"onset": [], "calm": [], "already_high": []}
+    for w in records:
+        groups[classify(w)].append(w)
+    total = sum(len(g) for g in groups.values())
+    if total != len(records):
+        raise ValueError(f"Window classes sum to {total}, expected {len(records)}.")
+
+    # Model counts only use windows where the model's prediction parsed.
+    scored = {name: [w for w in g if w["model_peak"] is not None] for name, g in groups.items()}
+    unparsed = len(records) - sum(len(s) for s in scored.values())
+
+    onset = scored["onset"]
+    onset_flagged = sum(w["model_peak"] > THRESHOLD for w in onset)
+    onset_missed = len(onset) - onset_flagged
+    # Mean of (model peak - true peak); negative means the model under-predicts the peak.
+    onset_mean_diff = (sum(w["model_peak"] - w["true_peak"] for w in onset) / len(onset)) if onset else None
+
+    calm = scored["calm"]
+    calm_false_alarms = sum(w["model_peak"] > THRESHOLD for w in calm)
+
+    high = scored["already_high"]
+    model_high = [w for w in high if w["model_peak"] > THRESHOLD]
+    model_drop = [w for w in high if w["model_peak"] <= THRESHOLD]
+    agrees_high = sum(w["true_peak"] > THRESHOLD for w in model_high)
+    falls_but_flagged = len(model_high) - agrees_high
+    wrong_drop = sum(w["true_peak"] > THRESHOLD for w in model_drop)
+    correct_drop = len(model_drop) - wrong_drop
+
+    t = f"{THRESHOLD:g}"
+    return [
+        "",
+        f"## Onset analysis (last history value vs the {t} threshold)",
+        "",
+        f"- Onset window: last value <= {t} and true peak > {t}.",
+        f"- Calm window: last value <= {t} and true peak <= {t}.",
+        f"- Already-high window: last value > {t}.",
+        "",
+        f"Windows without a parsed model prediction (excluded from model counts below): {unparsed}.",
+        "",
+        "| Window type | Windows |",
+        "|---|---:|",
+        f"| Onset | {len(groups['onset'])} |",
+        f"| Calm | {len(groups['calm'])} |",
+        f"| Already-high | {len(groups['already_high'])} |",
+        f"| Total | {total} |",
+        "",
+        "### Onset windows",
+        "",
+        "| | Count |",
+        "|---|---:|",
+        f"| Onset windows scored | {len(onset)} |",
+        f"| Model flagged (model peak > {t}) | {onset_flagged} |",
+        f"| Model missed (model peak <= {t}) | {onset_missed} |",
+        f"| Model recall on onsets | {ratio(onset_flagged, len(onset))} |",
+        f"| Mean (model peak - true peak) | {fmt(onset_mean_diff)} |",
+        "",
+        f"Persistence flags 0 onset windows by definition: its predicted peak is the last value, which is <= {t}.",
+        "",
+        "### Calm windows",
+        "",
+        "| | Count |",
+        "|---|---:|",
+        f"| Calm windows scored | {len(calm)} |",
+        f"| Model false alarms (model peak > {t}) | {ratio(calm_false_alarms, len(calm))} |",
+        "",
+        "### Already-high windows",
+        "",
+        f"Already-high windows scored: {len(high)}.",
+        "",
+        f"| | True peak > {t} | True peak <= {t} | Total |",
+        "|---|---:|---:|---:|",
+        f"| Model peak > {t} | stays high and model agrees: {agrees_high} "
+        f"| traffic falls but model still flags high: {falls_but_flagged} "
+        f"| still flags high: {len(model_high)} |",
+        f"| Model peak <= {t} | wrong drop: model predicts a drop but traffic stays high: {wrong_drop} "
+        f"| correct drop: {correct_drop} "
+        f"| predicts a drop: {len(model_drop)} |",
+    ]
+
+
 def main():
     with open(METRICS_PATH, "r", encoding="utf-8") as f:
         metrics = json.load(f)
     windows = load_windows()
 
-    model_pairs, persistence_pairs = [], []
-    model_unparsed = 0
+    # One record per window: true peak, last history value, model peak (None = parse failure).
+    records = []
     for rows in windows.values():
-        true_peak = max(float(r["true"]) for r in rows)
-        # Persistence repeats the last history value on every row, so its max is that value.
-        persistence_pairs.append((true_peak, max(float(r["persistence"]) for r in rows)))
-        if any(r["parsed"] != "True" or r["model"] == "" for r in rows):
-            # A parse failure has no model prediction; it is left out of the model's counts.
-            model_unparsed += 1
-            continue
-        model_pairs.append((true_peak, max(float(r["model"]) for r in rows)))
+        parsed = all(r["parsed"] == "True" and r["model"] != "" for r in rows)
+        records.append({
+            "true_peak": max(float(r["true"]) for r in rows),
+            # Persistence repeats the last history value on every row, so its max is that value.
+            "last_value": max(float(r["persistence"]) for r in rows),
+            "model_peak": max(float(r["model"]) for r in rows) if parsed else None,
+        })
+
+    persistence_pairs = [(w["true_peak"], w["last_value"]) for w in records]
+    # A parse failure has no model prediction; it is left out of the model's counts.
+    model_pairs = [(w["true_peak"], w["model_peak"]) for w in records if w["model_peak"] is not None]
+    model_unparsed = len(records) - len(model_pairs)
 
     results = {
         "Model (federated LoRA)": (confusion(model_pairs), len(model_pairs)),
@@ -138,6 +231,8 @@ def main():
         recall = ratio(c["hit"], c["hit"] + c["miss"])
         precision = ratio(c["hit"], c["hit"] + c["false_alarm"])
         lines.append(f"| {label} | {recall} | {precision} |")
+
+    lines += onset_section(records)
 
     with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
