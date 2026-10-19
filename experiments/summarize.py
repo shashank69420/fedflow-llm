@@ -3,7 +3,8 @@ FedFlow-LLM — experiments/summarize.py
 ---------------------------------------
 Reads only the raw files written by run_experiment.py and produces:
   summary.csv   one row per mode and rep
-  summary.png   loss % (server side) and p95 ping RTT per mode (mean of reps, min-max error bars)
+  summary.png   loss % (server side), p95 ping RTT and delivered-vs-alt % per mode
+                (mean of reps, min-max error bars)
 
 Usage (no sudo):
   python3 experiments/summarize.py                          results/experiment/
@@ -256,9 +257,10 @@ def plot(rows, png_path):
 
     modes = [m for m in MODES if any(r["mode"] == m for r in rows)]
     modes += sorted({r["mode"] for r in rows} - set(modes))
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
     for ax, key, label in [(axes[0], "server_udp_loss_pct", "UDP loss, server side (%)"),
-                           (axes[1], "ping_p95_ms", "Ping p95 RTT (ms)")]:
+                           (axes[1], "ping_p95_ms", "Ping p95 RTT (ms)"),
+                           (axes[2], "delivered_vs_alt_pct", "Datagrams delivered vs alt (%)")]:
         means, lows, highs, names = [], [], [], []
         for m in modes:
             vals = [r[key] for r in rows if r["mode"] == m and is_number(r[key])]
@@ -281,7 +283,21 @@ FIELDS = ["mode", "rep", "steps", "server_status", "server_udp_lost", "server_ud
           "server_udp_loss_pct", "server_steps_with_report", "steps_no_server_report",
           "client_udp_loss_pct", "client_steps_with_report", "client_steps_no_report",
           "client_bad_reports", "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
-          "frac_written_above_100", "flips_matched", "median_write_to_flip_s"]
+          "frac_written_above_100", "flips_matched", "median_write_to_flip_s",
+          "delivered_vs_alt_pct"]
+
+
+def add_delivered_vs_alt(rows):
+    """delivered_vs_alt_pct = run's server_udp_total / mean server_udp_total of the alt runs x 100.
+    "not computed" everywhere if there is no alt run or any alt run has no numeric total."""
+    alt_totals = [r["server_udp_total"] for r in rows if r["mode"] == "alt"]
+    usable = bool(alt_totals) and all(is_number(t) for t in alt_totals)
+    alt_mean = float(np.mean(alt_totals)) if usable else 0.0
+    for r in rows:
+        if usable and alt_mean > 0 and is_number(r["server_udp_total"]):
+            r["delivered_vs_alt_pct"] = round(100.0 * r["server_udp_total"] / alt_mean, 2)
+        else:
+            r["delivered_vs_alt_pct"] = NOT_COMPUTED
 
 
 def summarize(folder, make_plot=True):
@@ -293,6 +309,7 @@ def summarize(folder, make_plot=True):
         row = {"mode": mode, "rep": rep}
         row.update(summarize_run(prefix))
         rows.append(row)
+    add_delivered_vs_alt(rows)
     csv_path = os.path.join(folder, "summary.csv")
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
@@ -510,6 +527,8 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
         assert [(r["mode"], r["rep"]) for r in rows] == \
             [("static", 1), ("model", 1), ("model", 2), ("model", 3), ("oracle", 1)], "MODES order"
         by = {(r["mode"], r["rep"]): r for r in rows}
+        # No alt run in this folder -> delivered_vs_alt_pct can't be computed for anyone.
+        assert all(r["delivered_vs_alt_pct"] == NOT_COMPUTED for r in rows)
 
         r = by[("model", 1)]
         assert r["server_status"] == "ok"
@@ -548,6 +567,15 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
     # Header and "connected" lines are not reports.
     assert parse_server(server_block(0), [0]) == {"status": "ok", "lost": 0, "total": 0,
                                                   "with_report": 0, "without": 1}
+
+    # delivered_vs_alt_pct: alt mean = (100 + 200 + 300) / 3 = 200.
+    made = [{"mode": "alt", "server_udp_total": t} for t in (100, 200, 300)] + \
+           [{"mode": "static", "server_udp_total": 150}, {"mode": "model", "server_udp_total": NOT_COMPUTED}]
+    add_delivered_vs_alt(made)
+    assert [r["delivered_vs_alt_pct"] for r in made] == [50.0, 100.0, 150.0, 75.0, NOT_COMPUTED], made
+    made[0]["server_udp_total"] = NOT_COMPUTED  # one alt run unusable -> nothing computed
+    add_delivered_vs_alt(made)
+    assert all(r["delivered_vs_alt_pct"] == NOT_COMPUTED for r in made)
 
     # Client report check: garbled line (seen in real runs), printed-% mismatch, and good lines.
     assert not client_report_ok(4294966796, 0, "0")       # lost > total and total 0

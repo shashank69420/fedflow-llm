@@ -9,3 +9,4 @@ forecast_value.txt
 *.pt
 training/outputs/
 results/final/outputs.zip
+results/experiment/quick/
