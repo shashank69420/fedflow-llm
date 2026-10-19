@@ -1,0 +1,17 @@
+FedFlow-LLM live demo: chosen held-out windows
+Model peaks come from the saved forward-pass outputs in results/final/outputs/forecasts.csv.
+Peak = max of the 6 values. Threshold = 100 (strictly above = alternate path).
+
+Onset window (model flagged)
+  start timestep:  1608
+  last value:      93.15
+  model peak:      100.84
+  true peak:       115.50
+  feed controller: python3 write_forecast.py 100.84
+
+Calm window
+  start timestep:  1440
+  last value:      72.52
+  model peak:      70.35
+  true peak:       89.29
+  feed controller: python3 write_forecast.py 70.35
