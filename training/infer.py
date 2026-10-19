@@ -8,6 +8,7 @@ Usage (from inside training/):
   python infer.py --window "v1,...,v12"   forecast one window, print PEAK
   python infer.py --eval [--limit N]      score held-out test windows
   python infer.py --selftest              test parser + metrics, no model needed
+  add --max-new-tokens N to --window/--eval to change the generation limit
 
 torch/transformers/peft are imported only inside the functions that need
 them, so --selftest runs on a machine without them.
@@ -27,7 +28,7 @@ ADAPTER_PATH = "outputs/adapter.npz"
 TEST_WINDOWS_PATH = "data/test_windows.json"
 FORECASTS_PATH = "outputs/forecasts.csv"
 METRICS_PATH = "outputs/metrics.json"
-MAX_NEW_TOKENS = 80
+MAX_NEW_TOKENS = 160  # default; override with --max-new-tokens
 HISTORY_LEN = 12
 HORIZON = 6
 
@@ -136,7 +137,16 @@ def load_model():
     return model, tokenizer, device
 
 
-def predict(model, tokenizer, device, history):
+def eos_token_ids(model, tokenizer):
+    """All token ids that count as end-of-sequence (the model config may list several)."""
+    ids = model.generation_config.eos_token_id
+    ids = set(ids) if isinstance(ids, (list, tuple)) else ({ids} if ids is not None else set())
+    if tokenizer.eos_token_id is not None:
+        ids.add(tokenizer.eos_token_id)
+    return ids
+
+
+def predict(model, tokenizer, device, history, max_new_tokens=MAX_NEW_TOKENS):
     """Greedy-decode one forecast. Returns (6 floats or None, raw generated text)."""
     import torch
 
@@ -146,25 +156,28 @@ def predict(model, tokenizer, device, history):
     with torch.no_grad():
         output_ids = model.generate(
             **inputs,
-            max_new_tokens=MAX_NEW_TOKENS,
+            max_new_tokens=max_new_tokens,
             do_sample=False,  # greedy
             pad_token_id=tokenizer.pad_token_id,
         )
     new_ids = output_ids[0][inputs["input_ids"].shape[1]:]
-    # Generation stops early only on an end token; using all MAX_NEW_TOKENS means it was cut off.
-    truncated = len(new_ids) >= MAX_NEW_TOKENS
+    # Generation stops early only on an end token; using all max_new_tokens means it was cut off.
+    truncated = len(new_ids) >= max_new_tokens
+    # Separately report whether the model actually emitted an end-of-sequence token.
+    ended_with_eos = len(new_ids) > 0 and int(new_ids[-1]) in eos_token_ids(model, tokenizer)
+    print(f"new tokens: {len(new_ids)}/{max_new_tokens}" + ("" if ended_with_eos else "  HIT TOKEN LIMIT"))
     text = tokenizer.decode(new_ids, skip_special_tokens=True)
     return parse_prediction(text, truncated=truncated), text
 
 
 # ---------------------------------------------------------------- modes
 
-def run_window(window_arg):
+def run_window(window_arg, max_new_tokens):
     history = [float(v) for v in window_arg.split(",")]
     if len(history) != HISTORY_LEN:
         sys.exit(f"ERROR: --window needs {HISTORY_LEN} comma-separated values, got {len(history)}.")
     model, tokenizer, device = load_model()
-    prediction, text = predict(model, tokenizer, device, history)
+    prediction, text = predict(model, tokenizer, device, history, max_new_tokens)
     if prediction is None:
         print("Could not parse a PREDICTION line from the model output:")
         print(text)
@@ -173,7 +186,7 @@ def run_window(window_arg):
     print(f"PEAK: {max(prediction):.2f}")
 
 
-def run_eval(limit):
+def run_eval(limit, max_new_tokens):
     with open(TEST_WINDOWS_PATH, "r", encoding="utf-8") as f:
         windows = json.load(f)
     if limit is not None:
@@ -186,7 +199,10 @@ def run_eval(limit):
     parse_failures = 0
     for n, w in enumerate(windows, start=1):
         history, true = w["history"], w["true"]
-        prediction, _ = predict(model, tokenizer, device, history)
+        prediction, raw_output = predict(model, tokenizer, device, history, max_new_tokens)
+        if n <= 2:
+            # Show the first couple of raw generations so format problems are visible in the log.
+            print(f"--- raw output, window start={w['start']} ---\n{raw_output}\n--- end raw output ---")
         persistence = persistence_forecast(history)
         moving_avg = moving_average_forecast(history)
         if prediction is None:
@@ -206,6 +222,7 @@ def run_eval(limit):
                 "persistence": persistence[step],
                 "moving_avg": round(moving_avg[step], 4),
                 "parsed": prediction is not None,
+                "raw_output": raw_output,  # same full text on all 6 rows of a window
             })
         print(f"[{n}/{len(windows)}] start={w['start']} parsed={prediction is not None}")
 
@@ -270,14 +287,18 @@ def main():
     mode.add_argument("--eval", action="store_true", help="score the held-out test windows")
     mode.add_argument("--selftest", action="store_true", help="test parser and metrics without a model")
     parser.add_argument("--limit", type=int, help="with --eval: only use the first N windows")
+    parser.add_argument("--max-new-tokens", type=int, default=MAX_NEW_TOKENS,
+                        help=f"generation limit per window (default {MAX_NEW_TOKENS})")
     args = parser.parse_args()
+    if args.max_new_tokens < 1:
+        parser.error("--max-new-tokens must be at least 1")
 
     if args.selftest:
         run_selftest()
     elif args.eval:
-        run_eval(args.limit)
+        run_eval(args.limit, args.max_new_tokens)
     else:
-        run_window(args.window)
+        run_window(args.window, args.max_new_tokens)
 
 
 if __name__ == "__main__":
