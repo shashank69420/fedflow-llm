@@ -1,0 +1,99 @@
+Telecom check report (read-only; computed from datasets/telecom_milan/cells.csv and cells_meta.json)
+Experiment cell: square 7511, slice start 1837, crossings in cells_meta.json: 8
+
+1. SCALED VALUES OF SQUARE 7511, SLOTS 1837-1872
+slot 1837: 157.39
+slot 1838: 116.48
+slot 1839: 98.21
+slot 1840: 106.72
+slot 1841: 113.18
+slot 1842: 214.08
+slot 1843: 106.47
+slot 1844: 119.94
+slot 1845: 98.83
+slot 1846: 120.29
+slot 1847: 100.10
+slot 1848: 89.72
+slot 1849: 111.84
+slot 1850: 109.64
+slot 1851: 102.13
+slot 1852: 111.63
+slot 1853: 97.72
+slot 1854: 105.17
+slot 1855: 121.44
+slot 1856: 105.56
+slot 1857: 83.64
+slot 1858: 80.57
+slot 1859: 117.44
+slot 1860: 82.78
+slot 1861: 92.30
+slot 1862: 88.96
+slot 1863: 89.07
+slot 1864: 108.79
+slot 1865: 113.07
+slot 1866: 97.97
+slot 1867: 96.35
+slot 1868: 112.71
+slot 1869: 114.86
+slot 1870: 93.60
+slot 1871: 82.88
+slot 1872: 101.86
+
+2. UPWARD CROSSINGS IN THAT SLICE (value before <= 100, value after > 100)
+'next 6' = slots i..i+5, the 6 forecast steps that follow the 'before' value at slot i-1;
+the second reading (slots i+1..i+6) is shown too.
+slot  before  after  max(i..i+5)-100  max(i+1..i+6)-100
+1840  98.21  106.72  114.08  114.08
+1846  98.83  120.29  20.29  11.84
+1849  89.72  111.84  11.84  21.44
+1854  97.72  105.17  21.44  21.44
+1859  80.57  117.44  17.44  13.07
+1864  89.07  108.79  14.86  14.86
+1868  96.35  112.71  14.86  14.86
+1872  82.88  101.86  1.86  1.06
+Crossings found: 8
+Largest crossing size: 114.08 at slot 1840; largest size among the other 7 crossings: 21.44
+Highest value in the slice: 214.08 at slot 1842
+
+3. ONSET WINDOWS IN THE TEST BLOCK (slots 1728-2015); 12 history + 6 future;
+onset = last history value <= 100 and max of the 6 future values > 100
+A count under 10 is flagged: onset recall would be too unreliable to report.
+
+Stride 3:
+square  windows  onset windows  median(max future - 100)  note
+9721  91  13  9.69
+6997  91  18  20.53
+8336  91  14  21.85
+7511  91  14  23.46
+8062  91  9  23.74  FEWER THAN 10
+7584  91  5  23.59  FEWER THAN 10
+
+Stride 6:
+square  windows  onset windows  median(max future - 100)  note
+9721  46  6  9.17  FEWER THAN 10
+6997  46  9  24.37  FEWER THAN 10
+8336  46  7  33.91  FEWER THAN 10
+7511  46  7  21.44  FEWER THAN 10
+8062  46  6  17.55  FEWER THAN 10
+7584  46  2  24.16  FEWER THAN 10
+Pooled over all 6 cells at stride 6: 37 onset windows, median(max future - 100) 20.53
+
+4. MEAN SCALED VALUE BY DAY TYPE
+non-working training days: day indexes 0,1,2,8,9 = 1, 2, 3, 9, 10 Nov 2013 (holiday, Sat/Sun, Sat/Sun)
+working training days: day indexes 3-7 = 4-8 Nov 2013
+square  non-working  working  validation  test
+9721  58.11  56.16  53.56  60.41
+6997  60.99  77.58  81.76  85.07
+8336  69.68  96.55  94.36  95.17
+7511  85.39  108.38  104.63  107.16
+8062  117.99  118.95  118.68  123.03
+7584  125.87  159.78  160.57  171.33
+
+5. SHARE OF SLOTS ABOVE 100
+square  all 2016 slots  validation  test
+9721  0.0154  0.0035  0.0451
+6997  0.2257  0.3542  0.3611
+8336  0.3309  0.4792  0.4618
+7511  0.4841  0.6146  0.6146
+8062  0.6478  0.6736  0.6771
+7584  0.7217  0.7604  0.7535
