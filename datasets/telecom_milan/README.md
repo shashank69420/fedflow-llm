@@ -58,6 +58,36 @@ any locked rule, cell, k or split. Both are listed in `cells_meta.json` under `e
 36-step slice, found by the same rule on true traffic only. Experiment output goes to
 `results/experiment_telecom/<square_id>/`, chosen with `--cell <square_id>` (default 7511).
 
+Quick test: `sudo python3 experiments/run_experiment.py --dataset telecom --cell <square_id> --quick --mode reactive`.
+It needs no `forecasts.csv`. It runs 1 rep of the reactive mode for the first N steps of the slice, where N is the smallest
+number of steps that contains an upward crossing of 100 in the written values, plus 3 more steps; N is printed.
+Output goes to `results/experiment_telecom/<square_id>/quick/`. The default `--mode oracle` cannot run on these cells,
+because the oracle never has an upward crossing (see Known limits).
+
+### Measures reported for every mode
+
+Each run's row in `summary.csv` holds these three columns next to its delay columns (`ping_mean_ms`, `ping_p95_ms`).
+They are computed from the run's `_steps.csv` only, over the steps the run covers. A step's "true value" is the scaled true traffic at that step.
+
+- `frac_written_above_100`: the share of steps whose written value is above 100 (sent to the alternate path).
+- `steps_on_alt_while_true_le_100`: steps whose written value is above 100 while the step's true value is at most 100.
+- `steps_on_primary_while_true_gt_100`: steps whose written value is at most 100 while the step's true value is above 100.
+
+Values are filled in from `summary.csv` after the runs; until then every cell is "not run".
+
+| experiment cell | mode | frac_written_above_100 | steps_on_alt_while_true_le_100 | steps_on_primary_while_true_gt_100 |
+|---|---|---|---|---|
+| 7511 | static | not run | not run | not run |
+| 7511 | reactive | not run | not run | not run |
+| 7511 | model | not run | not run | not run |
+| 7511 | oracle | not run | not run | not run |
+| 7511 | alt | not run | not run | not run |
+| 8336 | static | not run | not run | not run |
+| 8336 | reactive | not run | not run | not run |
+| 8336 | model | not run | not run | not run |
+| 8336 | oracle | not run | not run | not run |
+| 8336 | alt | not run | not run | not run |
+
 ## How the data is used
 
 - `python generate_data.py --dataset telecom` (from `training/`) writes 200 training examples (12 history + 6 future), `val_windows.json` and `test_windows.json` to `training/data/telecom/`, never over the synthetic files. Example j belongs to cell j % 6, so client i (which takes `examples[i::6]`) trains only on cell i.
@@ -76,5 +106,6 @@ Numbers are quoted from `check_report.txt` and `prep_report.txt`.
 - **One spike drives one crossing in the experiment slice.** In square 7511, slots 1837-1872, the value at slot 1842 is 214.08. The crossing at slot 1840 has size 114.08 (highest of the next 6 values minus 100) because of that spike; the other 7 crossings have sizes of at most 21.44.
 - **The primary cell's oracle is above 100 at every step.** In the 36-step trace of square 7511 the oracle value (the peak of the next 6 true values) is above 100 at 36 of 36 steps (`check_report.txt`, section 6), so the oracle never has an upward crossing and, because the controller sends traffic to the alternate path whenever the written value is above 100, it behaves as always-alternate. The reactive value is above 100 at 22 of 36 steps. The second cell, 8336, shows the same for the oracle (36 of 36 above 100, no upward crossing; reactive 28 of 36), so `run_experiment.py --quick`, which needs an oracle upward crossing, cannot run on either cell.
 - **Alternate-path usage is reported next to delay.** For every mode, each row of `summary.csv` holds `frac_written_above_100` (the share of steps whose written value was above 100, so sent to the alternate path) in the same row as `ping_mean_ms` and `ping_p95_ms`, so a mode's delay is never read without how much of the alternate path it used.
+- **The two misrouting columns were declared before any telecom model result.** The two columns above were declared before any telecom model result existed, after the true-data counts showed that the oracle writes a value above 100 at 36 of 36 steps in both experiment cells. They separate real congestion handling from simply staying on the fast alternate path.
 - **Scaled values are unitless load, not measured Mbps.** They are the raw internet activity of the dataset multiplied by k. Treating 100 as the 10 Mbps primary link is a modelling choice of this project.
 - **Token length.** The longest telecom example is 256 tokens (`token_audit.txt`), exactly `client.py`'s default limit of 256, with no headroom; none is above it.
