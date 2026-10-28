@@ -8,12 +8,13 @@ Usage (from the repo root):
   python3 experiments/run_experiment.py --selftest       no Mininet, no sudo
   sudo python3 experiments/run_experiment.py --quick     oracle mode, 1 rep, short trace -> results/experiment/quick/
   sudo python3 experiments/run_experiment.py             5 modes x 3 reps (about 50 minutes)
-  add --dataset telecom to any of these to use the Telecom Italia experiment cell:
-    true series  datasets/telecom_milan/cells.csv (column of the experiment cell in cells_meta.json)
+  add --dataset telecom to any of these to use a Telecom Italia experiment cell; --cell <square_id>
+  picks which one (7511 = primary, the default; 8336 = second, declared before any model result):
+    true series  datasets/telecom_milan/cells.csv (that square's column)
     forecasts    results/final_telecom/outputs/forecasts.csv, rows of that cell only
-    output       results/experiment_telecom/
+    output       results/experiment_telecom/<square_id>/
     slice        same rule, starts 1740-1980 (so every step has a forecast); the recomputed slice
-                 must equal the one saved in cells_meta.json or the run stops
+                 must equal the one saved for that cell in cells_meta.json or the run stops
 
 Trace (synthetic): the 36-step slice of the held-out block (timesteps 1452-1727) with the
 most upward crossings of 100 in the TRUE traffic, earliest on ties. Step value
@@ -96,22 +97,29 @@ TELECOM_OUT_DIR = os.path.join(REPO, "results", "experiment_telecom")
 TELECOM = None   # stays None for synthetic; use_telecom() fills it with the experiment cell's saved facts
 
 
-def use_telecom():
-    """Point every path and the slice range at the Telecom Italia experiment cell."""
+def use_telecom(square=None):
+    """Point every path and the slice range at one Telecom Italia experiment cell.
+    square=None means the primary experiment cell (the one the locked rule picked)."""
     global FORECASTS_CSV, OUT_DIR, QUICK_DIR, BLOCK_FIRST, BLOCK_LAST, TELECOM
     with open(TELECOM_META_JSON, encoding="utf-8") as f:
         meta = json.load(f)
     rule = meta["slice_rule"]
     if rule["trace_len"] != TRACE_LEN or rule["threshold"] != THRESHOLD or rule["min_crossings"] != MIN_CROSSINGS:
         raise ValueError("cells_meta.json slice rule differs from this script's TRACE_LEN / THRESHOLD / MIN_CROSSINGS.")
+    if square is None:
+        square = int(meta["experiment_cell"])
+    entry = next((e for e in meta["experiment_cells"] if int(e["square"]) == int(square)), None)
+    if entry is None:   # only the declared experiment cells may be used
+        allowed = [e["square"] for e in meta["experiment_cells"]]
+        raise ValueError(f"Square {square} is not an experiment cell. Choose one of {allowed}.")
     TELECOM = {
-        "square": int(meta["experiment_cell"]),
-        "cell": int(meta["experiment_cell_index"]),
-        "start": int(meta["best_slice_start"]),
-        "crossings": int(meta["best_slice_crossings"]),
+        "square": int(entry["square"]),
+        "cell": int(entry["cell"]),
+        "start": int(entry["best_slice_start"]),
+        "crossings": int(entry["best_slice_crossings"]),
     }
     FORECASTS_CSV = TELECOM_FORECASTS_CSV
-    OUT_DIR = TELECOM_OUT_DIR
+    OUT_DIR = os.path.join(TELECOM_OUT_DIR, str(TELECOM["square"]))   # one folder per experiment cell
     QUICK_DIR = os.path.join(OUT_DIR, "quick")
     # choose_slice tries starts BLOCK_FIRST .. BLOCK_LAST - TRACE_LEN + 1, so this gives starts 1740-1980.
     BLOCK_FIRST = rule["start_min"]
@@ -260,9 +268,31 @@ Server listening on UDP port 5001
     assert count_server_reports("[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams\n") == 0
 
 
+def standin_forecasts_if_missing():
+    """Selftest only. If the real telecom forecasts.csv does not exist yet (no model has been run), write a
+    temporary file whose 'model' column just repeats the last history value, so the trace code can be
+    exercised. These stand-in numbers are never saved and are not results."""
+    global FORECASTS_CSV
+    if TELECOM is None or os.path.exists(FORECASTS_CSV):
+        return
+    traffic = load_traffic()
+    handle, path = tempfile.mkstemp(prefix="standin_forecasts_", suffix=".csv")
+    with os.fdopen(handle, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["cell", "start", "step", "true", "model", "persistence", "moving_avg", "parsed", "raw_output"])
+        for w in range(1728, 1999, 3):   # the experiment cell's stride-3 test windows
+            for k in range(6):
+                last_history = traffic[w + WINDOW_HISTORY - 1]
+                writer.writerow([TELECOM["cell"], w, k + 1, traffic[w + WINDOW_HISTORY + k], last_history, last_history, 0, True, ""])
+    FORECASTS_CSV = path
+    print(f"NOTE: {TELECOM_FORECASTS_CSV} does not exist yet, so this selftest uses stand-in forecasts "
+          "(last history value repeated). They are not results and are not saved.")
+
+
 def run_selftest():
     selftest_server_counting()
     print("Server report counting: OK")
+    standin_forecasts_if_missing()
     start, crossings, steps = build_trace()
     print(f"Trace: timesteps {start}-{start + TRACE_LEN - 1}, upward crossings of {THRESHOLD:g} "
           f"in true traffic: {crossings}")
@@ -574,9 +604,16 @@ def main():
     group.add_argument("--quick", action="store_true", help="oracle mode, 1 rep, short trace -> results/experiment/quick/")
     parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
                         help="synthetic (default, unchanged) or the Telecom Italia experiment cell")
+    parser.add_argument("--cell", type=int, default=None,
+                        help="with --dataset telecom: experiment cell square ID, 7511 (default, primary) or 8336 (second)")
     args = parser.parse_args()
+    if args.cell is not None and args.dataset != "telecom":
+        parser.error("--cell only applies with --dataset telecom")
     if args.dataset == "telecom":
-        use_telecom()
+        try:
+            use_telecom(args.cell)
+        except ValueError as error:
+            parser.error(str(error))
     if args.selftest:
         run_selftest()
     else:

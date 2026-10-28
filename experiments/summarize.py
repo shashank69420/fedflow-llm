@@ -34,6 +34,7 @@ import numpy as np
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.path.join(REPO, "results", "experiment")
 TELECOM_DIR = os.path.join(REPO, "results", "experiment_telecom")   # used by --dataset telecom
+PRIMARY_TELECOM_SQUARE = 7511   # default --cell: the primary experiment cell (8336 is the second one)
 MODES = ["static", "reactive", "model", "oracle", "alt"]
 THRESHOLD = 100.0
 MATCH_WINDOW_S = 5.0   # a FLIP must land within one step (5 s) of the write that caused it
@@ -627,21 +628,38 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
     wrap = match_flip_delays([(0.0, 86390.0), (150.0, 86399.8)], [(0.3, "primary", "alternate")])
     assert len(wrap) == 1 and abs(wrap[0] - 0.5) < 1e-6                       # midnight wrap
 
+    # Default folder per dataset and cell.
+    assert default_dir("synthetic", None) == DEFAULT_DIR
+    assert default_dir("telecom", None) == os.path.join(TELECOM_DIR, "7511")
+    assert default_dir("telecom", 8336) == os.path.join(TELECOM_DIR, "8336")
+
     print("SELFTEST OK")
+
+
+def default_dir(dataset, cell):
+    """Folder with the raw_* files when --dir is not given: results/experiment for synthetic,
+    results/experiment_telecom/<square_id> for telecom (cell None = the primary cell)."""
+    if dataset == "telecom":
+        return os.path.join(TELECOM_DIR, str(PRIMARY_TELECOM_SQUARE if cell is None else cell))
+    return DEFAULT_DIR
 
 
 def main():
     parser = argparse.ArgumentParser(description="Summarize FedFlow-LLM experiment raw files")
     parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
-                        help="telecom changes only the default --dir to results/experiment_telecom")
+                        help="telecom changes only the default --dir to results/experiment_telecom/<square_id>")
+    parser.add_argument("--cell", type=int, default=None,
+                        help="with --dataset telecom: experiment cell square ID, 7511 (default, primary) or 8336 (second)")
     parser.add_argument("--dir", default=None,
                         help="folder with raw_* files (default results/experiment, or results/experiment_telecom with --dataset telecom)")
     parser.add_argument("--selftest", action="store_true", help="test parsers on made-up raw text")
     parser.add_argument("--steps-check", action="store_true",
                         help=f"per-step static1 vs alt1 table, printed and saved to <dir>/{CHECK_FILE}")
     args = parser.parse_args()
-    if args.dir is None:   # no --dir given: pick the default folder for the chosen dataset
-        args.dir = TELECOM_DIR if args.dataset == "telecom" else DEFAULT_DIR
+    if args.cell is not None and args.dataset != "telecom":
+        parser.error("--cell only applies with --dataset telecom")
+    if args.dir is None:   # no --dir given: pick the default folder for the chosen dataset and cell
+        args.dir = default_dir(args.dataset, args.cell)
     if args.selftest:
         run_selftest()
     elif args.steps_check:
