@@ -1,0 +1,59 @@
+Telecom Italia (Milan) prep report
+Source: ~/fedflow_data/telecom_raw (14 day files, internet column only)
+
+Rows read: 75795226; rows with a numeric internet value: 37967291
+Smallest numeric internet value seen: 2.331497699529331e-06
+
+FILTER: squares with >= 95% non-blank slots over all 2016: 9998 of 10000
+
+CHOSEN CELLS (rank by raw training mean among passing squares; percentile = 100 * lower / (N-1))
+cell square  target pct  actual pct  raw train mean    
+0    9721    40          40.0020     24.514846         
+1    6997    46          46.0038     29.727451         
+2    8336    52          51.9956     35.662468         
+3    7511    58          57.9974     41.570186         
+4    8062    64          63.9992     50.832804         
+5    7584    70          70.0010     61.282058         
+Median of the 6 raw training means: 38.616327
+k = 90 / median = 2.3306204138
+
+SCALED CELLS (values rounded to 2 decimals; unitless load, 100 = the 10 Mbps primary link)
+square  block  mean        max         frac > 100  
+9721    train  57.1348     171.73      0.0118      
+9721    val    53.5602     107.38      0.0035      
+9721    test   60.4077     131.55      0.0451      
+6997    train  69.2834     190.37      0.1729      
+6997    val    81.7620     194.71      0.3542      
+6997    test   85.0708     200.93      0.3611      
+8336    train  83.1157     264.62      0.2750      
+8336    val    94.3555     182.37      0.4792      
+8336    test   95.1694     189.31      0.4618      
+7511    train  96.8842     303.61      0.4319      
+7511    val    104.6326    218.36      0.6146      
+7511    test   107.1590    229.39      0.6146      
+8062    train  118.4719    359.33      0.6368      
+8062    val    118.6809    351.07      0.6736      
+8062    test   123.0295    375.89      0.6771      
+7584    train  142.8252    485.97      0.7076      
+7584    val    160.5666    402.80      0.7604      
+7584    test   171.3260    346.50      0.7535      
+
+BLANK-FILLED SLOTS (no numeric internet value, filled with 0), share of the slots in each span
+square  all 2016    train       val         test        
+9721    0.0000      0.0000      0.0000      0.0000      
+6997    0.0000      0.0000      0.0000      0.0000      
+8336    0.0000      0.0000      0.0000      0.0000      
+7511    0.0000      0.0000      0.0000      0.0000      
+8062    0.0000      0.0000      0.0000      0.0000      
+7584    0.0000      0.0000      0.0000      0.0000      
+
+CROSSINGS: best 36-step slice per cell, slice starts 1740-1980 inclusive, true scaled traffic only
+square 9721: best slice start 1922, upward crossings of 100: 4
+square 6997: best slice start 1974, upward crossings of 100: 5
+square 8336: best slice start 1960, upward crossings of 100: 8
+square 7511: best slice start 1837, upward crossings of 100: 8
+square 8062: best slice start 1773, upward crossings of 100: 7
+square 7584: best slice start 1841, upward crossings of 100: 2
+Experiment cell: square 7511 (cell 3), slice start 1837, crossings 8
+
+Wrote datasets/telecom_milan/cells.csv and cells_meta.json
