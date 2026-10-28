@@ -48,6 +48,9 @@ THRESHOLD = 100.0                    # 100 = the 10 Mbps primary link, as in the
 TRACE_LEN = 36                       # slice length in steps
 SLICE_START_MIN, SLICE_START_MAX = 1740, 1980   # inclusive; 1740 = first step with a model forecast
 MIN_CROSSINGS = 3
+# Second experiment cell, declared before any model result. The locked rule above still picks the primary
+# experiment cell; results are reported for both cells, whatever they show.
+SECOND_EXPERIMENT_SQUARE = 8336
 CACHE_VERSION = 1
 
 
@@ -275,6 +278,19 @@ def main():
         finish(report)
         sys.exit(1)
 
+    # The second experiment cell must be one of the six chosen cells and meet the same crossing minimum.
+    if SECOND_EXPERIMENT_SQUARE not in squares:
+        report.append(f"ABORT: second experiment square {SECOND_EXPERIMENT_SQUARE} is not one of the chosen cells.")
+        finish(report)
+        sys.exit(1)
+    second = squares.index(SECOND_EXPERIMENT_SQUARE)
+    report.append(f"Second experiment cell (declared before any model result): square {squares[second]} (cell {second}), "
+                  f"slice start {best[second][0]}, crossings {best[second][1]}")
+    if best[second][1] < MIN_CROSSINGS:
+        report.append(f"ABORT: the second experiment cell has only {best[second][1]} crossings (need {MIN_CROSSINGS}).")
+        finish(report)
+        sys.exit(1)
+
     frame = pd.DataFrame(scaled.T, columns=[str(s) for s in squares])
     frame.insert(0, "timestep", np.arange(N_SLOTS))
     frame.to_csv(os.path.join(OUT_DIR, "cells.csv"), index=False)
@@ -297,6 +313,14 @@ def main():
         "experiment_cell_index": exp,
         "best_slice_start": best[exp][0],
         "best_slice_crossings": best[exp][1],
+        # Both of these are experiment cells and results are reported for both, whatever they show.
+        # "experiment_cell" above stays the primary one, picked by the locked rule.
+        "experiment_cells": [
+            {"square": squares[exp], "cell": exp, "role": "primary (locked rule)",
+             "best_slice_start": best[exp][0], "best_slice_crossings": best[exp][1]},
+            {"square": squares[second], "cell": second, "role": "second (declared before any model result)",
+             "best_slice_start": best[second][0], "best_slice_crossings": best[second][1]},
+        ],
     }
     with open(os.path.join(OUT_DIR, "cells_meta.json"), "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2)

@@ -91,5 +91,21 @@
   "experiment_cell": 7511,
   "experiment_cell_index": 3,
   "best_slice_start": 1837,
-  "best_slice_crossings": 8
+  "best_slice_crossings": 8,
+  "experiment_cells": [
+    {
+      "square": 7511,
+      "cell": 3,
+      "role": "primary (locked rule)",
+      "best_slice_start": 1837,
+      "best_slice_crossings": 8
+    },
+    {
+      "square": 8336,
+      "cell": 2,
+      "role": "second (declared before any model result)",
+      "best_slice_start": 1960,
+      "best_slice_crossings": 8
+    }
+  ]
 }

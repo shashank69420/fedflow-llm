@@ -55,5 +55,6 @@ square 7511: best slice start 1837, upward crossings of 100: 8
 square 8062: best slice start 1773, upward crossings of 100: 7
 square 7584: best slice start 1841, upward crossings of 100: 2
 Experiment cell: square 7511 (cell 3), slice start 1837, crossings 8
+Second experiment cell (declared before any model result): square 8336 (cell 2), slice start 1960, crossings 8
 
 Wrote datasets/telecom_milan/cells.csv and cells_meta.json
