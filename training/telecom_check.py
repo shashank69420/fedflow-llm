@@ -5,7 +5,8 @@ Read-only look at the locked telecom cells. Reads only datasets/telecom_milan/ce
 cells_meta.json, changes nothing, and writes datasets/telecom_milan/check_report.txt.
 
 Covers: the experiment-cell slice values, the size of each upward crossing in that slice,
-onset-window counts per cell at stride 3 and stride 6 (test block), and mean scaled load by day type.
+onset-window counts per cell at stride 3 and stride 6 (test block), mean scaled load by day type, and, for both
+experiment cells, how often the oracle and reactive values are above 100 in the 36-step trace.
 
 Standard library only.   Usage:  python3 training/telecom_check.py
 """
@@ -44,6 +45,17 @@ def onset_sizes(series, stride):
         if last_history <= THRESHOLD < peak:
             sizes.append(peak - THRESHOLD)
     return sizes, len(starts)
+
+
+def trace_values(series, start):
+    """Per step of the 36-step slice starting at `start`: (oracle value, reactive value), TRUE data only.
+    Same rule as experiments/run_experiment.py: reactive = true value of the previous step; oracle = peak of the
+    6 true values of the latest stride-3 test window whose history ends at or before the previous step."""
+    out = []
+    for t in range(start, start + 36):
+        w = max(a for a in range(VAL_END, N_SLOTS - WINDOW + 1, 3) if a + HISTORY - 1 <= t - 1)   # latest usable window
+        out.append((max(series[w + HISTORY : w + WINDOW]), series[t - 1]))
+    return out
 
 
 def median_text(values):
@@ -117,6 +129,18 @@ def main():
         v = series[s]
         share = lambda block: sum(1 for value in block if value > THRESHOLD) / len(block)
         out.append(f"{s}  {share(v):.4f}  {share(v[TRAIN_END:VAL_END]):.4f}  {share(v[VAL_END:]):.4f}")
+
+    out += ["", f"6. ORACLE AND REACTIVE VALUES IN THE 36-STEP TRACE OF EACH EXPERIMENT CELL (true data only)",
+            "oracle = peak of the next 6 true values (latest stride-3 window ending before the step); reactive = previous step's true value.",
+            "square  role  slice start  oracle>100  reactive>100  oracle<=100  oracle upward crossing"]
+    for e in meta["experiment_cells"]:
+        values = trace_values(series[str(e["square"])], e["best_slice_start"])
+        oracle = [o for o, _ in values]
+        reactive = [r for _, r in values]
+        first = next((i for i in range(1, 36) if oracle[i - 1] <= THRESHOLD < oracle[i]), None)
+        crossing = "none" if first is None else f"first at step {first}, --quick would run {min(first + 1 + 3, 36)} steps"
+        out.append(f"{e['square']}  {e['role'].split(' ')[0]}  {e['best_slice_start']}  {sum(o > THRESHOLD for o in oracle)} of 36  "
+                   f"{sum(r > THRESHOLD for r in reactive)} of 36  {sum(o <= THRESHOLD for o in oracle)} of 36  {crossing}")
 
     text = "\n".join(out) + "\n"
     print(text)

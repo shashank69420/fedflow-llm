@@ -97,3 +97,9 @@ square  all 2016 slots  validation  test
 7511  0.4841  0.6146  0.6146
 8062  0.6478  0.6736  0.6771
 7584  0.7217  0.7604  0.7535
+
+6. ORACLE AND REACTIVE VALUES IN THE 36-STEP TRACE OF EACH EXPERIMENT CELL (true data only)
+oracle = peak of the next 6 true values (latest stride-3 window ending before the step); reactive = previous step's true value.
+square  role  slice start  oracle>100  reactive>100  oracle<=100  oracle upward crossing
+7511  primary  1837  36 of 36  22 of 36  0 of 36  none
+8336  second  1960  36 of 36  28 of 36  0 of 36  none

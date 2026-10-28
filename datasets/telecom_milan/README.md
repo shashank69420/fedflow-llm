@@ -47,12 +47,21 @@ Numbers below are copied from `prep_report.txt`.
 
 - 9,998 of 10,000 squares passed the 95% filter.
 - Chosen squares (cell order 0-5): 9721, 6997, 8336, 7511, 8062, 7584. k = 2.3306204138.
-- Experiment cell: square 7511, slice start 1837, 8 upward crossings.
+- Experiment cell picked by the locked rule (primary): square 7511, slice start 1837, 8 upward crossings.
+- Second experiment cell, declared before any model result: square 8336, slice start 1960, 8 upward crossings.
+
+## Experiment cells
+
+Both **7511** and **8336** are experiment cells, and results are reported for both, whatever they show.
+The locked rule (decision 8) still picks 7511 as the primary cell; 8336 is an addition that does not change
+any locked rule, cell, k or split. Both are listed in `cells_meta.json` under `experiment_cells`. Each has its own
+36-step slice, found by the same rule on true traffic only. Experiment output goes to
+`results/experiment_telecom/<square_id>/`, chosen with `--cell <square_id>` (default 7511).
 
 ## How the data is used
 
 - `python generate_data.py --dataset telecom` (from `training/`) writes 200 training examples (12 history + 6 future), `val_windows.json` and `test_windows.json` to `training/data/telecom/`, never over the synthetic files. Example j belongs to cell j % 6, so client i (which takes `examples[i::6]`) trains only on cell i.
-- Test windows: the experiment cell every 3 slots, the other cells every 6. Validation windows: every cell every 6 slots.
+- Test windows: both experiment cells (7511 and 8336) every 3 slots, the other four cells every 6. Validation windows: every cell every 6 slots.
 - `notebooks/fedflow_colab_telecom.ipynb` runs it on Colab.
 
 ## Known limits
@@ -65,5 +74,7 @@ Numbers are quoted from `check_report.txt` and `prep_report.txt`.
 - **Windows overlap.** Windows are 18 slots long and start every 3 or 6 slots, so neighbouring windows share slots and the onset windows are not independent samples.
 - **Square 7584 is above 100 most of the time.** It is above 100 in 0.7217 of all 2016 slots (0.7076 of training slots, 0.7604 of validation, 0.7535 of test), about three quarters, so it has few chances to cross upward: 5 onset windows at stride 3.
 - **One spike drives one crossing in the experiment slice.** In square 7511, slots 1837-1872, the value at slot 1842 is 214.08. The crossing at slot 1840 has size 114.08 (highest of the next 6 values minus 100) because of that spike; the other 7 crossings have sizes of at most 21.44.
+- **The primary cell's oracle is above 100 at every step.** In the 36-step trace of square 7511 the oracle value (the peak of the next 6 true values) is above 100 at 36 of 36 steps (`check_report.txt`, section 6), so the oracle never has an upward crossing and, because the controller sends traffic to the alternate path whenever the written value is above 100, it behaves as always-alternate. The reactive value is above 100 at 22 of 36 steps. The second cell, 8336, shows the same for the oracle (36 of 36 above 100, no upward crossing; reactive 28 of 36), so `run_experiment.py --quick`, which needs an oracle upward crossing, cannot run on either cell.
+- **Alternate-path usage is reported next to delay.** For every mode, each row of `summary.csv` holds `frac_written_above_100` (the share of steps whose written value was above 100, so sent to the alternate path) in the same row as `ping_mean_ms` and `ping_p95_ms`, so a mode's delay is never read without how much of the alternate path it used.
 - **Scaled values are unitless load, not measured Mbps.** They are the raw internet activity of the dataset multiplied by k. Treating 100 as the 10 Mbps primary link is a modelling choice of this project.
 - **Token length.** The longest telecom example is 256 tokens (`token_audit.txt`), exactly `client.py`'s default limit of 256, with no headroom; none is above it.
