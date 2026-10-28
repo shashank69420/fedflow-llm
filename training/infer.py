@@ -10,6 +10,9 @@ Usage (from inside training/):
   python infer.py --selftest              test parser + metrics, no model needed
   add --max-new-tokens N to --window/--eval to change the generation limit
 
+If the test windows carry a "cell" field (telecom data), forecasts.csv gets a
+"cell" column and metrics.json gets a "per_cell" block. Synthetic output is unchanged.
+
 torch/transformers/peft are imported only inside the functions that need
 them, so --selftest runs on a machine without them.
 """
@@ -65,6 +68,30 @@ def mae_rmse(predictions, truths):
     mae = sum(abs(e) for e in errors) / len(errors)
     rmse = math.sqrt(sum(e * e for e in errors) / len(errors))
     return mae, rmse
+
+
+METHODS = ("model", "persistence", "moving_avg")
+
+
+def score_methods(scored):
+    """{method: {"mae", "rmse"}} for the three methods over the windows collected in `scored`."""
+    return {name: dict(zip(("mae", "rmse"), mae_rmse(scored[name], scored["true"]))) for name in METHODS}
+
+
+def per_cell_metrics(windows, scored, scored_cells):
+    """Same metrics as the overall ones, split by cell. `scored_cells[i]` is the cell of the i-th scored window."""
+    out = {}
+    for cell in sorted({w["cell"] for w in windows}):
+        keep = [i for i, c in enumerate(scored_cells) if c == cell]            # scored windows of this cell
+        subset = {name: [scored[name][i] for i in keep] for name in scored}
+        entry = {
+            "square_id": next(w["square_id"] for w in windows if w["cell"] == cell and "square_id" in w),
+            "windows_used": sum(1 for w in windows if w["cell"] == cell),
+            "windows_scored": len(keep),
+        }
+        entry.update(score_methods(subset))
+        out[str(cell)] = entry
+    return out
 
 
 def persistence_forecast(history):
@@ -196,6 +223,8 @@ def run_eval(limit, max_new_tokens):
 
     rows = []
     scored = {"true": [], "model": [], "persistence": [], "moving_avg": []}
+    scored_cells = []   # cell of each scored window (telecom windows only)
+    has_cells = all("cell" in w for w in windows)   # synthetic windows have no cell, so their outputs stay as before
     parse_failures = 0
     for n, w in enumerate(windows, start=1):
         history, true = w["history"], w["true"]
@@ -213,8 +242,11 @@ def run_eval(limit, max_new_tokens):
             scored["model"].append(prediction)
             scored["persistence"].append(persistence)
             scored["moving_avg"].append(moving_avg)
+            if has_cells:
+                scored_cells.append(w["cell"])
         for step in range(HORIZON):
             rows.append({
+                **({"cell": w["cell"]} if has_cells else {}),   # first column, only when the windows carry a cell
                 "start": w["start"],
                 "step": step + 1,
                 "true": true[step],
@@ -240,6 +272,8 @@ def run_eval(limit, max_new_tokens):
     for name in ("model", "persistence", "moving_avg"):
         mae, rmse = mae_rmse(scored[name], scored["true"])
         metrics[name] = {"mae": mae, "rmse": rmse}
+    if has_cells:
+        metrics["per_cell"] = per_cell_metrics(windows, scored, scored_cells)
     with open(METRICS_PATH, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
 
@@ -273,6 +307,16 @@ def run_selftest():
     history = [float(v) for v in range(1, 13)]  # 1..12
     assert persistence_forecast(history) == [12.0] * 6
     assert moving_average_forecast(history) == [11.0] * 6
+
+    # Per-cell metrics: cell 0 has errors 1 and 3, cell 1 has error 0, so overall MAE is (1 + 3 + 0) / 3.
+    windows = [{"cell": 0, "square_id": 11}, {"cell": 0, "square_id": 11}, {"cell": 1, "square_id": 22}]
+    scored = {"true": [[0.0], [0.0], [5.0]], "model": [[1.0], [3.0], [5.0]],
+              "persistence": [[0.0], [0.0], [0.0]], "moving_avg": [[0.0], [0.0], [0.0]]}
+    result = per_cell_metrics(windows, scored, [0, 0, 1])
+    assert result["0"]["square_id"] == 11 and result["0"]["windows_used"] == 2 and result["0"]["windows_scored"] == 2
+    assert math.isclose(result["0"]["model"]["mae"], 2.0) and math.isclose(result["1"]["model"]["mae"], 0.0)
+    assert math.isclose(result["1"]["persistence"]["mae"], 5.0)
+    assert math.isclose(score_methods(scored)["model"]["mae"], 4.0 / 3.0)
 
     prompt = build_instruction(history)
     assert "History: 1.00, 2.00" in prompt and prompt.endswith("PREDICTION: v1, v2, v3, v4, v5, v6")
