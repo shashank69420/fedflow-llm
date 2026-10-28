@@ -1,0 +1,15 @@
+Token audit (tokenizer only, no model weights)
+Tokenizer: Qwen/Qwen2.5-1.5B-Instruct, transformers 4.46.3, eos token '<|im_end|>'
+Full text = instruction + newline + output + eos, as client.py trains. Training length limit: 256.
+Answer tokens = tokens the model must generate (includes the end token). infer.py default limit: 160;
+a generation of exactly the limit is treated as truncated, so answers must be shorter than the limit.
+99th percentile = nearest rank, the ceil(0.99 n)-th smallest value.
+
+dataset   split      n   max   p99  >256   answer max answer p99 answer >=160
+synthetic train    200   255   255     0           86         86            0
+synthetic test      91   255   255     0           86         86            0
+telecom   train    200   256   255     0           87         87            0
+telecom   val      276   256   255     0           87         87            0
+telecom   test     321   255   255     0           87         86            0
+
+Longest telecom full text (any split): 256 tokens
