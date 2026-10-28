@@ -151,6 +151,22 @@ def parse_steps(path):
     return rows
 
 
+def parse_written_and_true(path):
+    """[(value_written, true_value)] for every step in a run's _steps.csv, in file order."""
+    with open(path, newline="", encoding="utf-8") as f:
+        return [(float(r["value_written"]), float(r["true_value"])) for r in csv.DictReader(f)]
+
+
+def count_misrouted_steps(pairs):
+    """From (value_written, true_value) pairs:
+    steps_on_alt_while_true_le_100      = written value > 100 while that step's true value <= 100
+    steps_on_primary_while_true_gt_100  = written value <= 100 while that step's true value > 100
+    Uses only the steps the run covers, so a short quick run counts only its own steps."""
+    on_alt = sum(1 for written, true in pairs if written > THRESHOLD and true <= THRESHOLD)
+    on_primary = sum(1 for written, true in pairs if written <= THRESHOLD and true > THRESHOLD)
+    return on_alt, on_primary
+
+
 def path_for(value):
     return "alternate" if value > THRESHOLD else "primary"
 
@@ -231,6 +247,14 @@ def summarize_run(prefix):
     row["frac_written_above_100"] = round(sum(v > THRESHOLD for _, v, _ in steps) / len(steps), 4) \
         if steps else NOT_COMPUTED
 
+    # How often the written value sent traffic the "wrong" way, judged against that step's TRUE value.
+    if steps:
+        on_alt, on_primary = count_misrouted_steps(parse_written_and_true(prefix + "_steps.csv"))
+    else:
+        on_alt = on_primary = NOT_COMPUTED
+    row["steps_on_alt_while_true_le_100"] = on_alt
+    row["steps_on_primary_while_true_gt_100"] = on_primary
+
     delays = match_flip_delays([(v, t) for _, v, t in steps], flips)
     row["flips_matched"] = len(delays)
     row["median_write_to_flip_s"] = round(float(np.median(delays)), 3) if delays else NOT_COMPUTED
@@ -285,7 +309,8 @@ FIELDS = ["mode", "rep", "steps", "server_status", "server_udp_lost", "server_ud
           "server_udp_loss_pct", "server_steps_with_report", "steps_no_server_report",
           "client_udp_loss_pct", "client_steps_with_report", "client_steps_no_report",
           "client_bad_reports", "ping_replies", "ping_mean_ms", "ping_p95_ms", "flip_lines",
-          "frac_written_above_100", "flips_matched", "median_write_to_flip_s",
+          "frac_written_above_100", "steps_on_alt_while_true_le_100", "steps_on_primary_while_true_gt_100",
+          "flips_matched", "median_write_to_flip_s",
           "delivered_vs_alt_pct"]
 
 
@@ -545,6 +570,31 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
         assert r["ping_p95_ms"] == round(float(np.percentile([1, 2, 3, 4, 100], 95)), 4)
         assert r["flip_lines"] == 2
         assert r["frac_written_above_100"] == 0.5
+        # STEPS_4: written 0/150/150/50 against true 68.95/150/150/70 -> no step is on the wrong path.
+        assert r["steps_on_alt_while_true_le_100"] == 0 and r["steps_on_primary_while_true_gt_100"] == 0, r
+
+        # Made-up steps file with known counts, including the boundaries (true = 100 and written = 100).
+        #   step: true / written
+        #   0: 50.00 / 150.00 -> alt while true <= 100
+        #   1: 100.00 / 101.00 -> alt while true <= 100 (true exactly 100 counts as <= 100)
+        #   2: 100.01 / 100.00 -> primary while true > 100 (written exactly 100 is not above 100)
+        #   3: 150.00 / 150.00 -> neither
+        #   4: 150.00 / 0.00 -> primary while true > 100
+        #   5: 120.00 / 40.00 -> primary while true > 100
+        #   6: 90.00 / 100.00 -> neither (written 100 is not above 100)
+        #   7: 200.00 / 100.50 -> neither
+        # So: alt-while-true<=100 = 2, primary-while-true>100 = 3, written above 100 = steps 0, 1, 3, 7 = 4 of 8.
+        known = "step,timestep,true_value,value_written,time_written\n" + "".join(
+            f"{i},{1452 + i},{t:.2f},{w:.2f},2026-10-20 10:00:{5 * i:02d}.000\n"
+            for i, (t, w) in enumerate([(50, 150), (100, 101), (100.01, 100), (150, 150),
+                                        (150, 0), (120, 40), (90, 100), (200, 100.5)]))
+        write_run(tmp, "known_counts", {"_steps.csv": known})   # not named raw_*, so summarize(tmp) ignores it
+        k = summarize_run(os.path.join(tmp, "known_counts"))
+        assert (k["steps"], k["frac_written_above_100"]) == (8, 0.5), k
+        assert k["steps_on_alt_while_true_le_100"] == 2 and k["steps_on_primary_while_true_gt_100"] == 3, k
+        assert count_misrouted_steps([]) == (0, 0)
+        # Only the steps a run covers are counted: the first 3 steps of the same file.
+        assert count_misrouted_steps(parse_written_and_true(os.path.join(tmp, "known_counts_steps.csv"))[:3]) == (2, 1)
         # Write at 10:00:05.000 -> FLIP at 05.600 (0.6 s); write at 15.000 -> FLIP at 15.900 (0.9 s).
         assert r["flips_matched"] == 2 and r["median_write_to_flip_s"] == 0.75, r
 
