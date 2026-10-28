@@ -7,12 +7,19 @@ Replays one traffic trace through the Mininet + POX dual-path network under
 Usage (from the repo root):
   python3 experiments/run_experiment.py --selftest       no Mininet, no sudo
   sudo python3 experiments/run_experiment.py --quick     oracle mode, 1 rep, short trace -> results/experiment/quick/
+  sudo python3 experiments/run_experiment.py --quick --mode reactive
+                                                         same quick test for another mode (default oracle)
   sudo python3 experiments/run_experiment.py             5 modes x 3 reps (about 50 minutes)
   add --dataset telecom to any of these to use a Telecom Italia experiment cell; --cell <square_id>
   picks which one (7511 = primary, the default; 8336 = second, declared before any model result):
     true series  datasets/telecom_milan/cells.csv (that square's column)
     forecasts    results/final_telecom/outputs/forecasts.csv, rows of that cell only
     output       results/experiment_telecom/<square_id>/
+    quick test   sudo python3 experiments/run_experiment.py --dataset telecom --quick --mode reactive
+                 (--cell <square_id> as above). Needs no forecasts.csv. 1 rep, the first N steps of the slice,
+                 N = the smallest number of steps that contains an upward crossing of 100 in the WRITTEN values,
+                 plus 3 more steps. N is printed. Output: results/experiment_telecom/<square_id>/quick/.
+                 The default --mode oracle cannot run on these cells (the oracle never crosses upward).
     slice        same rule, starts 1740-1980 (so every step has a forecast); the recomputed slice
                  must equal the one saved for that cell in cells_meta.json or the run stops
 
@@ -191,12 +198,14 @@ def latest_window(windows, t):
     return max(candidates)
 
 
-def build_trace():
-    """Returns (start, crossings, steps). Each step: timestep, true value, value per mode."""
-    windows = load_windows()
+def build_trace(needs_forecasts=True):
+    """Returns (start, crossings, steps). Each step: timestep, true value, value per mode.
+    needs_forecasts=False skips forecasts.csv entirely; the steps then have no model or oracle value
+    (only static, reactive and alt), which is all a quick run of those modes needs."""
+    windows = load_windows() if needs_forecasts else None
     traffic = load_traffic()
     # The true values in forecasts.csv must be the same series as synthetic_traffic.csv.
-    for w, data in windows.items():
+    for w, data in (windows or {}).items():
         for k, v in enumerate(data["true"]):
             if abs(traffic[w + WINDOW_HISTORY + k] - v) > 1e-9:
                 raise ValueError(f"forecasts.csv true value at {w + WINDOW_HISTORY + k} "
@@ -209,22 +218,15 @@ def build_trace():
                          f"(start {TELECOM['start']}, crossings {TELECOM['crossings']}).")
     steps = []
     for t in range(start, start + TRACE_LEN):
-        w = latest_window(windows, t)
+        w = latest_window(windows, t) if needs_forecasts else None
         true_value = traffic[t]
         if true_value <= 0:
             raise ValueError(f"Timestep {t} has traffic {true_value}; iperf needs a positive rate.")
-        steps.append({
-            "timestep": t,
-            "true": true_value,
-            "window": w,
-            "written": {
-                "static": 0.0,
-                "reactive": traffic[t - 1],
-                "model": max(windows[w]["pred"]),
-                "oracle": max(windows[w]["true"]),
-                "alt": 1000.0,
-            },
-        })
+        written = {"static": 0.0, "reactive": traffic[t - 1], "alt": 1000.0}
+        if needs_forecasts:   # model and oracle need the forecast windows
+            written = {"static": 0.0, "reactive": traffic[t - 1],
+                       "model": max(windows[w]["pred"]), "oracle": max(windows[w]["true"]), "alt": 1000.0}
+        steps.append({"timestep": t, "true": true_value, "window": w, "written": written})
     return start, crossings, steps
 
 
@@ -311,6 +313,16 @@ def run_selftest():
         print(f"\n--quick would run oracle mode for N = {n} steps")
     except SystemExit as error:   # quick_length stops when oracle never crosses; report it and keep checking
         print(f"\n--quick could NOT run on this trace: {error}")
+    # --quick --mode reactive: built WITHOUT forecasts.csv, with the written values for the first N steps.
+    _, _, quick_steps = build_trace(needs_forecasts=False)
+    assert "model" not in quick_steps[0]["written"] and "oracle" not in quick_steps[0]["written"]
+    for full, quick in zip(steps, quick_steps):   # the reactive values must match the full trace exactly
+        assert full["written"]["reactive"] == quick["written"]["reactive"] and full["timestep"] == quick["timestep"]
+    n = quick_length(quick_steps, "reactive")
+    print(f"\n--quick --mode reactive (needs no forecasts.csv): N = {n} steps")
+    print("step  timestep    true  reactive_written")
+    for i, s in enumerate(quick_steps[:n]):
+        print(f"{i:>4}  {s['timestep']:>8}  {s['true']:>6.2f}  {s['written']['reactive']:>16.2f}")
     print(f"Forecast file (as the current user): {forecast_path(pwd.getpwuid(os.getuid()).pw_dir)}")
     print("SELFTEST OK")
 
@@ -542,7 +554,7 @@ def chown_tree(path, uid, gid):
             os.chown(os.path.join(root, name), uid, gid)
 
 
-def run_real(quick):
+def run_real(quick, mode="oracle"):
     if os.geteuid() != 0:
         sys.exit("ERROR: run this with sudo (only --selftest works without it).")
     user = os.environ.get("SUDO_USER")
@@ -557,13 +569,15 @@ def run_real(quick):
         sys.exit(f"ERROR: {home}/pox/pox.py not found.")
     print(f"Forecast file used (the controller's ~ for {user}): {fpath}")
 
-    start, crossings, steps = build_trace()
+    # A quick run of static, reactive or alt needs no forecasts.csv; model and oracle (and the full run) do.
+    needs_forecasts = (not quick) or mode in ("model", "oracle")
+    start, crossings, steps = build_trace(needs_forecasts)
     print(f"Trace: timesteps {start}-{start + TRACE_LEN - 1}, upward crossings of {THRESHOLD:g}: {crossings}")
 
     if quick:
-        n = quick_length(steps)
-        print(f"Quick run: oracle mode, 1 rep, N = {n} steps")
-        out_dir, plan, steps = QUICK_DIR, [("oracle", 1)], steps[:n]
+        n = quick_length(steps, mode)
+        print(f"Quick run: {mode} mode, 1 rep, N = {n} steps")
+        out_dir, plan, steps = QUICK_DIR, [(mode, 1)], steps[:n]
     else:
         out_dir = OUT_DIR
         # Round-robin over modes within each rep, so slow drift in the machine affects all modes alike.
@@ -601,12 +615,17 @@ def main():
     parser = argparse.ArgumentParser(description="FedFlow-LLM reactive vs proactive experiment")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--selftest", action="store_true", help="build the trace only; no Mininet, no sudo")
-    group.add_argument("--quick", action="store_true", help="oracle mode, 1 rep, short trace -> results/experiment/quick/")
+    group.add_argument("--quick", action="store_true",
+                       help="1 rep of one mode (--mode, default oracle), short trace -> <output folder>/quick/")
     parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
                         help="synthetic (default, unchanged) or the Telecom Italia experiment cell")
     parser.add_argument("--cell", type=int, default=None,
                         help="with --dataset telecom: experiment cell square ID, 7511 (default, primary) or 8336 (second)")
+    parser.add_argument("--mode", choices=MODES, default=None,
+                        help="with --quick: the mode to run (default oracle, as before)")
     args = parser.parse_args()
+    if args.mode is not None and not args.quick:
+        parser.error("--mode only applies with --quick")
     if args.cell is not None and args.dataset != "telecom":
         parser.error("--cell only applies with --dataset telecom")
     if args.dataset == "telecom":
@@ -617,7 +636,7 @@ def main():
     if args.selftest:
         run_selftest()
     else:
-        run_real(args.quick)
+        run_real(args.quick, args.mode or "oracle")
 
 
 if __name__ == "__main__":
