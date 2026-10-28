@@ -5,7 +5,8 @@ Confirms that the data split has no leaks.
 Run from inside training/ after generate_data.py.
 
   python check_split.py                     synthetic: no training window shares a timestep with any test window
-  python check_split.py --dataset telecom   telecom: training/validation/test windows share no slot, and
+  python check_split.py --dataset telecom   telecom: training/validation/test windows share no slot,
+                                            test strides are 3 (experiment cells) / 6 (others), and
                                             each client's slice holds only its own cell
 """
 import argparse
@@ -46,7 +47,8 @@ def check_telecom():
         val = json.load(f)
     with open(f"{folder}/test_windows.json", "r", encoding="utf-8") as f:
         test = json.load(f)
-    _, squares, series = gd.load_telecom_cells()
+    meta, squares, series = gd.load_telecom_cells()
+    experiment_cells = [squares.index(int(e["square"])) for e in meta["experiment_cells"]]   # primary + second
 
     def slots(entries):
         """Every slot number covered by any window in the list (all cells share one timeline)."""
@@ -66,6 +68,13 @@ def check_telecom():
     assert not (train_slots & test_slots), "FAIL: a training window touches a test slot."
     assert not (val_slots & test_slots), "FAIL: a validation window touches a test slot."
     print("training/validation/test slot overlap: 0 / 0 / 0")
+
+    # Test windows: stride 3 for both experiment cells, stride 6 for the other four (starts 1728..1998).
+    for c in range(gd.N_CELLS):
+        stride = gd.TEST_STRIDE_EXPERIMENT if c in experiment_cells else gd.TEST_STRIDE_OTHER
+        starts = sorted(w["start"] for w in test if w["cell"] == c)
+        assert starts == list(range(gd.VAL_END, gd.N_SLOTS - 18 + 1, stride)), f"FAIL: cell {c} test starts are not stride {stride}."
+        print(f"test windows cell {c} (square {squares[c]}): {len(starts)} at stride {stride}")
 
     # Every window must be real data of its own cell (history and truth match cells.csv).
     for name, entries in [("validation", val), ("test", test)]:

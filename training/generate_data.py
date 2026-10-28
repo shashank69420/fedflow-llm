@@ -13,6 +13,7 @@ Writes (relative to training/):
 With --dataset telecom it instead reads datasets/telecom_milan/cells.csv (made by
 prepare_telecom.py) and writes the same four JSON files, plus val_windows.json,
 into data/telecom/ so the synthetic copies in data/ are never overwritten.
+Test windows: stride 3 for both experiment cells, stride 6 for the other four.
 """
 import argparse
 import json
@@ -186,8 +187,8 @@ N_CELLS = 6
 N_SLOTS = 2016                 # 14 days x 144 ten-minute slots
 TRAIN_END, VAL_END = 1440, 1728  # training = slots 0-1439, validation = 1440-1727, test = 1728-2015
 VAL_STRIDE = 6                 # validation windows start every 6 slots, for every cell
-TEST_STRIDE_EXPERIMENT = 3     # test windows of the experiment cell start every 3 slots
-TEST_STRIDE_OTHER = 6          # test windows of the other cells start every 6 slots
+TEST_STRIDE_EXPERIMENT = 3     # test windows of each experiment cell (primary and second) start every 3 slots
+TEST_STRIDE_OTHER = 6          # test windows of the other four cells start every 6 slots
 TELECOM_SEED = 123             # training starts of cell c use seed 123 + c
 
 
@@ -224,7 +225,8 @@ def build_telecom():
     """Build everything for the telecom dataset in memory and return it as a dict.
     Nothing is written here, so token_audit.py can reuse this without touching disk."""
     meta, squares, series = load_telecom_cells()
-    experiment_cell = squares.index(int(meta["experiment_cell"]))
+    # Both experiment cells (the primary one and the second one declared in cells_meta.json) get stride-3 test windows.
+    experiment_cells = [squares.index(int(e["square"])) for e in meta["experiment_cells"]]
 
     # Training starts: windows must fit completely inside training slots 0-1439.
     valid_starts = np.arange(0, TRAIN_END - WINDOW_LEN + 1)
@@ -258,15 +260,15 @@ def build_telecom():
     test_windows = []
     for start in range(VAL_END, N_SLOTS - WINDOW_LEN + 1, TEST_STRIDE_EXPERIMENT):   # last start = 1998
         for c in range(N_CELLS):
-            # The experiment cell uses every 3rd start; the other cells only every 6th.
-            if c != experiment_cell and (start - VAL_END) % TEST_STRIDE_OTHER != 0:
+            # The experiment cells use every 3rd start; the other cells only every 6th.
+            if c not in experiment_cells and (start - VAL_END) % TEST_STRIDE_OTHER != 0:
                 continue
             window = telecom_window(series, c, squares[c], start)
             verify_prediction(build_output(window["history"], window["true"]), window["true"],
                               f"Telecom test window cell {c} start {start}")
             test_windows.append(window)
 
-    return {"meta": meta, "squares": squares, "experiment_cell": experiment_cell, "series": series,
+    return {"meta": meta, "squares": squares, "experiment_cells": experiment_cells, "series": series,
             "examples": examples, "train_starts": train_starts,
             "val_windows": val_windows, "test_windows": test_windows}
 
@@ -282,7 +284,7 @@ def main_telecom():
     print(f"All {len(data['examples'])} training examples verified: PREDICTION values match cells.csv.")
     print(f"All {len(data['val_windows'])} validation windows verified: PREDICTION values match cells.csv.")
     print(f"All {len(data['test_windows'])} test windows verified: PREDICTION values match cells.csv.")
-    print(f"\nCells (square IDs): {data['squares']}; experiment cell: square {data['squares'][data['experiment_cell']]}")
+    print(f"\nCells (square IDs): {data['squares']}; experiment cells: squares {[data['squares'][c] for c in data['experiment_cells']]}")
     for c, square in enumerate(data["squares"]):
         n_train = sum(1 for t in data["train_starts"] if t["cell"] == c)
         n_val = sum(1 for w in data["val_windows"] if w["cell"] == c)
