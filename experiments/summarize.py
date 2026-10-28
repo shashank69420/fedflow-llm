@@ -33,6 +33,7 @@ import numpy as np
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.path.join(REPO, "results", "experiment")
+TELECOM_DIR = os.path.join(REPO, "results", "experiment_telecom")   # used by --dataset telecom
 MODES = ["static", "reactive", "model", "oracle", "alt"]
 THRESHOLD = 100.0
 MATCH_WINDOW_S = 5.0   # a FLIP must land within one step (5 s) of the write that caused it
@@ -631,11 +632,16 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
 
 def main():
     parser = argparse.ArgumentParser(description="Summarize FedFlow-LLM experiment raw files")
-    parser.add_argument("--dir", default=DEFAULT_DIR, help="folder with raw_* files (default results/experiment)")
+    parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
+                        help="telecom changes only the default --dir to results/experiment_telecom")
+    parser.add_argument("--dir", default=None,
+                        help="folder with raw_* files (default results/experiment, or results/experiment_telecom with --dataset telecom)")
     parser.add_argument("--selftest", action="store_true", help="test parsers on made-up raw text")
     parser.add_argument("--steps-check", action="store_true",
                         help=f"per-step static1 vs alt1 table, printed and saved to <dir>/{CHECK_FILE}")
     args = parser.parse_args()
+    if args.dir is None:   # no --dir given: pick the default folder for the chosen dataset
+        args.dir = TELECOM_DIR if args.dataset == "telecom" else DEFAULT_DIR
     if args.selftest:
         run_selftest()
     elif args.steps_check:

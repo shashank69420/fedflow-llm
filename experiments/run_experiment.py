@@ -8,8 +8,14 @@ Usage (from the repo root):
   python3 experiments/run_experiment.py --selftest       no Mininet, no sudo
   sudo python3 experiments/run_experiment.py --quick     oracle mode, 1 rep, short trace -> results/experiment/quick/
   sudo python3 experiments/run_experiment.py             5 modes x 3 reps (about 50 minutes)
+  add --dataset telecom to any of these to use the Telecom Italia experiment cell:
+    true series  datasets/telecom_milan/cells.csv (column of the experiment cell in cells_meta.json)
+    forecasts    results/final_telecom/outputs/forecasts.csv, rows of that cell only
+    output       results/experiment_telecom/
+    slice        same rule, starts 1740-1980 (so every step has a forecast); the recomputed slice
+                 must equal the one saved in cells_meta.json or the run stops
 
-Trace: the 36-step slice of the held-out block (timesteps 1452-1727) with the
+Trace (synthetic): the 36-step slice of the held-out block (timesteps 1452-1727) with the
 most upward crossings of 100 in the TRUE traffic, earliest on ties. Step value
 v -> UDP load of v/10 Mbps from h2 to h1 for 5 s.
 
@@ -47,6 +53,7 @@ sys.dont_write_bytecode = True  # never let root write __pycache__ into the repo
 import argparse
 import csv
 import importlib.util
+import json
 import os
 import pwd
 import re
@@ -81,6 +88,35 @@ N_SWITCHES = 4
 OF_PORT = 6633
 H1_IP, H2_IP = "10.0.0.1", "10.0.0.2"
 
+# Telecom paths; only used after use_telecom() has been called (--dataset telecom).
+TELECOM_FORECASTS_CSV = os.path.join(REPO, "results", "final_telecom", "outputs", "forecasts.csv")
+TELECOM_CELLS_CSV = os.path.join(REPO, "datasets", "telecom_milan", "cells.csv")
+TELECOM_META_JSON = os.path.join(REPO, "datasets", "telecom_milan", "cells_meta.json")
+TELECOM_OUT_DIR = os.path.join(REPO, "results", "experiment_telecom")
+TELECOM = None   # stays None for synthetic; use_telecom() fills it with the experiment cell's saved facts
+
+
+def use_telecom():
+    """Point every path and the slice range at the Telecom Italia experiment cell."""
+    global FORECASTS_CSV, OUT_DIR, QUICK_DIR, BLOCK_FIRST, BLOCK_LAST, TELECOM
+    with open(TELECOM_META_JSON, encoding="utf-8") as f:
+        meta = json.load(f)
+    rule = meta["slice_rule"]
+    if rule["trace_len"] != TRACE_LEN or rule["threshold"] != THRESHOLD or rule["min_crossings"] != MIN_CROSSINGS:
+        raise ValueError("cells_meta.json slice rule differs from this script's TRACE_LEN / THRESHOLD / MIN_CROSSINGS.")
+    TELECOM = {
+        "square": int(meta["experiment_cell"]),
+        "cell": int(meta["experiment_cell_index"]),
+        "start": int(meta["best_slice_start"]),
+        "crossings": int(meta["best_slice_crossings"]),
+    }
+    FORECASTS_CSV = TELECOM_FORECASTS_CSV
+    OUT_DIR = TELECOM_OUT_DIR
+    QUICK_DIR = os.path.join(OUT_DIR, "quick")
+    # choose_slice tries starts BLOCK_FIRST .. BLOCK_LAST - TRACE_LEN + 1, so this gives starts 1740-1980.
+    BLOCK_FIRST = rule["start_min"]
+    BLOCK_LAST = rule["start_max"] + TRACE_LEN - 1
+
 
 # ---------------------------------------------------------------- trace (pure, no Mininet)
 
@@ -89,6 +125,12 @@ def load_windows():
     windows = {}
     with open(FORECASTS_CSV, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
+            if TELECOM is not None:
+                # The telecom forecasts hold all six cells; keep only the experiment cell's rows.
+                if "cell" not in row:
+                    raise ValueError(f"{FORECASTS_CSV} has no cell column.")
+                if row["cell"] != str(TELECOM["cell"]):
+                    continue
             w = windows.setdefault(int(row["start"]), {})
             step = int(row["step"])
             if row["parsed"] != "True" or row["model"] == "":
@@ -104,7 +146,11 @@ def load_windows():
 
 
 def load_traffic():
-    """synthetic_traffic.csv -> {timestep: true traffic}."""
+    """synthetic_traffic.csv -> {timestep: true traffic}. With --dataset telecom: the experiment
+    cell's column of cells.csv instead (scaled TRUE traffic)."""
+    if TELECOM is not None:
+        with open(TELECOM_CELLS_CSV, newline="", encoding="utf-8") as f:
+            return {int(r["timestep"]): float(r[str(TELECOM["square"])]) for r in csv.DictReader(f)}
     if not os.path.exists(TRAFFIC_CSV):
         sys.exit(f"ERROR: {TRAFFIC_CSV} not found. Regenerate it with:\n"
                  f"  cd {os.path.dirname(os.path.dirname(TRAFFIC_CSV))} && python3 generate_data.py")
@@ -149,6 +195,10 @@ def build_trace():
                                  "does not match synthetic_traffic.csv.")
 
     start, crossings = choose_slice(traffic)
+    if TELECOM is not None and (start, crossings) != (TELECOM["start"], TELECOM["crossings"]):
+        # The slice must be exactly the one prepare_telecom.py saved; anything else means the data changed.
+        raise ValueError(f"Recomputed slice (start {start}, crossings {crossings}) differs from cells_meta.json "
+                         f"(start {TELECOM['start']}, crossings {TELECOM['crossings']}).")
     steps = []
     for t in range(start, start + TRACE_LEN):
         w = latest_window(windows, t)
@@ -226,8 +276,11 @@ def run_selftest():
     print("\nSteps with written value above 100 (of 36):")
     for m in MODES:
         print(f"  {m:<9} {sum(s['written'][m] > THRESHOLD for s in steps)}")
-    n = quick_length(steps)
-    print(f"\n--quick would run oracle mode for N = {n} steps")
+    try:
+        n = quick_length(steps)
+        print(f"\n--quick would run oracle mode for N = {n} steps")
+    except SystemExit as error:   # quick_length stops when oracle never crosses; report it and keep checking
+        print(f"\n--quick could NOT run on this trace: {error}")
     print(f"Forecast file (as the current user): {forecast_path(pwd.getpwuid(os.getuid()).pw_dir)}")
     print("SELFTEST OK")
 
@@ -519,7 +572,11 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--selftest", action="store_true", help="build the trace only; no Mininet, no sudo")
     group.add_argument("--quick", action="store_true", help="oracle mode, 1 rep, short trace -> results/experiment/quick/")
+    parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
+                        help="synthetic (default, unchanged) or the Telecom Italia experiment cell")
     args = parser.parse_args()
+    if args.dataset == "telecom":
+        use_telecom()
     if args.selftest:
         run_selftest()
     else:

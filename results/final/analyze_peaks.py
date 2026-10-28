@@ -13,7 +13,11 @@ values and of the 6 predicted values. A "crossing" means peak > 100
 which is the last history value.
 
 Run from anywhere:  python3 results/final/analyze_peaks.py
+                    python3 results/final/analyze_peaks.py --dir results/final_telecom
+--dir is a folder holding outputs/metrics.json and outputs/forecasts.csv; SUMMARY.md is
+written into that folder. The default is the folder this script is in.
 """
+import argparse
 import csv
 import json
 import os
@@ -22,11 +26,8 @@ from collections import defaultdict
 THRESHOLD = 100.0
 HORIZON = 6
 
-# Paths are relative to this script, so the working directory doesn't matter.
+# Default folder is this script's own, so the working directory doesn't matter.
 HERE = os.path.dirname(os.path.abspath(__file__))
-METRICS_PATH = os.path.join(HERE, "outputs", "metrics.json")
-FORECASTS_PATH = os.path.join(HERE, "outputs", "forecasts.csv")
-SUMMARY_PATH = os.path.join(HERE, "SUMMARY.md")
 
 NOT_COMPUTED = "not computed"
 
@@ -43,16 +44,17 @@ def ratio(numerator, denominator):
     return f"{numerator}/{denominator} ({100 * numerator / denominator:.1f}%)"
 
 
-def load_windows():
-    """Group forecasts.csv rows by window start. Returns {start: [6 rows ordered by step]}."""
+def load_windows(forecasts_path):
+    """Group forecasts.csv rows by window. Returns {(cell, start): [6 rows ordered by step]}.
+    Files without a cell column (the synthetic run) get cell "" and group by start alone, as before."""
     windows = defaultdict(list)
-    with open(FORECASTS_PATH, "r", encoding="utf-8", newline="") as f:
+    with open(forecasts_path, "r", encoding="utf-8", newline="") as f:
         for row in csv.DictReader(f):
-            windows[int(row["start"])].append(row)
-    for start, rows in windows.items():
+            windows[(row.get("cell", ""), int(row["start"]))].append(row)
+    for key, rows in windows.items():
         rows.sort(key=lambda r: int(r["step"]))
         if len(rows) != HORIZON:
-            raise ValueError(f"Window {start} has {len(rows)} rows, expected {HORIZON}.")
+            raise ValueError(f"Window {key} has {len(rows)} rows, expected {HORIZON}.")
     return dict(sorted(windows.items()))
 
 
@@ -163,9 +165,16 @@ def onset_section(records):
 
 
 def main():
-    with open(METRICS_PATH, "r", encoding="utf-8") as f:
+    parser = argparse.ArgumentParser(description="Peak-crossing summary of a saved final run")
+    parser.add_argument("--dir", default=HERE, help="folder with outputs/metrics.json and outputs/forecasts.csv (default: this script's folder)")
+    args = parser.parse_args()
+    metrics_path = os.path.join(args.dir, "outputs", "metrics.json")
+    forecasts_path = os.path.join(args.dir, "outputs", "forecasts.csv")
+    summary_path = os.path.join(args.dir, "SUMMARY.md")
+
+    with open(metrics_path, "r", encoding="utf-8") as f:
         metrics = json.load(f)
-    windows = load_windows()
+    windows = load_windows(forecasts_path)
 
     # One record per window: true peak, last history value, model peak (None = parse failure).
     records = []
@@ -234,9 +243,9 @@ def main():
 
     lines += onset_section(records)
 
-    with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
+    with open(summary_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"Wrote {SUMMARY_PATH}")
+    print(f"Wrote {summary_path}")
 
 
 if __name__ == "__main__":
