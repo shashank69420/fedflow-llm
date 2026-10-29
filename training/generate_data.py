@@ -14,6 +14,11 @@ With --dataset telecom it instead reads datasets/telecom_milan/cells.csv (made b
 prepare_telecom.py) and writes the same four JSON files, plus val_windows.json,
 into data/telecom/ so the synthetic copies in data/ are never overwritten.
 Test windows: stride 3 for both experiment cells, stride 6 for the other four.
+
+--dataset telecom --variant v2 (PLAN_V2.md) writes data/telecom_v2/ instead: onset-balanced training
+examples (FEDFLOW_N_EXAMPLES, default 200) whose prompt has one extra line with the Milan time and day type
+of the last history value, v1's validation/test windows tagged "variant": "v2", and build_report.txt.
+The default (--variant v1) is unchanged and never writes data/telecom_v2/.
 """
 import argparse
 import json
@@ -32,17 +37,55 @@ TEST_STRIDE = 3            # test windows start every 3 timesteps
 N_TRAIN_EXAMPLES = 200
 
 
-def build_instruction(history_values):
+def build_instruction(history_values, time_text=None):
     """The prompt text for one window. infer.py imports this, so training
-    and inference always use exactly the same wording."""
+    and inference always use exactly the same wording.
+    time_text=None (v1) gives exactly the original prompt; v2 passes one extra line
+    (see time_of_slot) that goes right after the History line."""
     history_text = ", ".join(f"{value:.2f}" for value in history_values)
+    time_part = "" if time_text is None else f"{time_text}\n"   # v1: nothing added
     return (
         "You are a traffic-forecasting assistant. Predict the next 6 traffic values "
         "given the following 12 historical values measured at 10-minute intervals.\n\n"
-        f"History: {history_text}\n\n"
+        f"History: {history_text}\n"
+        f"{time_part}\n"
         "Reason step by step about the traffic pattern, then end with exactly this format:\n"
         "PREDICTION: v1, v2, v3, v4, v5, v6"
     )
+
+
+VARIANTS = ("v1", "v2")
+# Telecom calendar for v2: slot 0 = Friday 1 November 2013 00:00 Milan time, 144 ten-minute slots per day.
+# Milan left summer time on 27 October 2013, so 1-14 November has no clock change.
+WEEKDAYS_FROM_SLOT0 = ["Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+HOLIDAY_DAYS = {0}   # day 0 = 1 November, a public holiday in Italy
+
+
+def time_of_slot(slot):
+    """The v2 time line for a slot, from the slot number and the calendar only (never from traffic values),
+    e.g. slot 0 -> "Time of last value: Friday 00:00 (non-working day)"."""
+    day, slot_in_day = divmod(slot, STEPS_PER_DAY)
+    weekday = WEEKDAYS_FROM_SLOT0[day % 7]
+    minutes = slot_in_day * 10                     # each slot is 10 minutes
+    working = day not in HOLIDAY_DAYS and weekday not in ("Saturday", "Sunday")
+    day_type = "working day" if working else "non-working day"
+    return f"Time of last value: {weekday} {minutes // 60:02d}:{minutes % 60:02d} ({day_type})"
+
+
+def build_example(history_values, future_values=None, variant="v1", last_slot=None):
+    """The one shared place that turns a window into prompt (and answer) text, for training and inference.
+    Returns {"instruction", "input", "output"}; "output" is None when future_values is None (inference).
+    v1: the original prompt. v2: the same prompt plus the time line of `last_slot`, the slot of the LAST history value."""
+    if variant not in VARIANTS:
+        raise ValueError(f"Unknown variant {variant!r}; expected one of {VARIANTS}.")
+    if variant == "v2":
+        if last_slot is None:
+            raise ValueError("v2 needs last_slot, the slot number of the last history value.")
+        instruction = build_instruction(history_values, time_of_slot(last_slot))
+    else:
+        instruction = build_instruction(history_values)
+    output = None if future_values is None else build_output(history_values, future_values)
+    return {"instruction": instruction, "input": "", "output": output}
 
 
 def build_output(history_values, future_values):
@@ -273,6 +316,134 @@ def build_telecom():
             "val_windows": val_windows, "test_windows": test_windows}
 
 
+# ---------------------------------------------------------------- telecom v2 (onset-balanced, time line in the prompt)
+
+TELECOM_OUT_V2 = os.path.join("data", "telecom_v2")   # v2 output folder, relative to training/; v1's data/telecom is never touched
+ONSET_THRESHOLD = 100.0
+MIN_ONSET_POOL = 60          # abort if the training pool holds fewer onset windows than this, over all cells
+
+
+def n_examples_from_env():
+    """FEDFLOW_N_EXAMPLES sets the v2 total (default 200, the same as v1)."""
+    n = int(os.environ.get("FEDFLOW_N_EXAMPLES", str(N_TRAIN_EXAMPLES)))
+    if n < N_CELLS:
+        raise ValueError(f"FEDFLOW_N_EXAMPLES={n} is smaller than the number of cells ({N_CELLS}).")
+    return n
+
+
+def is_onset(series_c, start):
+    """Onset window: last history value <= 100 and max of the 6 future values > 100."""
+    last = series_c[start + HISTORY_LEN - 1]
+    future_peak = max(series_c[start + HISTORY_LEN : start + WINDOW_LEN])
+    return last <= ONSET_THRESHOLD and future_peak > ONSET_THRESHOLD
+
+
+def build_telecom_v2(n_examples=None, v1=None):
+    """v2 data in memory: onset-balanced training examples with the time line, and v1's validation/test starts.
+    `v1` is build_telecom()'s result (built here if not given); it is only read, to copy the window starts and count v1 onsets."""
+    n_examples = n_examples_from_env() if n_examples is None else n_examples
+    v1 = build_telecom() if v1 is None else v1
+    squares, series = v1["squares"], v1["series"]
+
+    # Same candidate starts as v1: the whole window inside training slots 0-1439.
+    valid_starts = [int(s) for s in np.arange(0, TRAIN_END - WINDOW_LEN + 1)]
+    onset_pool = [[s for s in valid_starts if is_onset(series[c], s)] for c in range(N_CELLS)]
+    other_pool = [[s for s in valid_starts if not is_onset(series[c], s)] for c in range(N_CELLS)]
+    pool_total = sum(len(p) for p in onset_pool)
+    if pool_total < MIN_ONSET_POOL:
+        raise ValueError(f"Training pool has {pool_total} onset windows over all cells; at least {MIN_ONSET_POOL} are required.")
+
+    # Same interleaving as v1: example j belongs to cell j % 6, so client i trains only on cell i.
+    per_cell_count = [len(range(c, n_examples, N_CELLS)) for c in range(N_CELLS)]
+    starts_by_cell, cell_report = [], []
+    for c in range(N_CELLS):
+        rng = np.random.default_rng(TELECOM_SEED + c)       # same per-cell seed as v1
+        n = per_cell_count[c]
+        onset_target = (n + 1) // 2                          # half onset windows, rounding up for an odd count
+        n_onset = min(onset_target, len(onset_pool[c]))      # a short cell takes every onset window it has
+        n_other = n - n_onset                                # ... and is filled with other windows
+        if n_other > len(other_pool[c]):
+            raise ValueError(f"Cell {c} needs {n_other} non-onset windows but has only {len(other_pool[c])}.")
+        # replace=False and disjoint pools: every start in a cell is distinct, no window is duplicated.
+        chosen = [int(s) for s in rng.choice(onset_pool[c], size=n_onset, replace=False)]
+        chosen += [int(s) for s in rng.choice(other_pool[c], size=n_other, replace=False)]
+        chosen = [chosen[k] for k in rng.permutation(len(chosen))]   # mix onsets and others, so batches aren't all one kind
+        assert len(set(chosen)) == len(chosen), f"cell {c}: duplicate start"
+        starts_by_cell.append(chosen)
+        cell_report.append({"cell": c, "square_id": squares[c], "examples": n, "onset_pool": len(onset_pool[c]),
+                            "onset_target": onset_target, "onset_taken": n_onset,
+                            "shortfall": onset_target - n_onset, "other_taken": n_other})
+
+    examples, train_starts = [], []
+    for j in range(n_examples):
+        c = j % N_CELLS
+        start = starts_by_cell[c][j // N_CELLS]
+        history_values = series[c][start : start + HISTORY_LEN]
+        future_values = series[c][start + HISTORY_LEN : start + WINDOW_LEN]
+        example = build_example(history_values, future_values, "v2", last_slot=start + HISTORY_LEN - 1)
+        verify_prediction(example["output"], future_values, f"Telecom v2 training example {j}")
+        assert start + WINDOW_LEN <= TRAIN_END, f"v2 training window {start} reaches past slot {TRAIN_END - 1}"
+        examples.append(example)
+        train_starts.append({"cell": c, "square_id": squares[c], "start": start, "variant": "v2"})
+
+    # Validation and test: exactly v1's windows (same starts, history and truth); only the prompt built from them differs.
+    # The "variant" field lets infer.py refuse a v1 adapter on v2 data and the other way round.
+    val_windows = [dict(w, variant="v2") for w in v1["val_windows"]]
+    test_windows = [dict(w, variant="v2") for w in v1["test_windows"]]
+    for name, new, old in [("validation", val_windows, v1["val_windows"]), ("test", test_windows, v1["test_windows"])]:
+        assert [(w["cell"], w["start"]) for w in new] == [(w["cell"], w["start"]) for w in old], f"v2 {name} starts differ from v1"
+        assert all(a["history"] == b["history"] and a["true"] == b["true"] for a, b in zip(new, old)), f"v2 {name} values differ from v1"
+
+    v1_onsets = [sum(1 for t in v1["train_starts"] if t["cell"] == c and is_onset(series[c], t["start"])) for c in range(N_CELLS)]
+    v2_onsets = [sum(1 for t in train_starts if t["cell"] == c and is_onset(series[c], t["start"])) for c in range(N_CELLS)]
+    return {"squares": squares, "examples": examples, "train_starts": train_starts,
+            "val_windows": val_windows, "test_windows": test_windows, "n_examples": n_examples,
+            "onset_pool_total": pool_total, "cell_report": cell_report, "v1_onsets": v1_onsets, "v2_onsets": v2_onsets}
+
+
+def v2_build_report(data):
+    """Text of build_report.txt: onset counts per cell in training (v1 and v2), total examples, shortfalls."""
+    lines = [
+        "FedFlow-LLM v2 telecom data build report (written by generate_data.py --dataset telecom --variant v2)",
+        f"Total training examples: {data['n_examples']} (FEDFLOW_N_EXAMPLES, default {N_TRAIN_EXAMPLES})",
+        f"Onset window: last history value <= {ONSET_THRESHOLD:g} and max of the 6 future values > {ONSET_THRESHOLD:g}.",
+        f"Onset windows in the training pool (starts 0-{TRAIN_END - WINDOW_LEN}, all cells): {data['onset_pool_total']} "
+        f"(abort below {MIN_ONSET_POOL})",
+        "Onset target per cell = half the cell's examples, rounded up. Shortfall = target - onset windows taken.",
+        "",
+        f"{'cell':>4} {'square':>6} {'examples':>8} {'pool onsets':>11} {'target':>6} {'v2 onsets':>9} {'shortfall':>9} {'v1 onsets':>9}",
+    ]
+    for r, v1n, v2n in zip(data["cell_report"], data["v1_onsets"], data["v2_onsets"]):
+        lines.append(f"{r['cell']:>4} {r['square_id']:>6} {r['examples']:>8} {r['onset_pool']:>11} {r['onset_target']:>6} "
+                     f"{v2n:>9} {r['shortfall']:>9} {v1n:>9}")
+    lines += [
+        f"{'all':>4} {'':>6} {sum(r['examples'] for r in data['cell_report']):>8} {data['onset_pool_total']:>11} "
+        f"{sum(r['onset_target'] for r in data['cell_report']):>6} {sum(data['v2_onsets']):>9} "
+        f"{sum(r['shortfall'] for r in data['cell_report']):>9} {sum(data['v1_onsets']):>9}",
+        "",
+        f"v1 onsets = onset windows among v1's {N_TRAIN_EXAMPLES} training examples (data/telecom), for comparison.",
+        f"Validation windows: {len(data['val_windows'])}, test windows: {len(data['test_windows'])} "
+        "(same starts, history and truth as v1; asserted).",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def main_telecom_v2():
+    data = build_telecom_v2()
+    os.makedirs(TELECOM_OUT_V2, exist_ok=True)
+    for name, payload in [("traffic_train.json", data["examples"]), ("train_starts.json", data["train_starts"]),
+                          ("val_windows.json", data["val_windows"]), ("test_windows.json", data["test_windows"])]:
+        with open(os.path.join(TELECOM_OUT_V2, name), "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+    report = v2_build_report(data)
+    with open(os.path.join(TELECOM_OUT_V2, "build_report.txt"), "w", encoding="utf-8") as f:
+        f.write(report)
+    print(report)
+    print(f"--- Example 1 (cell {data['train_starts'][0]['cell']}) ---")
+    print(json.dumps(data["examples"][0], indent=2))
+    print(f"\nWrote {TELECOM_OUT_V2}/ traffic_train.json, train_starts.json, val_windows.json, test_windows.json, build_report.txt")
+
+
 def main_telecom():
     data = build_telecom()
     os.makedirs(TELECOM_OUT, exist_ok=True)
@@ -300,8 +471,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FedFlow-LLM data generation")
     parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic",
                         help="synthetic (default, unchanged) or telecom (reads datasets/telecom_milan/cells.csv)")
+    parser.add_argument("--variant", choices=VARIANTS, default="v1",
+                        help="with --dataset telecom: v1 (default, unchanged, writes data/telecom/) or v2 "
+                             "(onset-balanced, time line in the prompt, writes data/telecom_v2/; FEDFLOW_N_EXAMPLES sets the total)")
     args = parser.parse_args()
-    if args.dataset == "telecom":
+    if args.variant != "v1" and args.dataset != "telecom":
+        parser.error("--variant v2 only applies with --dataset telecom")
+    if args.dataset == "telecom" and args.variant == "v2":
+        main_telecom_v2()
+    elif args.dataset == "telecom":
         main_telecom()
     else:
         main()

@@ -8,6 +8,8 @@ Run from inside training/ after generate_data.py.
   python check_split.py --dataset telecom   telecom: training/validation/test windows share no slot,
                                             test strides are 3 (experiment cells) / 6 (others), and
                                             each client's slice holds only its own cell
+  add --variant v2 to check data/telecom_v2/ the same way (prompts include the time line, windows
+                                            are tagged "variant": "v2"); the default checks data/telecom/ as before
 """
 import argparse
 import json
@@ -34,11 +36,11 @@ def check_synthetic():
     print("PASS")
 
 
-def check_telecom():
+def check_telecom(variant="v1"):
     # Imported here so the synthetic check keeps working without pandas.
     import generate_data as gd
 
-    folder = gd.TELECOM_OUT
+    folder = gd.TELECOM_OUT if variant == "v1" else gd.TELECOM_OUT_V2
     with open(f"{folder}/traffic_train.json", "r", encoding="utf-8") as f:
         examples = json.load(f)
     with open(f"{folder}/train_starts.json", "r", encoding="utf-8") as f:
@@ -80,6 +82,8 @@ def check_telecom():
     for name, entries in [("validation", val), ("test", test)]:
         for e in entries:
             c, s = e["cell"], e["start"]
+            # v1 windows carry no variant field; v2 windows must say "v2".
+            assert e.get("variant", "v1") == variant, f"FAIL: {name} window cell {c} start {s} is not tagged {variant}."
             assert squares[c] == e["square_id"], f"FAIL: {name} window cell {c} has the wrong square ID."
             assert e["history"] == series[c][s : s + 12] and e["true"] == series[c][s + 12 : s + 18], \
                 f"FAIL: {name} window cell {c} start {s} does not match cells.csv."
@@ -92,7 +96,9 @@ def check_telecom():
             assert t["cell"] == client, f"FAIL: example {j} (client {client}) belongs to cell {t['cell']}."
             history = series[client][t["start"] : t["start"] + 12]
             future = series[client][t["start"] + 12 : t["start"] + 18]
-            assert examples[j]["instruction"] == gd.build_instruction(history), f"FAIL: example {j} history is not cell {client}'s data."
+            # v1: the plain prompt; v2: the same prompt plus the time line of the last history slot.
+            prompt = gd.build_example(history, variant=variant, last_slot=t["start"] + 11)["instruction"]
+            assert examples[j]["instruction"] == prompt, f"FAIL: example {j} prompt is not cell {client}'s data."
             assert examples[j]["output"] == gd.build_output(history, future), f"FAIL: example {j} answer is not cell {client}'s data."
         starts = [train[j]["start"] for j in range(client, len(examples), gd.N_CELLS)]
         assert len(set(starts)) == len(starts), f"FAIL: client {client} has repeated window starts."
@@ -103,5 +109,9 @@ def check_telecom():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FedFlow-LLM split check")
     parser.add_argument("--dataset", choices=["synthetic", "telecom"], default="synthetic")
+    parser.add_argument("--variant", choices=["v1", "v2"], default="v1",
+                        help="with --dataset telecom: v1 (default) checks data/telecom/, v2 checks data/telecom_v2/")
     args = parser.parse_args()
-    check_telecom() if args.dataset == "telecom" else check_synthetic()
+    if args.variant != "v1" and args.dataset != "telecom":
+        parser.error("--variant v2 only applies with --dataset telecom")
+    check_telecom(args.variant) if args.dataset == "telecom" else check_synthetic()
