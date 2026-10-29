@@ -22,6 +22,11 @@ Usage (from the repo root):
                  The default --mode oracle cannot run on these cells (the oracle never crosses upward).
     slice        same rule, starts 1740-1980 (so every step has a forecast); the recomputed slice
                  must equal the one saved for that cell in cells_meta.json or the run stops
+    --forecasts PATH   with --dataset telecom: read the model forecasts from PATH instead of
+                       results/final_telecom/outputs/forecasts.csv (e.g. a v2 run, PLAN_V2.md)
+    --out-root DIR     with --dataset telecom: write to DIR/<square_id>/ instead of
+                       results/experiment_telecom/<square_id>/. A non-default --forecasts needs a
+                       non-default --out-root, so v1 results are never mixed with or overwritten by another run.
 
 Trace (synthetic): the 36-step slice of the held-out block (timesteps 1452-1727) with the
 most upward crossings of 100 in the TRUE traffic, earliest on ties. Step value
@@ -104,9 +109,10 @@ TELECOM_OUT_DIR = os.path.join(REPO, "results", "experiment_telecom")
 TELECOM = None   # stays None for synthetic; use_telecom() fills it with the experiment cell's saved facts
 
 
-def use_telecom(square=None):
+def use_telecom(square=None, forecasts=None, out_root=None):
     """Point every path and the slice range at one Telecom Italia experiment cell.
-    square=None means the primary experiment cell (the one the locked rule picked)."""
+    square=None means the primary experiment cell (the one the locked rule picked).
+    forecasts / out_root = None keep the v1 defaults (TELECOM_FORECASTS_CSV, TELECOM_OUT_DIR)."""
     global FORECASTS_CSV, OUT_DIR, QUICK_DIR, BLOCK_FIRST, BLOCK_LAST, TELECOM
     with open(TELECOM_META_JSON, encoding="utf-8") as f:
         meta = json.load(f)
@@ -125,8 +131,9 @@ def use_telecom(square=None):
         "start": int(entry["best_slice_start"]),
         "crossings": int(entry["best_slice_crossings"]),
     }
-    FORECASTS_CSV = TELECOM_FORECASTS_CSV
-    OUT_DIR = os.path.join(TELECOM_OUT_DIR, str(TELECOM["square"]))   # one folder per experiment cell
+    FORECASTS_CSV = TELECOM_FORECASTS_CSV if forecasts is None else os.path.abspath(forecasts)
+    root = TELECOM_OUT_DIR if out_root is None else os.path.abspath(out_root)
+    OUT_DIR = os.path.join(root, str(TELECOM["square"]))   # one folder per experiment cell
     QUICK_DIR = os.path.join(OUT_DIR, "quick")
     # choose_slice tries starts BLOCK_FIRST .. BLOCK_LAST - TRACE_LEN + 1, so this gives starts 1740-1980.
     BLOCK_FIRST = rule["start_min"]
@@ -623,14 +630,26 @@ def main():
                         help="with --dataset telecom: experiment cell square ID, 7511 (default, primary) or 8336 (second)")
     parser.add_argument("--mode", choices=MODES, default=None,
                         help="with --quick: the mode to run (default oracle, as before)")
+    parser.add_argument("--forecasts", default=None,
+                        help="with --dataset telecom: forecasts CSV (default results/final_telecom/outputs/forecasts.csv, the v1 run)")
+    parser.add_argument("--out-root", default=None,
+                        help="with --dataset telecom: output root (default results/experiment_telecom); files go to <root>/<square_id>/")
     args = parser.parse_args()
+    if (args.forecasts is not None or args.out_root is not None) and args.dataset != "telecom":
+        parser.error("--forecasts and --out-root only apply with --dataset telecom")
+    if args.forecasts is not None and not os.path.isfile(args.forecasts):
+        parser.error(f"--forecasts {args.forecasts} is not a file")
+    # Another run's forecasts must never land in (or overwrite) the v1 results folder.
+    if (args.forecasts is not None and os.path.abspath(args.forecasts) != TELECOM_FORECASTS_CSV
+            and (args.out_root is None or os.path.abspath(args.out_root) == TELECOM_OUT_DIR)):
+        parser.error("a non-default --forecasts needs its own --out-root (not results/experiment_telecom)")
     if args.mode is not None and not args.quick:
         parser.error("--mode only applies with --quick")
     if args.cell is not None and args.dataset != "telecom":
         parser.error("--cell only applies with --dataset telecom")
     if args.dataset == "telecom":
         try:
-            use_telecom(args.cell)
+            use_telecom(args.cell, args.forecasts, args.out_root)
         except ValueError as error:
             parser.error(str(error))
     if args.selftest:

@@ -682,15 +682,19 @@ INFO:reroute_trigger:[FedFlow] 10:00:15.900 FLIP alternate -> primary (forecast 
     assert default_dir("synthetic", None) == DEFAULT_DIR
     assert default_dir("telecom", None) == os.path.join(TELECOM_DIR, "7511")
     assert default_dir("telecom", 8336) == os.path.join(TELECOM_DIR, "8336")
+    assert default_dir("telecom", 8336, "/tmp/x") == os.path.join("/tmp/x", "8336")
+    assert default_dir("synthetic", None, "/tmp/x") == DEFAULT_DIR    # out_root only affects telecom
 
     print("SELFTEST OK")
 
 
-def default_dir(dataset, cell):
+def default_dir(dataset, cell, out_root=None):
     """Folder with the raw_* files when --dir is not given: results/experiment for synthetic,
-    results/experiment_telecom/<square_id> for telecom (cell None = the primary cell)."""
+    results/experiment_telecom/<square_id> for telecom (cell None = the primary cell).
+    out_root replaces results/experiment_telecom (run_experiment.py --out-root)."""
     if dataset == "telecom":
-        return os.path.join(TELECOM_DIR, str(PRIMARY_TELECOM_SQUARE if cell is None else cell))
+        root = TELECOM_DIR if out_root is None else os.path.abspath(out_root)
+        return os.path.join(root, str(PRIMARY_TELECOM_SQUARE if cell is None else cell))
     return DEFAULT_DIR
 
 
@@ -702,14 +706,18 @@ def main():
                         help="with --dataset telecom: experiment cell square ID, 7511 (default, primary) or 8336 (second)")
     parser.add_argument("--dir", default=None,
                         help="folder with raw_* files (default results/experiment, or results/experiment_telecom with --dataset telecom)")
+    parser.add_argument("--out-root", default=None,
+                        help="with --dataset telecom: root used by run_experiment.py --out-root (default results/experiment_telecom)")
     parser.add_argument("--selftest", action="store_true", help="test parsers on made-up raw text")
     parser.add_argument("--steps-check", action="store_true",
                         help=f"per-step static1 vs alt1 table, printed and saved to <dir>/{CHECK_FILE}")
     args = parser.parse_args()
     if args.cell is not None and args.dataset != "telecom":
         parser.error("--cell only applies with --dataset telecom")
+    if args.out_root is not None and (args.dataset != "telecom" or args.dir is not None):
+        parser.error("--out-root only applies with --dataset telecom and without --dir")
     if args.dir is None:   # no --dir given: pick the default folder for the chosen dataset and cell
-        args.dir = default_dir(args.dataset, args.cell)
+        args.dir = default_dir(args.dataset, args.cell, args.out_root)
     if args.selftest:
         run_selftest()
     elif args.steps_check:
