@@ -10,6 +10,12 @@ This defines what ONE simulated client (site) does:
 
 Nothing here is Flower-specific magic — it's a normal PyTorch/HuggingFace
 training loop, wrapped in the shape Flower expects (a "NumPyClient").
+
+Variant switches (token_utils.py, PLAN_V2.md):
+  FEDFLOW_VARIANT=v1 (default)  unchanged: loss on every token, labels = input_ids
+  FEDFLOW_VARIANT=v2            loss on the answer and end token only (prompt and padding labels = -100),
+                                and training stops before any example would be truncated
+  FEDFLOW_MAX_LENGTH            token limit per example (default 256, v1's value)
 """
 
 # Must be set BEFORE importing transformers/peft — these environment
@@ -32,12 +38,15 @@ import torch
 from peft import LoraConfig, get_peft_model, set_peft_model_state_dict, get_peft_model_state_dict
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+import token_utils
+
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # matches the Objectives slide's stated target
 DATA_PATH = "data/traffic_train.json"
 NUM_CLIENTS = 6
 LOCAL_EPOCHS = 1          # how many passes over this client's own data slice, per round
 LOCAL_BATCH_SIZE = 2
-MAX_LENGTH = 256           # max tokens per training example (keeps this fast)
+MAX_LENGTH = token_utils.max_length_from_env()   # max tokens per training example; default 256 (v1)
+VARIANT = token_utils.variant_from_env()          # "v1" (default) or "v2"
 
 
 def load_model_and_tokenizer():
@@ -80,7 +89,13 @@ def load_client_data(client_id: int, num_clients: int):
 
 def format_example(example, tokenizer):
     """Turn one {"instruction","input","output"} example into a single
-    tokenized training string: instruction followed by the expected output."""
+    tokenized training string: instruction followed by the expected output.
+    v2 also returns "labels" with the prompt and padding masked out (token_utils.v2_token_lists)."""
+    if VARIANT == "v2":
+        input_ids, attention_mask, labels = token_utils.v2_token_lists(example, tokenizer, MAX_LENGTH)
+        # Same shapes as the v1 tokenizer output below: a batch of one.
+        return {"input_ids": torch.tensor([input_ids]), "attention_mask": torch.tensor([attention_mask]),
+                "labels": torch.tensor([labels])}
     full_text = example["instruction"] + "\n" + example["output"] + tokenizer.eos_token
     tokens = tokenizer(
         full_text,
@@ -97,6 +112,9 @@ class FedFlowClient(fl.client.NumPyClient):
         self.client_id = client_id
         self.model, self.tokenizer = load_model_and_tokenizer()
         self.examples = load_client_data(client_id, NUM_CLIENTS)
+        if VARIANT == "v2":
+            # Stop before training if any example would not fit; v2 never truncates.
+            token_utils.abort_if_truncated(self.examples, self.tokenizer, MAX_LENGTH, f"Client {client_id}")
         print(f"[Client {client_id}] loaded {len(self.examples)} local examples.")
 
     def get_parameters(self, config):
@@ -136,11 +154,13 @@ class FedFlowClient(fl.client.NumPyClient):
                     tokens = format_example(example, self.tokenizer)
                     input_ids = tokens["input_ids"].to("cuda")
                     attention_mask = tokens["attention_mask"].to("cuda")
+                    # v1: labels = input_ids (unchanged). v2: answer-only labels from format_example.
+                    labels = tokens["labels"].to("cuda") if "labels" in tokens else input_ids
 
                     outputs = self.model(
                         input_ids=input_ids,
                         attention_mask=attention_mask,
-                        labels=input_ids,
+                        labels=labels,
                     )
                     loss = outputs.loss
 
@@ -169,8 +189,9 @@ class FedFlowClient(fl.client.NumPyClient):
                 tokens = format_example(example, self.tokenizer)
                 input_ids = tokens["input_ids"].to("cuda")
                 attention_mask = tokens["attention_mask"].to("cuda")
+                labels = tokens["labels"].to("cuda") if "labels" in tokens else input_ids   # same rule as fit()
                 outputs = self.model(
-                    input_ids=input_ids, attention_mask=attention_mask, labels=input_ids
+                    input_ids=input_ids, attention_mask=attention_mask, labels=labels
                 )
                 total_loss += outputs.loss.item()
                 num_steps += 1
