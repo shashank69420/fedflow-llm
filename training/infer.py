@@ -10,6 +10,12 @@ Usage (from inside training/):
   python infer.py --eval --split val      score the validation windows instead (writes val_* files)
   python infer.py --selftest              test parser + metrics, no model needed
   add --max-new-tokens N to --window/--eval to change the generation limit
+  add --last-slot S to --window for a v2 adapter (slot number of the last history value)
+
+Variant (PLAN_V2.md): outputs/run_config.json (written by server.py for v2 runs) says which
+variant the adapter is; a missing file means v1. Prompts are built for that variant through
+generate_data.build_example. Windows tagged "variant": "v2" are v2 data, untagged windows are v1;
+the run stops if the data and the adapter disagree. metrics.json / val_metrics.json record the variant.
 
 If the test windows carry a "cell" field (telecom data), forecasts.csv gets a
 "cell" column and metrics.json gets a "per_cell" block. Synthetic output is unchanged.
@@ -27,13 +33,15 @@ import os
 import re
 import sys
 
-from generate_data import build_instruction
+from generate_data import build_example, build_instruction
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 ADAPTER_PATH = "outputs/adapter.npz"
 TEST_WINDOWS_PATH = "data/test_windows.json"
 FORECASTS_PATH = "outputs/forecasts.csv"
 METRICS_PATH = "outputs/metrics.json"
+RUN_CONFIG_PATH = "outputs/run_config.json"   # written by server.py for v2 runs only
+VARIANTS = ("v1", "v2")
 VAL_WINDOWS_PATH = "data/val_windows.json"
 VAL_FORECASTS_PATH = "outputs/val_forecasts.csv"
 VAL_METRICS_PATH = "outputs/val_metrics.json"
@@ -218,12 +226,45 @@ def eos_token_ids(model, tokenizer):
     return ids
 
 
-def predict(model, tokenizer, device, history, max_new_tokens=MAX_NEW_TOKENS):
-    """Greedy-decode one forecast. Returns (6 floats or None, raw generated text)."""
+def adapter_variant(path=RUN_CONFIG_PATH):
+    """Variant of the adapter in outputs/: run_config.json's "variant", or v1 if the file is missing."""
+    if not os.path.exists(path):
+        return "v1"
+    with open(path, "r", encoding="utf-8") as f:
+        variant = json.load(f).get("variant")
+    if variant not in VARIANTS:
+        sys.exit(f"ERROR: {path} has variant {variant!r}; expected one of {VARIANTS}.")
+    return variant
+
+
+def data_variant(windows):
+    """Variant of a list of windows: "v2" if tagged so, "v1" if untagged. Mixed tags stop the run."""
+    found = {w.get("variant", "v1") for w in windows}
+    if len(found) != 1:
+        sys.exit(f"ERROR: the windows mix variants {sorted(found)}; regenerate the data.")
+    return found.pop()
+
+
+def check_variants(adapter, data, where):
+    """Stop with a clear message if the adapter and the data were made for different variants."""
+    if adapter != data:
+        sys.exit(f"ERROR: the adapter is {adapter} (from {RUN_CONFIG_PATH}, missing = v1) but {where} holds {data} windows. "
+                 f"Copy the {adapter} data files into data/ (generate_data.py --dataset telecom --variant {adapter}).")
+
+
+def window_instruction(window, variant):
+    """Prompt text of one window for the adapter's variant, through the shared build_example.
+    The last history value sits at slot start + 11."""
+    return build_example(window["history"], variant=variant, last_slot=window["start"] + HISTORY_LEN - 1)["instruction"]
+
+
+def predict(model, tokenizer, device, history, max_new_tokens=MAX_NEW_TOKENS, instruction=None):
+    """Greedy-decode one forecast. Returns (6 floats or None, raw generated text).
+    instruction=None builds the v1 prompt from history, exactly as before."""
     import torch
 
     # Exactly client.py's training format: instruction text, then a newline.
-    prompt = build_instruction(history) + "\n"
+    prompt = (build_instruction(history) if instruction is None else instruction) + "\n"
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
     with torch.no_grad():
         output_ids = model.generate(
@@ -244,12 +285,16 @@ def predict(model, tokenizer, device, history, max_new_tokens=MAX_NEW_TOKENS):
 
 # ---------------------------------------------------------------- modes
 
-def run_window(window_arg, max_new_tokens):
+def run_window(window_arg, max_new_tokens, last_slot=None):
     history = [float(v) for v in window_arg.split(",")]
     if len(history) != HISTORY_LEN:
         sys.exit(f"ERROR: --window needs {HISTORY_LEN} comma-separated values, got {len(history)}.")
+    variant = adapter_variant()
+    if variant == "v2" and last_slot is None:
+        sys.exit("ERROR: this is a v2 adapter; add --last-slot S (slot number of the last history value).")
+    instruction = None if variant == "v1" else build_example(history, variant="v2", last_slot=last_slot)["instruction"]
     model, tokenizer, device = load_model()
-    prediction, text = predict(model, tokenizer, device, history, max_new_tokens)
+    prediction, text = predict(model, tokenizer, device, history, max_new_tokens, instruction)
     if prediction is None:
         print("Could not parse a PREDICTION line from the model output:")
         print(text)
@@ -263,6 +308,9 @@ def run_eval(limit, max_new_tokens, split="test"):
     windows = load_split_windows(split)
     if limit is not None:
         windows = windows[:limit]
+    # Check the variant before loading the model, so a mismatch stops at once.
+    variant = adapter_variant()
+    check_variants(variant, data_variant(windows), windows_path)
 
     model, tokenizer, device = load_model()
 
@@ -273,7 +321,8 @@ def run_eval(limit, max_new_tokens, split="test"):
     parse_failures = 0
     for n, w in enumerate(windows, start=1):
         history, true = w["history"], w["true"]
-        prediction, raw_output = predict(model, tokenizer, device, history, max_new_tokens)
+        prediction, raw_output = predict(model, tokenizer, device, history, max_new_tokens,
+                                         None if variant == "v1" else window_instruction(w, variant))
         if n <= 2:
             # Show the first couple of raw generations so format problems are visible in the log.
             print(f"--- raw output, window start={w['start']} ---\n{raw_output}\n--- end raw output ---")
@@ -314,6 +363,7 @@ def run_eval(limit, max_new_tokens, split="test"):
         writer.writerows(rows)
 
     metrics = {
+        "variant": variant,   # which adapter/prompt variant produced these forecasts (PLAN_V2.md)
         "windows_used": len(windows),
         "parse_failures": parse_failures,
         "windows_scored": len(scored["model"]),
@@ -415,6 +465,40 @@ def run_selftest():
     prompt = build_instruction(history)
     assert "History: 1.00, 2.00" in prompt and prompt.endswith("PREDICTION: v1, v2, v3, v4, v5, v6")
 
+    # v1 prompt: byte-identical to the text before the v2 work (copied from the unmodified build_instruction).
+    v1_today = "You are a traffic-forecasting assistant. Predict the next 6 traffic values given the following 12 historical values measured at 10-minute intervals.\n\nHistory: 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 10.00, 11.00, 12.00\n\nReason step by step about the traffic pattern, then end with exactly this format:\nPREDICTION: v1, v2, v3, v4, v5, v6"
+    assert prompt == v1_today
+    assert build_example(history)["instruction"] == v1_today
+    assert window_instruction({"history": history, "start": 0}, "v1") == v1_today
+    # v2 prompt: the same text plus exactly one time line after History. Slot 1739 = day 12 (Wednesday 13 Nov), 01:50.
+    v2 = window_instruction({"history": history, "start": 1728}, "v2")
+    time_line = "Time of last value: Wednesday 01:50 (working day)"
+    assert v2.count(time_line + "\n") == 1 and v2.replace(time_line + "\n", "", 1) == v1_today
+    # Day type: slot 0 is the 1 November holiday (Friday), slot 144 is a Saturday, 432 a Monday.
+    assert window_instruction({"history": history, "start": -11}, "v2").count("Friday 00:00 (non-working day)") == 1
+    assert "Saturday 00:00 (non-working day)" in window_instruction({"history": history, "start": 133}, "v2")
+    assert "Monday 00:00 (working day)" in window_instruction({"history": history, "start": 421}, "v2")
+
+    # Variant detection: no run_config.json = v1; a run_config.json says its variant; data tags must match.
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        cfg = os.path.join(tmp, "run_config.json")
+        assert adapter_variant(cfg) == "v1"                          # missing file -> v1 adapter
+        with open(cfg, "w", encoding="utf-8") as f:
+            json.dump({"variant": "v2"}, f)
+        assert adapter_variant(cfg) == "v2"
+    assert data_variant([{"start": 0}, {"start": 6}]) == "v1"
+    assert data_variant([{"variant": "v2"}, {"variant": "v2"}]) == "v2"
+    for bad in (lambda: data_variant([{"variant": "v2"}, {}]), lambda: check_variants("v2", "v1", "x"),
+                lambda: check_variants("v1", "v2", "x")):
+        try:
+            bad()
+            raise AssertionError("variant mismatch was not refused")
+        except SystemExit:
+            pass
+    check_variants("v1", "v1", "x")
+    check_variants("v2", "v2", "x")
+
     print("SELFTEST OK")
 
 
@@ -427,6 +511,8 @@ def main():
     parser.add_argument("--limit", type=int, help="with --eval: only use the first N windows")
     parser.add_argument("--split", choices=["test", "val"], default="test",
                         help="with --eval: which windows to score (default test; val writes val_forecasts.csv and val_metrics.json)")
+    parser.add_argument("--last-slot", type=int, default=None,
+                        help="with --window and a v2 adapter: slot number of the last history value")
     parser.add_argument("--max-new-tokens", type=int, default=MAX_NEW_TOKENS,
                         help=f"generation limit per window (default {MAX_NEW_TOKENS})")
     args = parser.parse_args()
@@ -441,7 +527,7 @@ def main():
     elif args.eval:
         run_eval(args.limit, args.max_new_tokens, args.split)
     else:
-        run_window(args.window, args.max_new_tokens)
+        run_window(args.window, args.max_new_tokens, args.last_slot)
 
 
 if __name__ == "__main__":
