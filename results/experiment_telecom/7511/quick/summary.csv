@@ -1,0 +1,2 @@
+mode,rep,steps,server_status,server_udp_lost,server_udp_total,server_udp_loss_pct,server_steps_with_report,steps_no_server_report,client_udp_loss_pct,client_steps_with_report,client_steps_no_report,client_bad_reports,ping_replies,ping_mean_ms,ping_p95_ms,flip_lines,frac_written_above_100,steps_on_alt_while_true_le_100,steps_on_primary_while_true_gt_100,flips_matched,median_write_to_flip_s,delivered_vs_alt_pct
+reactive,1,8,ok,177,45534,0.3887,8,0,0.3887,8,0,0,254,14.2016,90.35,2,0.875,1,1,2,1.09,not computed

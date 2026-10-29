@@ -1,0 +1,16 @@
+mode,rep,steps,server_status,server_udp_lost,server_udp_total,server_udp_loss_pct,server_steps_with_report,steps_no_server_report,client_udp_loss_pct,client_steps_with_report,client_steps_no_report,client_bad_reports,ping_replies,ping_mean_ms,ping_p95_ms,flip_lines,frac_written_above_100,steps_on_alt_while_true_le_100,steps_on_primary_while_true_gt_100,flips_matched,median_write_to_flip_s,delivered_vs_alt_pct
+static,1,36,server report count mismatch,not computed,not computed,server report count mismatch,not computed,not computed,0.0,23,0,13,1182,59.7686,108.0,0,0.0,0,28,0,not computed,not computed
+static,2,36,ok,0,149196,0.0,36,0,0.0,19,0,17,1176,57.1621,108.25,0,0.0,0,28,0,not computed,82.72
+static,3,36,ok,0,146048,0.0,36,0,0.0,21,0,15,1170,59.7586,109.0,0,0.0,0,28,0,not computed,80.97
+reactive,1,36,ok,0,171325,0.0,36,0,0.0,31,0,5,1141,13.3251,92.3,15,0.7778,8,8,15,0.62,94.99
+reactive,2,36,ok,0,173982,0.0,36,0,0.0,32,0,4,1149,14.6099,93.16,15,0.7778,8,8,15,0.545,96.46
+reactive,3,36,ok,0,174563,0.0,36,0,0.0,31,0,5,1153,13.7985,94.3,15,0.7778,8,8,15,0.456,96.78
+model,1,36,ok,0,173341,0.0,36,0,0.0,32,0,4,1149,7.8507,74.04,3,0.8889,8,4,3,0.229,96.1
+model,2,36,ok,0,171768,0.0,36,0,0.0,33,0,3,1163,7.1018,77.4,3,0.8889,8,4,3,0.804,95.23
+model,3,36,ok,0,173102,0.0,36,0,0.0,33,0,3,1137,7.5164,76.6,3,0.8889,8,4,3,0.554,95.97
+oracle,1,36,ok,0,177261,0.0,36,0,0.0,35,0,1,1140,0.1273,0.104,0,1.0,8,0,0,not computed,98.28
+oracle,2,36,ok,0,179315,0.0,36,0,0.0,34,0,2,1132,0.2487,0.0995,0,1.0,8,0,0,not computed,99.42
+oracle,3,36,ok,0,180370,0.0,36,0,0.0,36,0,0,1137,0.2495,0.105,0,1.0,8,0,0,not computed,100.0
+alt,1,36,ok,0,180369,0.0,36,0,0.0,35,0,1,1134,0.193,0.107,0,1.0,8,0,0,not computed,100.0
+alt,2,36,ok,0,180370,0.0,36,0,0.0,36,0,0,1134,0.2501,0.101,0,1.0,8,0,0,not computed,100.0
+alt,3,36,ok,0,180370,0.0,36,0,0.0,36,0,0,1149,0.1053,0.105,0,1.0,8,0,0,not computed,100.0

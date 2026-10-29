@@ -1,0 +1,501 @@
+### step 0 timestep 1837 rate 15.739M written 138.12
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 712.57 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 39733 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0010 sec  9.84 MBytes  16.5 Mbits/sec
+[  1] Sent 7021 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9963 sec  9.84 MBytes  16.5 Mbits/sec   0.004 ms 0/7020 (0%)
+[  1] 0.0000-4.9963 sec  7 datagrams received out-of-order
+### step 1 timestep 1838 rate 11.648M written 138.12
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 962.84 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 36622 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0011 sec  7.28 MBytes  12.2 Mbits/sec
+[  1] Sent 5197 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  7.28 MBytes  12.2 Mbits/sec   0.005 ms 0/5196 (0%)
+[  1] 0.0000-4.9967 sec  6 datagrams received out-of-order
+### step 2 timestep 1839 rate 9.821M written 138.33
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1141.96 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 57131 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0019 sec  6.14 MBytes  10.3 Mbits/sec
+[  1] Sent 4383 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9954 sec  6.14 MBytes  10.3 Mbits/sec   0.004 ms 0/4382 (0%)
+[  1] 0.0000-4.9954 sec  6 datagrams received out-of-order
+### step 3 timestep 1840 rate 10.672M written 138.33
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1050.90 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 39310 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0014 sec  6.67 MBytes  11.2 Mbits/sec
+[  1] Sent 4762 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9962 sec  6.67 MBytes  11.2 Mbits/sec   0.012 ms 0/4761 (0%)
+[  1] 0.0000-4.9962 sec  6 datagrams received out-of-order
+### step 4 timestep 1841 rate 11.318M written 138.33
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 990.92 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 52885 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0013 sec  7.08 MBytes  11.9 Mbits/sec
+[  1] Sent 5050 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9956 sec  7.08 MBytes  11.9 Mbits/sec   0.004 ms 0/5049 (0%)
+[  1] 0.0000-4.9956 sec  7 datagrams received out-of-order
+### step 5 timestep 1842 rate 21.408M written 106.72
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 523.88 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 38922 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0005 sec  13.4 MBytes  22.5 Mbits/sec
+[  1] Sent 9548 datagrams
+[  1] Server Report:
+[ ID] Interval            Transfer     Bandwidth        Jitter   Lost/Total  Latency avg/min/max/stdev PPS NetPwr
+[  1] 0.0000-0.0000 sec  4.00 GBytes  -nan bits/sec   0.000 ms 4294966796/0 (0%) -/-/-/- ms 0 pps
+### step 6 timestep 1843 rate 10.647M written 106.72
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1053.37 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 41983 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  6.66 MBytes  11.2 Mbits/sec
+[  1] Sent 4751 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9955 sec  6.66 MBytes  11.2 Mbits/sec   0.008 ms 0/4750 (0%)
+[  1] 0.0000-4.9955 sec  5 datagrams received out-of-order
+### step 7 timestep 1844 rate 11.994M written 106.72
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 935.07 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 60593 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0018 sec  7.50 MBytes  12.6 Mbits/sec
+[  1] Sent 5352 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  7.50 MBytes  12.6 Mbits/sec   0.003 ms 0/5351 (0%)
+[  1] 0.0000-4.9967 sec  5 datagrams received out-of-order
+### step 8 timestep 1845 rate 9.883M written 113.18
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1134.80 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 38332 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0012 sec  6.18 MBytes  10.4 Mbits/sec
+[  1] Sent 4410 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9969 sec  6.18 MBytes  10.4 Mbits/sec   0.006 ms 0/4409 (0%)
+[  1] 0.0000-4.9969 sec  5 datagrams received out-of-order
+### step 9 timestep 1846 rate 12.029M written 113.18
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 932.35 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 33606 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0012 sec  7.52 MBytes  12.6 Mbits/sec
+[  1] Sent 5367 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9964 sec  7.52 MBytes  12.6 Mbits/sec   0.002 ms 0/5366 (0%)
+[  1] 0.0000-4.9964 sec  4 datagrams received out-of-order
+### step 10 timestep 1847 rate 10.010M written 113.18
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1120.40 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 58895 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0016 sec  6.26 MBytes  10.5 Mbits/sec
+[  1] Sent 4467 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9969 sec  6.26 MBytes  10.5 Mbits/sec   0.006 ms 0/4466 (0%)
+[  1] 0.0000-4.9969 sec  4 datagrams received out-of-order
+### step 11 timestep 1848 rate 8.972M written 100.00
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1250.02 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 52620 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  5.61 MBytes  9.41 Mbits/sec
+[  1] Sent 4004 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  5.61 MBytes  9.42 Mbits/sec   0.005 ms 0/4003 (0%)
+[  1] 0.0000-4.9967 sec  5 datagrams received out-of-order
+### step 12 timestep 1849 rate 11.184M written 100.00
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1002.79 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 57595 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0237 sec  5.89 MBytes  9.83 Mbits/sec
+[  1] Sent 4201 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0793 sec  5.89 MBytes  9.72 Mbits/sec   4.546 ms 0/4200 (0%)
+[  1] 0.0000-5.0793 sec  4 datagrams received out-of-order
+### step 13 timestep 1850 rate 10.964M written 100.00
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1022.91 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 48090 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0389 sec  5.91 MBytes  9.83 Mbits/sec
+[  1] Sent 4214 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0940 sec  5.91 MBytes  9.73 Mbits/sec   4.537 ms 0/4213 (0%)
+[  1] 0.0000-5.0940 sec  2 datagrams received out-of-order
+### step 14 timestep 1851 rate 10.213M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1098.13 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 45737 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0022 sec  6.39 MBytes  10.7 Mbits/sec
+[  1] Sent 4558 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9978 sec  6.39 MBytes  10.7 Mbits/sec   0.009 ms 0/4557 (0%)
+[  1] 0.0000-4.9978 sec  4 datagrams received out-of-order
+### step 15 timestep 1852 rate 11.163M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1004.68 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 42382 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0014 sec  6.98 MBytes  11.7 Mbits/sec
+[  1] Sent 4981 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9975 sec  6.98 MBytes  11.7 Mbits/sec   0.003 ms 0/4980 (0%)
+[  1] 0.0000-4.9975 sec  5 datagrams received out-of-order
+### step 16 timestep 1853 rate 9.772M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1147.69 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 52577 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0018 sec  6.11 MBytes  10.3 Mbits/sec
+[  1] Sent 4361 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9954 sec  6.11 MBytes  10.3 Mbits/sec   0.003 ms 0/4360 (0%)
+[  1] 0.0000-4.9954 sec  4 datagrams received out-of-order
+### step 17 timestep 1854 rate 10.517M written 100.11
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1066.39 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 60197 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  6.58 MBytes  11.0 Mbits/sec
+[  1] Sent 4693 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9968 sec  6.58 MBytes  11.0 Mbits/sec   0.004 ms 0/4692 (0%)
+[  1] 0.0000-4.9968 sec  4 datagrams received out-of-order
+### step 18 timestep 1855 rate 12.144M written 100.11
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 923.52 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 49848 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0010 sec  7.59 MBytes  12.7 Mbits/sec
+[  1] Sent 5418 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9957 sec  7.59 MBytes  12.8 Mbits/sec   0.003 ms 0/5417 (0%)
+[  1] 0.0000-4.9957 sec  6 datagrams received out-of-order
+### step 19 timestep 1856 rate 10.556M written 100.11
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1062.45 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 37954 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0011 sec  6.60 MBytes  11.1 Mbits/sec
+[  1] Sent 4710 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9952 sec  6.60 MBytes  11.1 Mbits/sec   0.006 ms 0/4709 (0%)
+[  1] 0.0000-4.9952 sec  7 datagrams received out-of-order
+### step 20 timestep 1857 rate 8.364M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1340.89 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 57656 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0016 sec  5.23 MBytes  8.77 Mbits/sec
+[  1] Sent 3733 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  5.23 MBytes  8.78 Mbits/sec   0.003 ms 0/3732 (0%)
+[  1] 0.0000-4.9967 sec  4 datagrams received out-of-order
+### step 21 timestep 1858 rate 8.057M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1391.98 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 57179 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  5.04 MBytes  8.45 Mbits/sec
+[  1] Sent 3596 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9958 sec  5.04 MBytes  8.46 Mbits/sec   0.003 ms 0/3595 (0%)
+[  1] 0.0000-4.9958 sec  3 datagrams received out-of-order
+### step 22 timestep 1859 rate 11.744M written 108.83
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 954.97 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 52364 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0013 sec  7.34 MBytes  12.3 Mbits/sec
+[  1] Sent 5240 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9960 sec  7.34 MBytes  12.3 Mbits/sec   0.004 ms 0/5239 (0%)
+[  1] 0.0000-4.9960 sec  4 datagrams received out-of-order
+### step 23 timestep 1860 rate 8.278M written 88.89
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1354.82 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 56996 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0021 sec  5.18 MBytes  8.68 Mbits/sec
+[  1] Sent 3695 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9969 sec  5.18 MBytes  8.69 Mbits/sec   0.006 ms 0/3694 (0%)
+[  1] 0.0000-4.9969 sec  4 datagrams received out-of-order
+### step 24 timestep 1861 rate 9.230M written 88.89
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1215.08 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 50851 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0014 sec  5.77 MBytes  9.68 Mbits/sec
+[  1] Sent 4119 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9973 sec  5.77 MBytes  9.69 Mbits/sec   0.003 ms 0/4118 (0%)
+[  1] 0.0000-4.9973 sec  3 datagrams received out-of-order
+### step 25 timestep 1862 rate 8.896M written 88.89
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1260.70 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 40244 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0013 sec  5.56 MBytes  9.33 Mbits/sec
+[  1] Sent 3970 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  5.56 MBytes  9.34 Mbits/sec   0.007 ms 0/3969 (0%)
+[  1] 0.0000-4.9967 sec  3 datagrams received out-of-order
+### step 26 timestep 1863 rate 8.907M written 88.40
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1259.15 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 55753 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  5.57 MBytes  9.34 Mbits/sec
+[  1] Sent 3975 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9965 sec  5.57 MBytes  9.35 Mbits/sec   0.003 ms 0/3974 (0%)
+[  1] 0.0000-4.9965 sec  1 datagrams received out-of-order
+### step 27 timestep 1864 rate 10.879M written 88.40
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1030.90 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 47218 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0105 sec  5.87 MBytes  9.83 Mbits/sec
+[  1] Sent 4190 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0656 sec  5.87 MBytes  9.72 Mbits/sec   4.542 ms 0/4189 (0%)
+[  1] 0.0000-5.0656 sec  2 datagrams received out-of-order
+### step 28 timestep 1865 rate 11.307M written 88.40
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 991.88 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 59212 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0480 sec  5.92 MBytes  9.83 Mbits/sec
+[  1] Sent 4221 datagrams
+[  1] Server Report:
+[ ID] Interval            Transfer     Bandwidth        Jitter   Lost/Total  Latency avg/min/max/stdev PPS NetPwr
+[  1] 0.0000-0.0000 sec  4.00 GBytes  -nan bits/sec   0.000 ms 4294966796/0 (0%) -/-/-/- ms 0 pps
+### step 29 timestep 1866 rate 9.797M written 100.20
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1144.76 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 53780 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0016 sec  6.13 MBytes  10.3 Mbits/sec
+[  1] Sent 4372 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9968 sec  6.13 MBytes  10.3 Mbits/sec   0.005 ms 0/4371 (0%)
+[  1] 0.0000-4.9968 sec  6 datagrams received out-of-order
+### step 30 timestep 1867 rate 9.635M written 100.20
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1164.01 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 59213 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0018 sec  6.03 MBytes  10.1 Mbits/sec
+[  1] Sent 4300 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9970 sec  6.03 MBytes  10.1 Mbits/sec   0.005 ms 0/4299 (0%)
+[  1] 0.0000-4.9970 sec  5 datagrams received out-of-order
+### step 31 timestep 1868 rate 11.271M written 100.20
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 995.05 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 37302 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0013 sec  7.05 MBytes  11.8 Mbits/sec
+[  1] Sent 5029 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9961 sec  7.05 MBytes  11.8 Mbits/sec   0.004 ms 0/5028 (0%)
+[  1] 0.0000-4.9961 sec  6 datagrams received out-of-order
+### step 32 timestep 1869 rate 11.486M written 118.01
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 976.42 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 42579 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0014 sec  7.18 MBytes  12.0 Mbits/sec
+[  1] Sent 5125 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9948 sec  7.18 MBytes  12.1 Mbits/sec   0.002 ms 0/5124 (0%)
+[  1] 0.0000-4.9948 sec  6 datagrams received out-of-order
+### step 33 timestep 1870 rate 9.360M written 118.01
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1198.21 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 43052 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0014 sec  5.85 MBytes  9.82 Mbits/sec
+[  1] Sent 4177 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9973 sec  5.85 MBytes  9.83 Mbits/sec   0.004 ms 0/4176 (0%)
+[  1] 0.0000-4.9973 sec  5 datagrams received out-of-order
+### step 34 timestep 1871 rate 8.288M written 118.01
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1353.19 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 40484 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0015 sec  5.18 MBytes  8.70 Mbits/sec
+[  1] Sent 3699 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9967 sec  5.18 MBytes  8.70 Mbits/sec   0.005 ms 0/3698 (0%)
+[  1] 0.0000-4.9967 sec  3 datagrams received out-of-order
+### step 35 timestep 1872 rate 10.186M written 90.81
+------------------------------------------------------------
+Client connecting to 10.0.0.1, UDP port 5001
+Sending 1470 byte datagrams, IPG target: 1101.04 us (kalman adjust)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 46105 connected with 10.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-5.0087 sec  5.92 MBytes  9.92 Mbits/sec
+[  1] Sent 4224 datagrams
+[  1] Server Report:
+[ ID] Interval            Transfer     Bandwidth        Jitter   Lost/Total  Latency avg/min/max/stdev PPS NetPwr
+[  1] 0.0000-0.0000 sec  4.00 GBytes  -nan bits/sec   0.000 ms 4294966796/0 (0%) -/-/-/- ms 0 pps

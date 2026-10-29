@@ -1,0 +1,322 @@
+### step 0 timestep 1837 rate 15.739M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 43012
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1030 sec  5.92 MBytes  9.73 Mbits/sec   4.541 ms 0/4220 (0%)
+[  1] 0.0000-5.1030 sec  2 datagrams received out-of-order
+### step 1 timestep 1838 rate 11.648M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 44392
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.9595 sec  5.44 MBytes  7.66 Mbits/sec  79.031 ms 0/3881 (0%)
+[  1] 0.0000-5.9595 sec  2 datagrams received out-of-order
+### step 2 timestep 1839 rate 9.821M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 49775
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0887 sec  5.90 MBytes  9.72 Mbits/sec   4.544 ms 0/4208 (0%)
+[  1] 0.0000-5.0887 sec  3 datagrams received out-of-order
+### step 3 timestep 1840 rate 10.672M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 45374
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1020 sec  5.91 MBytes  9.72 Mbits/sec   4.546 ms 0/4219 (0%)
+[  1] 0.0000-5.1020 sec  2 datagrams received out-of-order
+### step 4 timestep 1841 rate 11.318M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 34536
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1030 sec  5.92 MBytes  9.73 Mbits/sec   4.542 ms 0/4220 (0%)
+[  1] 0.0000-5.1030 sec  4 datagrams received out-of-order
+### step 5 timestep 1842 rate 21.408M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 58536
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0701 sec  5.88 MBytes  9.73 Mbits/sec   4.534 ms 0/4193 (0%)
+[  1] 0.0000-5.0701 sec  3 datagrams received out-of-order
+### step 6 timestep 1843 rate 10.647M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 36096
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0799 sec  4.68 MBytes  7.73 Mbits/sec   4.688 ms 0/3340 (0%)
+[  1] 0.0000-5.0799 sec  3 datagrams received out-of-order
+### step 7 timestep 1844 rate 11.994M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 60303
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0932 sec  5.90 MBytes  9.73 Mbits/sec   4.542 ms 0/4212 (0%)
+[  1] 0.0000-5.0932 sec  3 datagrams received out-of-order
+### step 8 timestep 1845 rate 9.883M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 42929
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0645 sec  5.87 MBytes  9.72 Mbits/sec   4.532 ms 0/4188 (0%)
+### step 9 timestep 1846 rate 12.029M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 38939
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0837 sec  5.89 MBytes  9.72 Mbits/sec   4.543 ms 0/4204 (0%)
+[  1] 0.0000-5.0837 sec  1 datagrams received out-of-order
+### step 10 timestep 1847 rate 10.010M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 48169
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0693 sec  5.88 MBytes  9.72 Mbits/sec   4.547 ms 0/4192 (0%)
+[  1] 0.0000-5.0693 sec  2 datagrams received out-of-order
+### step 11 timestep 1848 rate 8.972M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 47095
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0036 sec  4.38 MBytes  7.35 Mbits/sec   0.003 ms 0/3127 (0%)
+[  1] 0.0000-5.0036 sec  1 datagrams received out-of-order
+### step 12 timestep 1849 rate 11.184M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 60439
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0802 sec  5.89 MBytes  9.72 Mbits/sec   4.553 ms 0/4201 (0%)
+[  1] 0.0000-5.0802 sec  2 datagrams received out-of-order
+### step 13 timestep 1850 rate 10.964M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 58650
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0932 sec  5.90 MBytes  9.73 Mbits/sec   4.542 ms 0/4212 (0%)
+[  1] 0.0000-5.0932 sec  2 datagrams received out-of-order
+### step 14 timestep 1851 rate 10.213M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 60432
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1054 sec  5.92 MBytes  9.73 Mbits/sec   4.546 ms 0/4222 (0%)
+[  1] 0.0000-5.1054 sec  2 datagrams received out-of-order
+### step 15 timestep 1852 rate 11.163M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 47582
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0860 sec  5.90 MBytes  9.73 Mbits/sec   4.545 ms 0/4206 (0%)
+### step 16 timestep 1853 rate 9.772M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 36296
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1946 sec  4.73 MBytes  7.64 Mbits/sec  70.620 ms 0/3376 (0%)
+[  1] 0.0000-5.1946 sec  3 datagrams received out-of-order
+### step 17 timestep 1854 rate 10.517M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 41898
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0776 sec  5.89 MBytes  9.73 Mbits/sec   4.553 ms 0/4199 (0%)
+[  1] 0.0000-5.0776 sec  2 datagrams received out-of-order
+### step 18 timestep 1855 rate 12.144M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 51621
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0653 sec  5.87 MBytes  9.73 Mbits/sec   4.549 ms 0/4189 (0%)
+[  1] 0.0000-5.0653 sec  1 datagrams received out-of-order
+### step 19 timestep 1856 rate 10.556M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 45049
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1079 sec  5.92 MBytes  9.72 Mbits/sec   4.545 ms 0/4224 (0%)
+[  1] 0.0000-5.1079 sec  2 datagrams received out-of-order
+### step 20 timestep 1857 rate 8.364M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 58762
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9951 sec  5.23 MBytes  8.79 Mbits/sec   0.004 ms 0/3732 (0%)
+[  1] 0.0000-4.9951 sec  5 datagrams received out-of-order
+### step 21 timestep 1858 rate 8.057M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 36192
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.3904 sec  4.32 MBytes  6.73 Mbits/sec   0.005 ms 0/3083 (0%)
+[  1] 0.0000-5.3904 sec  2 datagrams received out-of-order
+### step 22 timestep 1859 rate 11.744M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 47046
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0640 sec  5.87 MBytes  9.73 Mbits/sec   4.546 ms 0/4188 (0%)
+[  1] 0.0000-5.0640 sec  3 datagrams received out-of-order
+### step 23 timestep 1860 rate 8.278M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 33944
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9973 sec  5.18 MBytes  8.69 Mbits/sec   0.003 ms 0/3694 (0%)
+[  1] 0.0000-4.9973 sec  4 datagrams received out-of-order
+### step 24 timestep 1861 rate 9.230M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 48453
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9973 sec  5.77 MBytes  9.69 Mbits/sec   0.003 ms 0/4118 (0%)
+[  1] 0.0000-4.9973 sec  2 datagrams received out-of-order
+### step 25 timestep 1862 rate 8.896M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 51158
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9973 sec  5.56 MBytes  9.34 Mbits/sec   0.006 ms 0/3969 (0%)
+[  1] 0.0000-4.9973 sec  2 datagrams received out-of-order
+### step 26 timestep 1863 rate 8.907M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 55509
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9980 sec  5.57 MBytes  9.35 Mbits/sec   0.004 ms 0/3974 (0%)
+[  1] 0.0000-4.9980 sec  3 datagrams received out-of-order
+### step 27 timestep 1864 rate 10.879M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 59101
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0701 sec  5.88 MBytes  9.73 Mbits/sec   4.535 ms 0/4193 (0%)
+[  1] 0.0000-5.0701 sec  2 datagrams received out-of-order
+### step 28 timestep 1865 rate 11.307M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 37392
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1065 sec  5.92 MBytes  9.73 Mbits/sec   4.550 ms 0/4223 (0%)
+[  1] 0.0000-5.1065 sec  3 datagrams received out-of-order
+### step 29 timestep 1866 rate 9.797M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 40762
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0555 sec  5.86 MBytes  9.73 Mbits/sec   4.541 ms 0/4181 (0%)
+[  1] 0.0000-5.0555 sec  2 datagrams received out-of-order
+### step 30 timestep 1867 rate 9.635M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 37703
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1058 sec  5.92 MBytes  9.72 Mbits/sec   4.546 ms 0/4222 (0%)
+[  1] 0.0000-5.1058 sec  4 datagrams received out-of-order
+### step 31 timestep 1868 rate 11.271M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 46735
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.1035 sec  5.92 MBytes  9.73 Mbits/sec   4.540 ms 0/4221 (0%)
+[  1] 0.0000-5.1035 sec  3 datagrams received out-of-order
+### step 32 timestep 1869 rate 11.486M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 57544
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0677 sec  5.88 MBytes  9.73 Mbits/sec   4.544 ms 0/4191 (0%)
+[  1] 0.0000-5.0677 sec  3 datagrams received out-of-order
+### step 33 timestep 1870 rate 9.360M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 57188
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0496 sec  5.85 MBytes  9.73 Mbits/sec   0.029 ms 0/4176 (0%)
+[  1] 0.0000-5.0496 sec  4 datagrams received out-of-order
+### step 34 timestep 1871 rate 8.288M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 52628
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-4.9983 sec  5.18 MBytes  8.70 Mbits/sec   0.008 ms 0/3698 (0%)
+[  1] 0.0000-4.9983 sec  1 datagrams received out-of-order
+### step 35 timestep 1872 rate 10.186M written 0.00
+------------------------------------------------------------
+Server listening on UDP port 5001
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  1] local 10.0.0.1 port 5001 connected with 10.0.0.2 port 42345
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-5.0795 sec  5.89 MBytes  9.73 Mbits/sec   4.535 ms 0/4201 (0%)
+[  1] 0.0000-5.0795 sec  2 datagrams received out-of-order
