@@ -16,6 +16,10 @@ Run from anywhere:  python3 results/final/analyze_peaks.py
                     python3 results/final/analyze_peaks.py --dir results/final_telecom
 --dir is a folder holding outputs/metrics.json and outputs/forecasts.csv; SUMMARY.md is
 written into that folder. The default is the folder this script is in.
+
+--split val reads only outputs/val_forecasts.csv from --dir and writes SUMMARY_val.md there (SUMMARY.md is
+never touched). It compares the model with the slope baseline on onset windows, per cell and pooled.
+The slope column is optional: files without it (older runs) still work and show "not computed".
 """
 import argparse
 import csv
@@ -30,6 +34,7 @@ HORIZON = 6
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 NOT_COMPUTED = "not computed"
+MIN_ONSET_WINDOWS = 10   # a cell needs at least this many onset windows before its numbers are reported
 
 
 def fmt(value, digits=2):
@@ -164,10 +169,147 @@ def onset_section(records):
     ]
 
 
+def val_records(windows):
+    """One record per window for the validation summary: cell, last history value, true peak, model peak and slope peak.
+    A peak is None when it is missing (model parse failure, or a file without a slope column)."""
+    records = []
+    for (cell, _start), rows in windows.items():
+        parsed = all(r["parsed"] == "True" and r["model"] != "" for r in rows)
+        has_slope = all(r.get("slope") not in (None, "") for r in rows)   # old files have no slope column
+        records.append({
+            "cell": cell,
+            "true_peak": max(float(r["true"]) for r in rows),
+            "last_value": max(float(r["persistence"]) for r in rows),
+            "model_peak": max(float(r["model"]) for r in rows) if parsed else None,
+            "slope_peak": max(float(r["slope"]) for r in rows) if has_slope else None,
+        })
+    return records
+
+
+def onset_row(onsets, peak_key):
+    """(recall text, mean error text) for one forecaster over the onset records `onsets`."""
+    if not onsets or any(w[peak_key] is None for w in onsets):
+        return NOT_COMPUTED, NOT_COMPUTED
+    flagged = sum(w[peak_key] > THRESHOLD for w in onsets)
+    mean_diff = sum(w[peak_key] - w["true_peak"] for w in onsets) / len(onsets)
+    return ratio(flagged, len(onsets)), fmt(mean_diff)
+
+
+def val_summary(records, source_name):
+    """Markdown lines for SUMMARY_val.md: pooled onset result first, then one row per cell."""
+    t = f"{THRESHOLD:g}"
+    # Only windows the model parsed count, for both the model and slope, so the two are compared on the same windows.
+    scored = [w for w in records if w["model_peak"] is not None]
+    onsets = [w for w in scored if w["last_value"] <= THRESHOLD and w["true_peak"] > THRESHOLD]
+    cells = sorted({w["cell"] for w in records}, key=lambda c: (len(c), c))
+
+    pooled_model = onset_row(onsets, "model_peak")
+    pooled_slope = onset_row(onsets, "slope_peak")
+    lines = [
+        "# Validation run summary",
+        "",
+        f"Computed by `analyze_peaks.py --split val` from `outputs/{source_name}` only. No test file is read.",
+        "",
+        f"**Pooled onset windows (all cells): {len(onsets)}**",
+        "",
+        f"- Onset window: last history value <= {t} and true peak > {t}.",
+        f"- Recall = onset windows whose predicted peak is > {t}. Mean error = mean of (predicted peak - true peak) over onset windows; negative means under-prediction.",
+        f"- Windows in the file: {len(records)}. Windows without a parsed model prediction (left out for both methods): {len(records) - len(scored)}.",
+        "",
+        "## Pooled over all cells (the figure to read)",
+        "",
+        "| Method | Onset windows | Recall | Mean (predicted peak - true peak) |",
+        "|---|---:|---:|---:|",
+        f"| Model (federated LoRA) | {len(onsets)} | {pooled_model[0]} | {pooled_model[1]} |",
+        f"| Slope baseline | {len(onsets)} | {pooled_slope[0]} | {pooled_slope[1]} |",
+        "",
+        "Validation windows use stride 6 and each holds 12 history + 6 future values, so neighbouring windows overlap "
+        "and the onset windows are not independent samples. Read the counts as a rough size, not as that many separate events.",
+    ]
+    if len(onsets) < MIN_ONSET_WINDOWS:
+        lines += ["", f"Even pooled, there are fewer than {MIN_ONSET_WINDOWS} onset windows, so treat these figures as weak evidence."]
+
+    lines += [
+        "",
+        f"## Per cell (reported only with at least {MIN_ONSET_WINDOWS} onset windows)",
+        "",
+        "| Cell | Onset windows | Model recall | Model mean error | Slope recall | Slope mean error |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    for cell in cells:
+        cell_onsets = [w for w in onsets if w["cell"] == cell]
+        label = cell if cell != "" else "all"
+        if len(cell_onsets) < MIN_ONSET_WINDOWS:
+            note = f"not reportable (onset windows: {len(cell_onsets)})"
+            lines.append(f"| {label} | {len(cell_onsets)} | {note} | | | |")
+            continue
+        m, sl = onset_row(cell_onsets, "model_peak"), onset_row(cell_onsets, "slope_peak")
+        lines.append(f"| {label} | {len(cell_onsets)} | {m[0]} | {m[1]} | {sl[0]} | {sl[1]} |")
+    lines.append(f"| Sum of the per-cell counts | {len(onsets)} | | | | |")
+    return lines
+
+
+def run_val(args):
+    """--split val: read val_forecasts.csv and write SUMMARY_val.md (never SUMMARY.md)."""
+    forecasts_path = os.path.join(args.dir, "outputs", "val_forecasts.csv")
+    summary_path = os.path.join(args.dir, "SUMMARY_val.md")
+    records = val_records(load_windows(forecasts_path))
+    with open(summary_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(val_summary(records, "val_forecasts.csv")) + "\n")
+    print(f"Wrote {summary_path}")
+
+
+def run_selftest():
+    """Check the validation summary on tiny made-up windows (no files read or written)."""
+    def window(cell, start, last, true_peak, model_peak, slope_peak):
+        rows = []
+        for step in range(1, HORIZON + 1):
+            rows.append({"cell": cell, "start": str(start), "step": str(step),
+                         "true": str(true_peak if step == 3 else 10), "persistence": str(last),
+                         "model": "" if model_peak is None else str(model_peak if step == 3 else 10),
+                         "parsed": str(model_peak is not None), "slope": "" if slope_peak is None else str(slope_peak if step == 3 else 10)})
+        return rows
+    # 12 onsets in cell 0 (model flags 6 at 120 and misses 6 at 50; slope flags 3), 2 onsets in cell 1, one calm window, one parse failure.
+    rows = []
+    for i in range(12):
+        rows += window("0", i, 50, 150, 120 if i < 6 else 50, 130 if i < 3 else 20)
+    rows += window("1", 0, 50, 150, 120, 20) + window("1", 1, 50, 150, 50, 20)
+    rows += window("1", 2, 50, 60, 40, 30) + window("1", 3, 50, 150, None, 130)
+    windows = defaultdict(list)
+    for r in rows:
+        windows[(r["cell"], int(r["start"]))].append(r)
+    records = val_records(dict(windows))
+    text = "\n".join(val_summary(records, "x.csv"))
+    assert "**Pooled onset windows (all cells): 14**" in text          # 12 + 2 (the parse failure is left out)
+    # Model: 7 flagged of 14; errors are 7 x (120 - 150) and 7 x (50 - 150), so (-210 - 700) / 14 = -65.00.
+    assert "| Model (federated LoRA) | 14 | 7/14 (50.0%) | -65.00 |" in text
+    # Slope: 3 flagged of 14; errors are 3 x (130 - 150) and 11 x (20 - 150), so (-60 - 1430) / 14 = -106.43.
+    assert "| Slope baseline | 14 | 3/14 (21.4%) | -106.43 |" in text
+    assert "| 0 | 12 | 6/12 (50.0%)" in text                            # cell 0 has enough onset windows
+    assert "| 1 | 2 | not reportable (onset windows: 2) |" in text      # cell 1 does not
+    # A file without the slope column still works and says so.
+    for r in rows:
+        del r["slope"]
+    windows = defaultdict(list)
+    for r in rows:
+        windows[(r["cell"], int(r["start"]))].append(r)
+    assert "| Slope baseline | 14 | not computed | not computed |" in "\n".join(val_summary(val_records(dict(windows)), "x.csv"))
+    print("SELFTEST OK")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Peak-crossing summary of a saved final run")
     parser.add_argument("--dir", default=HERE, help="folder with outputs/metrics.json and outputs/forecasts.csv (default: this script's folder)")
+    parser.add_argument("--split", choices=["test", "val"], default="test",
+                        help="test (default): write SUMMARY.md as before. val: read val_forecasts.csv and write SUMMARY_val.md")
+    parser.add_argument("--selftest", action="store_true", help="run the built-in checks and exit")
     args = parser.parse_args()
+    if args.selftest:
+        run_selftest()
+        return
+    if args.split == "val":
+        run_val(args)
+        return
     metrics_path = os.path.join(args.dir, "outputs", "metrics.json")
     forecasts_path = os.path.join(args.dir, "outputs", "forecasts.csv")
     summary_path = os.path.join(args.dir, "SUMMARY.md")
