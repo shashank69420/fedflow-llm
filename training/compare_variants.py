@@ -334,6 +334,46 @@ def run_selftest():
                 raise AssertionError(f"{folder} was not refused")
             except SystemExit:
                 pass
+
+    # Rule 3 edges, with rules 1, 2 and 4 held true so only rule 3 decides. v1: 10 false alarms on 100 calm windows (10%).
+    def rule3_run(folder, variant, n_calm, n_alarms, mae):
+        preds = windows([120, 50, 50, 50] if variant is None else [120, 120, 120, 50],
+                        [120] * n_alarms + [50] * (n_calm - n_alarms))
+        write_run(folder, variant, preds, 0, mae)
+        return load_run(*find_files(folder))
+
+    with tempfile.TemporaryDirectory() as tmp:
+        base = rule3_run(os.path.join(tmp, "v1"), None, 100, 10, 15.0)
+        for name, n_calm, n_alarms, rise_text, expect in [
+                ("within", 100, 14, "+4.00 points", True),      # 14%: 4 points above
+                ("exactly", 100, 15, "+5.00 points", True),     # 15%: exactly 5 points above, allowed
+                ("over", 10000, 1501, "+5.01 points", False)]:  # 15.01%: 5.01 points above, refused
+            # The over case needs 10000 calm windows so v2's rate can be 15.01%; v1 must score the same windows,
+            # so it gets a matching 10000-window file with 1000 false alarms (still 10%).
+            v1 = base if n_calm == 100 else rule3_run(os.path.join(tmp, "v1_big"), None, n_calm, n_calm // 10, 15.0)
+            v2 = rule3_run(os.path.join(tmp, name), "v2", n_calm, n_alarms, 14.0)
+            text, adopt = build_report(v1, v2)
+            assert rise_text in text and adopt == expect, (name, text)
+            rule3_row = next(line for line in text.splitlines() if line.startswith("| 3."))
+            assert rule3_row.endswith("| yes |" if expect else "| NO |"), rule3_row
+
+        # v2 parsed a window that v1 did not. Both files hold the same windows (cell, start), so they are NOT refused;
+        # they are compared, each run counting only its own parsed windows: v1 scores one window fewer than v2.
+        # (Behaviour recorded as it is today, not changed.)
+        v1_preds = windows([120, 50, 50, 50], [120] * 10 + [50] * 90)
+        unparsed_key = max(k for k in v1_preds if v1_preds[k][0] == 50 and v1_preds[k][1] == 80)   # a calm window
+        v2_preds = windows([120, 120, 120, 50], [120] * 10 + [50] * 90)
+        v1_preds[unparsed_key] = v1_preds[unparsed_key][:2] + (None,) + v1_preds[unparsed_key][3:]
+        write_run(os.path.join(tmp, "v1_unparsed"), None, v1_preds, 1, 15.0)
+        write_run(os.path.join(tmp, "v2_all_parsed"), "v2", v2_preds, 0, 14.0)
+        r1 = load_run(*find_files(os.path.join(tmp, "v1_unparsed")))
+        r2 = load_run(*find_files(os.path.join(tmp, "v2_all_parsed")))
+        text, adopt = build_report(r1, r2)                      # no SystemExit: the window sets are identical
+        s1, s2 = summarize(r1), summarize(r2)
+        assert s1["windows_scored"] == len(v1_preds) - 1 and s2["windows_scored"] == len(v2_preds)
+        assert (s1["pooled"]["model"]["calm_n"], s2["pooled"]["model"]["calm_n"]) == (99, 100)   # different denominators
+        assert "| 3. Calm false-alarm rate" in text and "10/99 (10.1%) | 10/100 (10.0%) | yes |" in text
+        assert "| 4. Parse failures no more than v1's | 1 | 0 | yes |" in text and adopt
     print("SELFTEST OK")
 
 

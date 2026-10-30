@@ -18,7 +18,8 @@ Run from anywhere:  python3 results/final/analyze_peaks.py
 written into that folder. The default is the folder this script is in.
 
 --split val reads only outputs/val_forecasts.csv from --dir and writes SUMMARY_val.md there (SUMMARY.md is
-never touched). It compares the model with the slope baseline on onset windows, per cell and pooled.
+never touched). It compares the model with the slope baseline on onset windows, per cell and pooled, and reports the
+model's false alarms on calm windows (pooled rate, per-cell counts), as PLAN_V2.md defines them.
 The slope column is optional: files without it (older runs) still work and show "not computed".
 """
 import argparse
@@ -246,6 +247,42 @@ def val_summary(records, source_name):
         m, sl = onset_row(cell_onsets, "model_peak"), onset_row(cell_onsets, "slope_peak")
         lines.append(f"| {label} | {len(cell_onsets)} | {m[0]} | {m[1]} | {sl[0]} | {sl[1]} |")
     lines.append(f"| Sum of the per-cell counts | {len(onsets)} | | | | |")
+    lines += calm_section(records, cells)
+    return lines
+
+
+def calm_section(records, cells):
+    """Markdown lines for the calm-window false alarms of the model (PLAN_V2.md rule 3 definitions).
+    Calm = last history value <= 100 and true peak <= 100. False alarm = a calm window whose model peak is > 100,
+    counted only over calm windows whose model prediction parsed."""
+    t = f"{THRESHOLD:g}"
+    calm_all = [w for w in records if w["last_value"] <= THRESHOLD and w["true_peak"] <= THRESHOLD]
+    calm = [w for w in calm_all if w["model_peak"] is not None]          # only parsed windows are counted
+    alarms = sum(w["model_peak"] > THRESHOLD for w in calm)
+    lines = [
+        "",
+        "## Calm windows: model false alarms",
+        "",
+        f"- Calm window: last history value <= {t} and true peak <= {t}. False alarm: a calm window whose model peak is > {t}.",
+        "- Only calm windows whose model prediction parsed are counted.",
+        f"- Calm windows in the file: {len(calm_all)}. Parsed (counted): {len(calm)}. "
+        f"Left out (no parsed model prediction): {len(calm_all) - len(calm)}.",
+        "",
+        "| Pooled over all cells | False alarms / parsed calm windows |",
+        "|---|---:|",
+        f"| Model (federated LoRA) | {ratio(alarms, len(calm))} |",
+        "",
+        "Per cell (counts only, no reporting threshold):",
+        "",
+        "| Cell | Calm windows | Parsed | Model false alarms |",
+        "|---|---:|---:|---:|",
+    ]
+    for cell in cells:
+        cell_all = [w for w in calm_all if w["cell"] == cell]
+        cell_calm = [w for w in cell_all if w["model_peak"] is not None]
+        label = cell if cell != "" else "all"
+        lines.append(f"| {label} | {len(cell_all)} | {len(cell_calm)} | {sum(w['model_peak'] > THRESHOLD for w in cell_calm)} |")
+    lines.append(f"| Sum of the per-cell counts | {len(calm_all)} | {len(calm)} | {alarms} |")
     return lines
 
 
@@ -287,6 +324,27 @@ def run_selftest():
     assert "| Slope baseline | 14 | 3/14 (21.4%) | -106.43 |" in text
     assert "| 0 | 12 | 6/12 (50.0%)" in text                            # cell 0 has enough onset windows
     assert "| 1 | 2 | not reportable (onset windows: 2) |" in text      # cell 1 does not
+    # Calm section: one calm window (cell 1, model peak 40, no false alarm); the parse failure is an onset, not calm.
+    assert "Calm windows in the file: 1. Parsed (counted): 1. Left out (no parsed model prediction): 0." in text
+    assert "| Model (federated LoRA) | 0/1 (0.0%) |" in text and "| 1 | 1 | 1 | 0 |" in text and "| 0 | 0 | 0 | 0 |" in text
+
+    def calm_case(n_calm, n_alarms, n_unparsed):
+        """Pooled calm text for n_calm parsed calm windows (n_alarms of them flagged) plus n_unparsed unparsed calm windows."""
+        rows = []
+        for i in range(n_calm):
+            rows += window(str(i % 2), i, 50, 80, 120 if i < n_alarms else 40, 30)
+        for i in range(n_unparsed):
+            rows += window("1", 100000 + i, 50, 80, None, 30)
+        grouped = defaultdict(list)
+        for r in rows:
+            grouped[(r["cell"], int(r["start"]))].append(r)
+        return "\n".join(val_summary(val_records(dict(grouped)), "x.csv"))
+    # The three rule-3 fixtures used by compare_variants.py's selftest (v1 = 10/100; v2 within, at, and 0.01 points over +5).
+    for n_calm, n_alarms, pct in [(100, 10, "10.0%"), (100, 14, "14.0%"), (100, 15, "15.0%"), (10000, 1501, "15.0%")]:
+        text = calm_case(n_calm, n_alarms, 1)
+        assert f"| Model (federated LoRA) | {n_alarms}/{n_calm} ({pct}) |" in text, text
+        assert f"Calm windows in the file: {n_calm + 1}. Parsed (counted): {n_calm}. Left out (no parsed model prediction): 1." in text
+        assert f"| Sum of the per-cell counts | {n_calm + 1} | {n_calm} | {n_alarms} |" in text
     # A file without the slope column still works and says so.
     for r in rows:
         del r["slope"]
